@@ -8,8 +8,9 @@ function Login()
 
   const handleSubmit = (event) => {
     event.preventDefault();
-
-    fetch('https://obscure-springs-89188.herokuapp.com/api/login',
+    //https://obscure-springs-89188.herokuapp.com/api/login
+    //http://localhost:5000/api/login
+    fetch('http://localhost:5000/api/login',
     {
       method: 'POST',
       headers: {
@@ -29,6 +30,10 @@ function Login()
       {
         if (data.error === ('no user found'))
           alert('No user found');
+
+        else if (data.error === ('please confirm email'))
+          alert('Please confirm your email');
+
         else
         {
           console.log(data);

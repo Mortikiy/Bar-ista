@@ -10,8 +10,9 @@ function Signup() {
     const handleSubmit = (event) => {
       event.preventDefault();
       // Sign up API here
-
-      fetch('https://obscure-springs-89188.herokuapp.com/api/createUser',
+      //https://obscure-springs-89188.herokuapp.com/api/login
+      //http://localhost:5000/api/createUser
+      fetch('http://localhost:5000/api/createUser',
       {
         method: 'POST',
         headers:
