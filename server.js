@@ -263,7 +263,7 @@ app.post('/api/searchDrink', async (req, res, next) =>
   res.status(200).json(ret);
 });
 
-app.post('/api/getIngredients', async (req, res, next) => 
+app.get('/api/getIngredients', async (req, res, next) => 
 {
   
   // outgoing: Ingredients
