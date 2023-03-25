@@ -1,0 +1,241 @@
+------------------------- Login (POST) ------------------------
+incoming: login, password
+outgoing: id, firstName, email, password, bar, favorite, error
+
+incoming:
+{
+  "login" : "leonieA@knights.ucf.edu",
+  "password" : "POOSD!"
+}
+
+outgoing:
+{
+  "_id": "641a69a4c3b678c56ea05f6d",
+  "firstname": "Leonie",
+  "lastName": "Alex",
+  "bar": [],
+  "savedDrinks": [],
+  "error": ""
+}
+
+---------------------- Create User (POST) ----------------------
+incoming: first, last, email, password
+outgoing: id, firstName, lastName, email, password, bar, error
+
+incoming:
+{
+  "first" : "Leonie",
+  "last" : "Alex",
+  "email" : "leonieA@knights.ucf.edu",
+  "password" : "POOSD!"
+}
+
+outgoing:
+{
+  "acknowledged": true,
+  "insertedId": "641a69a4c3b678c56ea05f6d"
+}
+
+------------------- Search Ingredient (POST) -------------------
+incoming: userId, search
+outgoing: ingredient information, error
+
+incoming:
+
+
+----------------------- Get Drinks (POST) ----------------------
+incoming: userID
+outgoing: drink data
+
+incoming:
+{
+  "userId" : "64190b2df9026453bb061544"
+}
+
+outgoing:
+[
+  {
+    "_id": "641907209bd0e02faddab904",
+    "name": "Some Drink",
+    "ingNeeded": "DRINK1 and DRINK2",
+    "ingMeasurements": "a;a",
+    "instructions": ";jf;awfe;",
+    "img": "google.com"
+  }
+]
+or
+{
+  "error": "no user found"
+}
+
+
+--------------------- Search Drink (POST) ---------------------
+incoming: search
+outgoing: drink data, error
+
+incoming:
+{
+  "search" : "Rum and Coke"
+}
+
+outgoing:
+{
+  "results": [
+    {
+      "_id": "63fc519bd3d01aea2a6cc3c8",
+      "name": "Rum and Coke",
+      "ingNeeded": [
+        "Rum",
+        "Cola"
+      ],
+      "ingMeasurments": [
+        "2 oz rum",
+        "top off with coke"
+      ],
+      "instructions": "Build all ingredients in a Collins glass filled with ice.Garnish with lime wedge.",
+      "img": "https://www.thecocktaildb.com/images/media/drink/wmkbfj1606853905.jpg"
+    }
+  ],
+  "error": ""
+}
+
+----------------------- Add Drink (POST) -----------------------
+incoming: name, ingNeeded, ingMeasurements, instructions, img
+outgoing: acknowledgement (true or false), inserted Id
+
+incoming:
+{
+  "name" : "Something New 2",
+  "ingNeeded" : "asdf",
+  "ingMeasurements" : "asesf",
+  "instructions": "asd",
+  "img" : ""
+}
+
+outgoing:
+{
+  "acknowledged": true,
+  "insertedId": "641a6829c3b678c56ea05f6a"
+}
+
+---------------------- Edit Drink (POST) ----------------------
+incoming: name, ingNeeded, ingMeasurements, instructions, img
+outgoing: id, name, ingredients Needed, measurements, instructions, image
+
+incoming:
+{
+  "name" : "Something New 2",
+  "ingNeeded" : "asdf",
+  "ingMeasurements" : "al",
+  "instructions": "asd",
+  "img" : "adsff"
+}
+
+ougoing:
+{
+  "_id": "641a6829c3b678c56ea05f6a",
+  "name": "Something New 2",
+  "ingNeeded": "asdf",
+  "ingMeasurements": "al",
+  "instructions": "asd",
+  "img": "adsff"
+}
+
+------------------- Delete Drinks (DELETE) -------------------
+incoming: name
+outgoing: drink data
+
+incoming:
+{
+  "name" : "Something New 2"
+}
+
+outgoing:
+{
+  "acknowledged": true,
+  "deletedCount": 1
+}
+
+-------------------- Add Favorite (POST) --------------------
+incoming: userId, name
+outgoing: result or error
+
+incoming:
+{
+  "userId": "64190b2df9026453bb061544",
+  "name" : "Rum and Coke"
+}
+
+outgoing:
+{
+  "_id": "64190b2df9026453bb061544",
+  "firstName": "Test",
+  "lastName": "Testttt",
+  "email": "asf@gmail.com",
+  "password": "asedf123",
+  "bar": [],
+  "savedDrinks": ["Rum and Coke"]
+}
+
+------------------ Delete Favorite (DELETE) ------------------
+incoming: userId, name
+outgoing: result or error
+
+incoming:
+{
+  "userId": "64190b2df9026453bb061544",
+  "name" : "Rum and Coke"
+}
+
+outgoing:
+{
+  "_id": "64190b2df9026453bb061544",
+  "firstName": "Test",
+  "lastName": "Testttt",
+  "email": "asf@gmail.com",
+  "password": "asedf123",
+  "bar": [Kahlua],
+  "savedDrinks": []
+}
+
+----------------- Add Ingredient to Bar (ADD) -----------------
+incoming: userId, ingName
+outgoing: result or error
+
+incoming:
+{
+  "userId": "64190b2df9026453bb061544",
+  "ingName" : "Kahlua"
+}
+
+outgoing:
+{
+  "_id": "64190b2df9026453bb061544",
+  "firstName": "Test",
+  "lastName": "Testttt",
+  "email": "asf@gmail.com",
+  "password": "asedf123",
+  "bar": ["Kahlua"],
+  "savedDrinks": []
+}
+
+-------------- Delete Ingredient In Bar (DELETE) --------------
+incoming: userId, ingName
+outgoing: result or error
+
+incoming:
+{
+  "userId": "64190b2df9026453bb061544",
+  "ingName" : "Kahlua"
+}
+
+outgoing: 
+{
+  "_id": "64190b2df9026453bb061544",
+  "firstName": "Test",
+  "lastName": "Testttt",
+  "email": "asf@gmail.com",
+  "password": "asedf123",
+  "bar": [],
+  "savedDrinks": []
+}

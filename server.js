@@ -178,6 +178,93 @@ app.post('/api/getDrinks', async (req, res, next) =>
   
 });
 
+//Drink end points
+app.post('/api/addDrink', async (req, res, next) => 
+{
+  // incoming: id, name, ingredients needed, measurements, instructions, img
+  // outgoing: id, name, ingredients needed, measurements, instructions, img
+  var error = '';
+  const {userId, name, ingNeeded, ingMeasurements, instructions, img} = req.body;
+  const db = client.db("LargeProject");
+  var o_id = new mongo.ObjectId(userId);
+  const find = await db.collection('users').find({id:o_id}).toArray();
+  
+  if(find.length > 0){
+    const search = await db.collection('userDrinks').find({name:name}).toArray();
+    if( search.length > 0 )
+    {
+      var results = {error: 'drink already exists'};
+      res.status(200).json(results);
+    }
+    else{
+      const results = await db.collection('userDrinks').insertOne({name:name, ingNeeded:ingNeeded, ingMeasurements:ingMeasurements, instructions:instructions, img:img});
+      res.status(200).json(results);
+    }
+  } else {
+    var results = {error: 'User does not exists'};
+      res.status(200).json(results);
+  }
+ 
+});
+
+// edit drink
+app.post('/api/editDrink', async (req, res, next) =>
+{
+  // incoming: name, ingredients needed, measurements, instructions, img
+  // outgoing: id, name, ingredients needed, measurements, instructions, img
+  var error = '';
+  const {userId, name, ingNeeded, ingMeasurements, instructions, img} = req.body;
+  const db = client.db("LargeProject");
+  var o_id = new mongo.ObjectId(userId);
+  const find = await db.collection('users').find({id:o_id}).toArray();
+ 
+  if(find.length > 0) {
+    const search = await db.collection('userDrinks').find({name:name}).toArray();
+    if( search.length > 0 )
+    {
+      const results = await db.collection('userDrinks').updateOne({_id: search[0]._id}, {$set :{name:name, ingNeeded:ingNeeded, ingMeasurements:ingMeasurements, instructions:instructions, img:img}});
+      const updated = await db.collection('userDrinks').find({name:name}).toArray();
+      res.status(200).json(updated[0]);
+    } else {
+      var results = {error: 'drink doesnt exist'};
+      res.status(200).json(results);
+    }
+  } else {
+    var results = {error: 'user doesnt exist'};
+    res.status(200).json(results);
+  }
+
+});
+
+app.delete('/api/deleteDrinks', async (req, res, next) =>
+{
+  // incoming: name
+  // outgoing: results[], error
+  var error = '';
+  const {userId, name } = req.body;
+  
+  const db = client.db("LargeProject");
+  var o_id = new mongo.ObjectId(userId);
+  const find = await db.collection('users').find({id:o_id}).toArray();
+
+  if(find.length >0){
+    const user = await db.collection('userDrinks').find({name: name}).toArray();
+    if(user.length>0)
+    {
+      const remove = await db.collection('userDrinks').deleteOne({name:name});
+      res.status(200).json(remove);
+    }
+    else
+    {
+      var ret = {error: 'Drink not found'};
+      res.status(200).json(ret);
+    }
+  } else {
+    var results = {error: 'user doesnt exist'};
+    res.status(200).json(results);
+  }
+});
+
 app.post('/api/searchDrink', async (req, res, next) => 
 {
   // incoming: search
@@ -254,6 +341,76 @@ app.get('/api/getRandomDrink', async (req, res, next) =>
   res.status(200).json(_ret);
 });
 
+//Favorites Section
+// add and delete favorite section
+app.post('/api/addFavorite', async (req, res, next) => 
+{
+  // incoming: search
+  // outgoing: results[], error
+  var error = '';
+  const { userId, name } = req.body;
+  var o_id = new mongo.ObjectId(userId);
+  
+  const db = client.db("LargeProject");
+  const user = await db.collection('users').find({_id: o_id}).toArray();
+
+  if(user.length>0)
+  {
+    const result = await db.collection('Drinks').find({name: name}).toArray();
+
+    if(result.length>0)
+    {
+      const add = await db.collection('users').updateOne({_id:user[0]._id}, {$addToSet:{savedDrinks:name}});
+      const updated = await db.collection('users').find({_id: o_id}).toArray();
+      res.status(200).json(updated[0]);
+    }
+    else
+    {
+      var ret = {error: 'Drink not found'};
+      res.status(200).json(ret);
+    }
+  }
+  else{
+    var ret = {error: 'user not found'};
+    res.status(200).json(ret);
+  }
+  
+});
+
+app.delete('/api/deleteFavorite', async (req, res, next) => 
+{
+  // incoming: search
+  // outgoing: results[], error
+  var error = '';
+  const { userId, name } = req.body;
+  var o_id = new mongo.ObjectId(userId);
+  
+  const db = client.db("LargeProject");
+  const user = await db.collection('users').find({_id: o_id}).toArray();
+
+  if(user.length>0)
+  {
+    const result = await db.collection('Drinks').find({name: name}).toArray();
+
+    if(result.length>0)
+    {
+      const add = await db.collection('users').updateOne({_id:user[0]._id}, {$pull:{savedDrinks:name}});
+      const updated = await db.collection('users').find({_id: o_id}).toArray();
+      res.status(200).json(updated[0]);
+    }
+    else
+    {
+      var ret = {error: 'Drink not found'};
+      res.status(200).json(ret);
+    }
+  }
+  else{
+    var ret = {error: 'user not found'};
+    res.status(200).json(ret);
+  }
+  
+});
+
 app.post('/api/addIngredientToBar', async (req, res, next) => 
 {
   // incoming: search
@@ -272,6 +429,41 @@ app.post('/api/addIngredientToBar', async (req, res, next) =>
     if(result.length>0)
     {
       const add = await db.collection('users').updateOne({_id:user[0]._id}, {$addToSet:{bar:ingName}});
+      const updated = await db.collection('users').find({_id: o_id}).toArray();
+      res.status(200).json(updated[0]);
+    }
+    else
+    {
+      var ret = {error: 'ingredient not found'};
+      res.status(200).json(ret);
+    
+    }
+  }
+  else{
+    var ret = {error: 'user not found'};
+    res.status(200).json(ret);
+  }
+  
+});
+
+app.delete('/api/deleteIngredientInBar', async (req, res, next) => 
+{
+  // incoming: search
+  // outgoing: results[], error
+  var error = '';
+  const { userId, ingName } = req.body;
+  var o_id = new mongo.ObjectId(userId);
+  
+  const db = client.db("LargeProject");
+  const user = await db.collection('users').find({_id: o_id}).toArray();
+
+  if(user.length>0)
+  {
+    const result = await db.collection('ingredients').find({ingredient: ingName}).toArray();
+
+    if(result.length>0)
+    {
+      const add = await db.collection('users').updateOne({_id:user[0]._id}, {$pull:{bar:ingName}});
       const updated = await db.collection('users').find({_id: o_id}).toArray();
       res.status(200).json(updated[0]);
     }
