@@ -1,8 +1,12 @@
 const express = require('express');
+const nodemailer = require('nodemailer');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const { ObjectId } = require('mongodb');
+const path = require("path");
+const PORT = process.env.PORT || 5000;
 const app = express();
+app.set('port', (process.env.PORT || 5000));
 app.use(cors());
 app.use(bodyParser.json());
 app.use((req, res, next) => 
@@ -19,23 +23,37 @@ app.use((req, res, next) =>
   next();
 });
 
-const url = 'mongodb+srv://alexslort:COP4331@cluster0.pmypipy.mongodb.net/LargeProject?retryWrites=true&w=majority';
+require('dotenv').config();
+const url = process.env.MONGODB_URI;
 const MongoClient = require("mongodb").MongoClient;
 const mongo = require("mongodb");
 const client = new MongoClient(url);
-client.connect(console.log("mongodb connected"));
+client.connect(console.log("MongoDB connected"));
 
-const PORT = process.env.PORT || 5000;
+const emailer = require('./emailer');
+const jwt = require('jsonwebtoken');
+
+//const PORT = process.env.PORT || 5000;
 
 // Accessing the path module
-const path = require("path");
+//const path = require("path");
 
 // Step 1:
-app.use(express.static(path.resolve(__dirname, "./frontend/build")));
-// Step 2:
-app.get("*", function (request, response) {
-  response.sendFile(path.resolve(__dirname, "./frontend/build", "index.html"));
+// app.use(express.static(path.resolve(__dirname, "./frontend/build")));
+// // Step 2:
+// app.get("*", function (request, response) {
+//   response.sendFile(path.resolve(__dirname, "./frontend/build", "index.html"));
+// });
+
+if (process.env.NODE_ENV === 'production')
+{
+// Set static folder
+app.use(express.static('frontend/build'));
+app.get('*', (req, res) =>
+{
+res.sendFile(path.resolve(__dirname, 'frontend', 'build', 'index.html'));
 });
+}
 
 app.post('/api/login', async (req, res, next) => 
 {
@@ -49,6 +67,7 @@ app.post('/api/login', async (req, res, next) =>
   const { login, password } = req.body;
   const db = client.db("LargeProject");
   const results = await db.collection('users').find({email:login, password:password}).toArray();
+  
 
   var id = -1;
   var fn = '';
@@ -57,9 +76,17 @@ app.post('/api/login', async (req, res, next) =>
   var pass = '';
   var bar = '';
   var sd;
+  var ec;
 
   if( results.length > 0 )
   {
+    if(results[0].emailConfirmed == false)
+    {
+      var ret = {error: 'please confirm email'};
+      res.status(200).json(ret);
+      return;
+    }
+
     id = results[0]._id
     fn = results[0].firstName
     ln = results[0].lastName;
@@ -67,10 +94,11 @@ app.post('/api/login', async (req, res, next) =>
     pass = results[0].password;
     bar = results[0].bar;
     sd = results[0].savedDrinks;
+    ec = results[0].emailConfirmed;
     //fing = bar[0];
     //Iib = bar.length;
 
-    var ret = { _id:id, firstName:fn, lastName:ln, bar:bar, savedDrinks:sd, error:''};
+    var ret = { _id:id, firstName:fn, lastName:ln, bar:bar, savedDrinks:sd, emailConfirmed:ec, error:''};
     res.status(200).json(ret);
 
   }
@@ -101,9 +129,41 @@ app.post('/api/createUser', async (req, res, next) =>
   }
 
   else{
-    const results = await db.collection('users').insertOne({firstName:firstName, lastName:lastName, email:email, password:password, bar:[], savedDrinks:[]});
+    const results = await db.collection('users').insertOne({firstName:firstName, lastName:lastName, email:email, password:password, bar:[], savedDrinks:[], emailConfirmed:false});
     const ret = await db.collection('users').find({_id:results.insertedId}).toArray();
+    //console.log(results.insertedId);
+    emailer.confirmationEmail(ret[0]);
     res.status(200).json(ret[0]);
+  }
+});
+
+app.get('/confirmation/:token', async (req, res, next) => 
+{
+  try{
+    let userId = jwt.verify(req.params.token, process.env.SECRET_TOKEN).id;
+    var o_id = new mongo.ObjectId(userId);
+    //console.log(o_id);
+    //console.log(req.params.token);
+    //const update = db.collection('users').updateOne({_id:o_id}, {$set:{"emailConfirmed":true}}).toArray();
+    const db = client.db("LargeProject");
+    db.collection('users').updateOne({_id:o_id}, {$set:{"emailConfirmed":true}});
+    //const ret = await db.collection('users').find({_id:o_id}).toArray();
+   
+    
+    
+  }
+  catch(e)
+  {
+    res.send(e);
+  }
+
+  if (process.env.NODE_ENV === 'production')
+  {
+    res.redirect('https://obscure-springs-89188.herokuapp.com');
+  }
+  else
+  {
+    res.redirect('http://localhost:3000');
   }
 });
 
@@ -136,11 +196,12 @@ app.post('/api/getDrinks', async (req, res, next) =>
   var error = '';
   const { userId } = req.body;
   var o_id = new mongo.ObjectId(userId);
-  //console.log(userID);
+  //console.log(o_id);
   
   const db = client.db("LargeProject");
   const user = await db.collection('users').find({_id:o_id}).toArray();
-  //console.log(user);
+  //let test = await User.findOne({_id:o_id});
+  //console.log(test);
   
   
   if( user.length > 0 )
@@ -152,6 +213,7 @@ app.post('/api/getDrinks', async (req, res, next) =>
     //console.log(bar);
     var ret = [];
     const makeDrink = await db.collection('Drinks').find({ingNeeded: { $not: {$elemMatch: { $nin: bar}}}}).toArray();
+    
     //console.log(makeDrink.length);
 
     for( var i=0; i<makeDrink.length; i++ )
@@ -207,6 +269,7 @@ app.get('/api/getIngredients', async (req, res, next) =>
   
   const db = client.db("LargeProject");
   const results = await db.collection('ingredients').find({}).toArray();
+  console.log("hit");
   
   
   var _ret = [];
@@ -289,4 +352,11 @@ app.post('/api/addIngredientToBar', async (req, res, next) =>
   
 });
 
-app.listen(process.env.PORT || 5000); // start Node + Express server on port 5000
+app.get('/', (req, res) => {
+  res.send('hello world')
+});
+
+app.listen(PORT, () =>
+{
+console.log('Server listening on port ' + PORT);
+}); // start Node + Express server on port 5000
