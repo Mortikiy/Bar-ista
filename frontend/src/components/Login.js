@@ -1,15 +1,60 @@
 import React, { useState } from "react";
 import "./styles.css";
+import { Link } from 'react-router-dom';
 
-function Login() 
+function Login(props) 
 {
   const [login, setLogin] = useState("");
   const [password, setPassword] = useState("");
+   
+  const handleClick2 = () => {
+    props.handleFunction2();
+  };
+
+  function verifyLogin()
+  {
+    let email = document.getElementById("email").value;
+    let password = document.getElementById("password").value;
+
+    // eslint-disable-next-line
+    let emailRestriction = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+
+    if (email == null || password == null || email == "" || password == "")
+      return 0;
+
+    else if (emailRestriction.test(email) == false)
+      return 1;
+    else
+      return 200;
+
+  }
 
   const handleSubmit = (event) => {
     event.preventDefault();
+    const errmsg = document.getElementById('logInError');
 
-    fetch('https://obscure-springs-89188.herokuapp.com/api/login',
+    switch(verifyLogin())
+        {
+          case 0:
+            {
+              errmsg.innerHTML="Please enter all fields.";
+              return;
+            }
+          case 1:
+            {
+              errmsg.innerHTML="Please enter a valid email address.";
+              return;
+            }
+          case 200:
+            {
+              // Continue to fetch
+              ;
+            }
+        }
+    
+    //https://obscure-springs-89188.herokuapp.com/api/login
+    //http://localhost:5000/api/login
+    fetch('http://localhost:5000/api/login',
     {
       method: 'POST',
       headers: {
@@ -28,7 +73,17 @@ function Login()
       .then((data) =>
       {
         if (data.error === ('no user found'))
-          alert('No user found');
+        {
+          errmsg.innerHTML="Incorrect or invalid combination.";
+        }
+          
+
+        else if (data.error === ('please confirm email'))
+        {
+          errmsg.innerHTML="Please confirm your email to log in.";
+        }
+
+        // LOGGED IN
         else
         {
           console.log(data);
@@ -53,16 +108,15 @@ function Login()
           Email:
           </label>
           <input
-            placeholder="Email:"
-            type="email"
+            placeholder="Email"
+            type="text"
             id="email"
             value={login}
             onChange={(event) => setLogin(event.target.value)}
             className="form-input"
-            required
           />
         </div>
-        <div className="form-group">
+        <div className="form-group" id="labelpass" >
           <label htmlFor="password" className="form-label">
             Password:
           </label>
@@ -73,14 +127,15 @@ function Login()
             value={password}
             onChange={(event) => setPassword(event.target.value)}
             className="form-input"
-            required
           />
+          <Link to="/forgot"><strong id="forgot" style={{textDecoration: "underline", display: "inline", cursor: "pointer"}}>Forgot?</strong></Link>
         </div>
         <button type="submit" className="form-button">
-          Submit
+          Log in
         </button>
         <br></br>
-        <p>New here? <div id="bold">Sign Up.</div></p>
+        <p id="logInError"></p>
+        <p>New here? <strong onClick={handleClick2} style={{textDecoration: "underline", display: "inline", cursor: "pointer"}}>Sign up!</strong></p>
       </form>
     </div>
   );
