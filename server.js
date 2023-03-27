@@ -142,8 +142,8 @@ app.get('/confirmation/:token', async (req, res, next) =>
   try{
     let userId = jwt.verify(req.params.token, process.env.SECRET_TOKEN).id;
     var o_id = new mongo.ObjectId(userId);
-    //console.log(o_id);
-    //console.log(req.params.token);
+    console.log(o_id);
+    console.log(req.params.token);
     //const update = db.collection('users').updateOne({_id:o_id}, {$set:{"emailConfirmed":true}}).toArray();
     const db = client.db("LargeProject");
     db.collection('users').updateOne({_id:o_id}, {$set:{"emailConfirmed":true}});
