@@ -29,7 +29,7 @@ const RegisterScreen = ({ navigation }) => {
   const [confirmPassword, setConfirmPassword] = useState("");
 
   const handleSubmit = () => {
-    fetch('https://obscure-springs-89188.herokuapp.com/api/login',
+    fetch('https://obscure-springs-89188.herokuapp.com/api/createUser',
     {
       method: 'POST',
       headers: {
@@ -86,7 +86,7 @@ const RegisterScreen = ({ navigation }) => {
             Register
           </Text>
 
-          <InputField
+          {/* <InputField
             label={"First Name"}
             icon={
               <Ionicons
@@ -98,10 +98,39 @@ const RegisterScreen = ({ navigation }) => {
             }
             onChangeText={value => setfirstName(value)}
             value={email}
-          />
+          /> */}
+          <View style={styles.container}>
+            <MaterialIcons
+              name="firstname"
+              size={29}
+              color="#666"
+              style={{ marginRight: 5 }}
+            />
+            <TextInput
+              placeholder="First Name"
+              style={styles.input}
+              onChangeText={(text) => setfirstName(text)}
+              value={firstName}
+            />
+          </View>
+
+          <View style={styles.container}>
+            <MaterialIcons
+              name="lastname"
+              size={29}
+              color="#666"
+              style={{ marginRight: 5 }}
+            />
+            <TextInput
+              placeholder="Last Name"
+              style={styles.input}
+              onChangeText={(text) => setlastName(text)}
+              value={lastName}
+            />
+          </View>
 
 
-          <InputField
+          {/* <InputField
             label={"Last Name"}
             icon={
               <Ionicons
@@ -113,9 +142,24 @@ const RegisterScreen = ({ navigation }) => {
             }
             onChangeText={value => setlastName(value)}
             value={lastName}
-          />
+          /> */}
 
-          <InputField
+          <View style={styles.container}>
+            <MaterialIcons
+              name="alternate-email"
+              size={29}
+              color="#666"
+              style={{ marginRight: 5 }}
+            />
+            <TextInput
+              placeholder="Email"
+              style={styles.input}
+              keyboardType="email-address"
+              onChangeText={(text) => setEmail(text)}
+              value={email}
+            />
+          </View>
+          {/* <InputField
             label={"Email"}
             icon={
               <MaterialIcons
@@ -128,9 +172,9 @@ const RegisterScreen = ({ navigation }) => {
             onChangeText={value => setEmail(value)}
             value={email}
             keyboardType="email-address"
-          />
+          /> */}
 
-          <InputField
+          {/* <InputField
             label={"Password"}
             icon={
               <Ionicons
@@ -143,8 +187,28 @@ const RegisterScreen = ({ navigation }) => {
             onChangeText={value => setPassword(value)}
             value={password}
             inputType="password"
-          />
-          <InputField
+          /> */}
+          <View style={styles.container}>
+            <Ionicons
+              name="ios-lock-closed-outline"
+              size={29}
+              color="#666"
+              style={{ marginRight: 5 }}
+            />
+            <TextInput
+              placeholder="Password"
+              style={styles.input}
+              secureTextEntry={true}
+              onChangeText={(text) => setPassword(text)}
+              value={password}
+            />
+            <TouchableOpacity onPress={() => {}}>
+              <Text style={{ color: "#AD40AF", fontWeight: "700" }}>
+                Forgot?
+              </Text>
+            </TouchableOpacity>
+          </View>
+          {/* <InputField
             label={"Confirm Password"}
             icon={
               <Ionicons
@@ -157,10 +221,30 @@ const RegisterScreen = ({ navigation }) => {
             onChangeText={value => setConfirmPassword(value)}
             value={confirmPassword}
             inputType="password"
-          />
+          /> */}
+          <View style={styles.container}>
+            <Ionicons
+              name="ios-lock-closed-outline"
+              size={29}
+              color="#666"
+              style={{ marginRight: 5 }}
+            />
+            <TextInput
+              placeholder="Confirm Password"
+              style={styles.input}
+              secureTextEntry={true}
+              // onChangeText={(text) => setPassword(text)}
+              // value={password}
+            />
+            <TouchableOpacity onPress={() => {}}>
+              <Text style={{ color: "#AD40AF", fontWeight: "700" }}>
+                Forgot?
+              </Text>
+            </TouchableOpacity>
+          </View>
 
           {/* register button */}
-          <CustomButton label={"Register"} onPress={() => {}} />
+          <CustomButton label={"Register"} onPress={() => {handleSubmit()}} />
 
           {/* <TouchableOpacity
             onPress={() => {}}

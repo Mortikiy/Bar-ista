@@ -47,12 +47,10 @@ const LogInScreen = ({ navigation }) => {
     .then((data) =>
     {
       if (data.error === ('no user found')){
-        alert(login + " " + password);
         alert('No user found');
       }
       else{
         console.log(data);
-        alert(login + " " + password);
         alert('Hello, '+data.firstName+' '+data.lastName+'!');
       }
         // Here is where we do something with the response data our call gives us (nothing for login besides a cookie maybe)
@@ -85,7 +83,7 @@ const LogInScreen = ({ navigation }) => {
           >
             Login
           </Text>
-          {/* <View style={styles.container}>
+          <View style={styles.container}>
             <MaterialIcons
               name="alternate-email"
               size={29}
@@ -96,10 +94,12 @@ const LogInScreen = ({ navigation }) => {
               placeholder="Email"
               style={styles.input}
               keyboardType="email-address"
+              onChangeText={(text) => setLogin(text)}
+              value={login}
             />
-          </View> */}
+          </View>
 
-          <InputField
+          {/* <InputField
             label={"Email"}
             icon={
               <MaterialIcons
@@ -112,26 +112,38 @@ const LogInScreen = ({ navigation }) => {
             keyboardType="email-address"
             onChange={(event) => setLogin(event.target.value)}
             value={login}
-          />
+          /> */}
+          {/* <View>
+            <TextInput
+              placeholder="emailId"
+              style= {{flex: 1, paddingVertical: 0}}
+              keyboardType = "email-address"
+            /> */}
 
-          <InputField
-            label={"Password"}
-            icon={
-              <Ionicons
-                name="ios-lock-closed-outline"
-                size={29}
-                color="#666"
-                style={{ marginRight: 5 }}
-              />
-            }
-            inputType="password"
-            onChangeText={(text) => setPassword(text)}
-            value={password}
-            fieldButtonLabel={"Forgot?"} 
-            fieldButtonFunction={() => {}} //forget password function
-          />
+            {/* <InputField
+              label={"Password"}
+              icon={
+                <Ionicons
+                  name="ios-lock-closed-outline"
+                  size={29}
+                  color="#666"
+                  style={{ marginRight: 5 }}
+                />
+              }
+              inputType="password"
+              onChangeText={(text) => setPassword(text)}
+              value={password}
+              fieldButtonLabel={"Forgot?"} 
+              fieldButtonFunction={() => {}} //forget password function
+            /> */}
+            {/* <TextInput
+              placeholder = "password"
+              style = {{flex: 1, paddingVertical: 0}}
+              secureTextEntry = {true}
+            />
+          </View> */}
 
-          {/* <View style={styles.container}>
+          <View style={styles.container}>
             <Ionicons
               name="ios-lock-closed-outline"
               size={29}
@@ -142,13 +154,15 @@ const LogInScreen = ({ navigation }) => {
               placeholder="Password"
               style={styles.input}
               secureTextEntry={true}
+              onChangeText={(text) => setPassword(text)}
+              value={password}
             />
             <TouchableOpacity onPress={() => {}}>
               <Text style={{ color: "#AD40AF", fontWeight: "700" }}>
                 Forgot?
               </Text>
             </TouchableOpacity>
-          </View> */}
+          </View>
           {/* <TouchableOpacity
             onPress={() => {}}
             style={{
@@ -168,7 +182,7 @@ const LogInScreen = ({ navigation }) => {
             >
               Login
             </Text>
-          </TouchableOpacity> */}
+          </TouchableOpacity>
 
           {/* where the functionality should go */}
           <CustomButton label={"Login"} onPress={() => handleSubmit()} />
