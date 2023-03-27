@@ -125,7 +125,7 @@ function Signup(props) {
       // Sign up API here
       //https://obscure-springs-89188.herokuapp.com/api/login
       //http://localhost:5000/api/createUser
-      fetch('http://localhost:5000/api/createUser',
+      fetch('https://obscure-springs-89188.herokuapp.com/api/login',
       {
         method: 'POST',
         headers:
