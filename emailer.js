@@ -14,7 +14,9 @@ exports.confirmationEmail = async function(user){
     //console.log(user._id.toString());
     let emailToken = await jwt.sign(userID, process.env.SECRET_TOKEN);
     //console.log(emailToken);
-    let url;
+    let url = `https://obscure-springs-89188.herokuapp.com/confirmation/${emailToken}`;
+
+    /*
     if (process.env.NODE_ENV === 'production')
     {
         url = `https://obscure-springs-89188.herokuapp.com/confirmation/${emailToken}`;
@@ -23,6 +25,7 @@ exports.confirmationEmail = async function(user){
     {
         url = `http://localhost:5000/confirmation/${emailToken}`;
     }
+    */
 
     //console.log(user.email);
 
