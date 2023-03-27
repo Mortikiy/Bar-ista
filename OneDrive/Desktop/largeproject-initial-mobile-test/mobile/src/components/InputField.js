@@ -7,6 +7,7 @@ import {
 } from "react-native";
 import React from "react";
 
+//Input Field is just basically just a class of input fields
 export default function InputField({
   label,
   icon,

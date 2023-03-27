@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import {
   StyleSheet,
   Text,
@@ -20,7 +20,49 @@ import RegisterSVG from "../assets/register.svg";
 import InputField from "../components/InputField";
 import CustomButton from "../components/CustomButton";
 
+//attach sign up in the register
 const RegisterScreen = ({ navigation }) => {
+  const [firstName, setfirstName] = useState("");
+  const [lastName, setlastName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+
+  const handleSubmit = () => {
+    fetch('https://obscure-springs-89188.herokuapp.com/api/login',
+    {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ 
+        firstName: firstName, 
+        lastName: lastName,
+        email: email,
+        password: password
+      }),
+    })
+    .then((response) =>
+    {
+      if (!response.ok){
+        throw new Error('Network error - response not OK');
+      }
+      return response.json();
+    })
+    .then((data) =>
+      {
+        if (data.error === ('user already exists'))
+          alert('Error: User already exists!');
+        else
+          console.log('New account made! Hello, '+data.firstName+' '+data.lastName+'!');
+      })
+      .catch((error) => 
+      {
+        console.error('Signup request error:', error);
+      });
+    };
+
   return (
     <ImageBackground
       style={styles.background}
@@ -45,7 +87,7 @@ const RegisterScreen = ({ navigation }) => {
           </Text>
 
           <InputField
-            label={"Username"}
+            label={"First Name"}
             icon={
               <Ionicons
                 name="person-outline"
@@ -54,6 +96,23 @@ const RegisterScreen = ({ navigation }) => {
                 style={{ marginRight: 5 }}
               />
             }
+            onChangeText={value => setfirstName(value)}
+            value={email}
+          />
+
+
+          <InputField
+            label={"Last Name"}
+            icon={
+              <Ionicons
+                name="person-outline"
+                size={29}
+                color="#666"
+                style={{ marginRight: 5 }}
+              />
+            }
+            onChangeText={value => setlastName(value)}
+            value={lastName}
           />
 
           <InputField
@@ -66,6 +125,8 @@ const RegisterScreen = ({ navigation }) => {
                 style={{ marginRight: 5 }}
               />
             }
+            onChangeText={value => setEmail(value)}
+            value={email}
             keyboardType="email-address"
           />
 
@@ -79,6 +140,8 @@ const RegisterScreen = ({ navigation }) => {
                 style={{ marginRight: 5 }}
               />
             }
+            onChangeText={value => setPassword(value)}
+            value={password}
             inputType="password"
           />
           <InputField
@@ -91,9 +154,12 @@ const RegisterScreen = ({ navigation }) => {
                 style={{ marginRight: 5 }}
               />
             }
+            onChangeText={value => setConfirmPassword(value)}
+            value={confirmPassword}
             inputType="password"
           />
 
+          {/* register button */}
           <CustomButton label={"Register"} onPress={() => {}} />
 
           {/* <TouchableOpacity

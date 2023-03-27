@@ -1,6 +1,7 @@
 import { Text, TouchableOpacity } from "react-native";
 import React from "react";
 
+//Just like Input Field. Components have no functionality
 export default function CustomButton({ label, onPress }) {
   return (
     <TouchableOpacity

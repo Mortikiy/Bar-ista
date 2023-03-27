@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import {
   StyleSheet,
   Text,
@@ -21,6 +21,48 @@ import CustomButton from "../components/CustomButton";
 import InputField from "../components/InputField";
 
 const LogInScreen = ({ navigation }) => {
+  const [login, setLogin] = useState("");
+  const [password, setPassword] = useState("");
+
+  const handleSubmit = () => {
+    fetch('https://obscure-springs-89188.herokuapp.com/api/login',
+    {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ 
+        login: login, 
+        password: password 
+      }),
+    })
+    .then((response) =>
+    {
+      if (!response.ok){
+        throw new Error('Network error - response not OK');
+      }
+      return response.json();
+    })
+    .then((data) =>
+    {
+      if (data.error === ('no user found')){
+        alert(login + " " + password);
+        alert('No user found');
+      }
+      else{
+        console.log(data);
+        alert(login + " " + password);
+        alert('Hello, '+data.firstName+' '+data.lastName+'!');
+      }
+        // Here is where we do something with the response data our call gives us (nothing for login besides a cookie maybe)
+    })
+    .catch((error) => 
+    {
+      console.error('Login request error:', error);
+    });
+  }
+
   return (
     <ImageBackground
       style={styles.background}
@@ -68,6 +110,8 @@ const LogInScreen = ({ navigation }) => {
               />
             }
             keyboardType="email-address"
+            onChange={(event) => setLogin(event.target.value)}
+            value={login}
           />
 
           <InputField
@@ -81,8 +125,10 @@ const LogInScreen = ({ navigation }) => {
               />
             }
             inputType="password"
-            fieldButtonLabel={"Forgot?"}
-            fieldButtonFunction={() => {}}
+            onChangeText={(text) => setPassword(text)}
+            value={password}
+            fieldButtonLabel={"Forgot?"} 
+            fieldButtonFunction={() => {}} //forget password function
           />
 
           {/* <View style={styles.container}>
@@ -124,7 +170,8 @@ const LogInScreen = ({ navigation }) => {
             </Text>
           </TouchableOpacity> */}
 
-          <CustomButton label={"Login"} onPress={() => {}} />
+          {/* where the functionality should go */}
+          <CustomButton label={"Login"} onPress={() => handleSubmit()} />
 
           <View style={{ flexDirection: "row", justifyContent: "center" }}>
             <Text style={{ color: "#fff" }}>Don't have an account? </Text>
