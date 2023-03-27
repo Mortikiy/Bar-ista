@@ -10,6 +10,7 @@ import {
   Platform,
   TextInput,
   KeyboardAvoidingView,
+  Alert,
 } from "react-native";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import Ionicons from "react-native-vector-icons/Ionicons";
@@ -29,38 +30,60 @@ const RegisterScreen = ({ navigation }) => {
   const [confirmPassword, setConfirmPassword] = useState("");
 
   const handleSubmit = () => {
-    fetch('https://obscure-springs-89188.herokuapp.com/api/createUser',
-    {
-      method: 'POST',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ 
-        firstName: firstName, 
-        lastName: lastName,
-        email: email,
-        password: password
-      }),
-    })
-    .then((response) =>
-    {
-      if (!response.ok){
-        throw new Error('Network error - response not OK');
-      }
-      return response.json();
-    })
-    .then((data) =>
+    let str = "";
+    if(firstName === ""){
+      str += "First Name cannot be empty";
+    } 
+    if(lastName === ""){
+      str += "\nLast Name cannot be empty";
+    }
+    if(email === ""){
+      str += "\nEmail cannot be empty";
+    }
+    if(password.localeCompare(confirmPassword)){
+      str += "\nPassword does not match";
+    }
+    if(password === ""){
+      str += "\nPassword cannot be empty";
+    }
+
+    if(str != ""){
+      alert(str);
+    }
+    else {
+        fetch('https://obscure-springs-89188.herokuapp.com/api/createUser',
       {
-        if (data.error === ('user already exists'))
-          alert('Error: User already exists!');
-        else
-          console.log('New account made! Hello, '+data.firstName+' '+data.lastName+'!');
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ 
+          firstName: firstName, 
+          lastName: lastName,
+          email: email,
+          password: password
+        }),
       })
-      .catch((error) => 
+      .then((response) =>
       {
-        console.error('Signup request error:', error);
-      });
+        if (!response.ok){
+          throw new Error('Network error - response not OK');
+        }
+        return response.json();
+      })
+      .then((data) =>
+        {
+          if (data.error === ('user already exists'))
+            alert('Error: User already exists!');
+          else
+            console.log('New account made! Hello, '+data.firstName+' '+data.lastName+'!');
+        })
+        .catch((error) => 
+        {
+          console.error('Signup request error:', error);
+        });
+    }
     };
 
   return (
@@ -233,8 +256,8 @@ const RegisterScreen = ({ navigation }) => {
               placeholder="Confirm Password"
               style={styles.input}
               secureTextEntry={true}
-              // onChangeText={(text) => setPassword(text)}
-              // value={password}
+              onChangeText={(text) => setConfirmPassword(text)}
+              value={confirmPassword}
             />
             <TouchableOpacity onPress={() => {}}>
               <Text style={{ color: "#AD40AF", fontWeight: "700" }}>
