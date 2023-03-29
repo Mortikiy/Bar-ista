@@ -10,8 +10,8 @@ function App() {
     <BrowserRouter>
     <Routes>
       <Route exact path="/" index element={<LoginPage/>} />
-      <Route path="/forgot" index element={<ForgotPassword/>} />
-      <Route path="/reset-password/:token" index element ={<ResetPassword/>} />
+      <Route exact path="/forgot" index element={<ForgotPassword/>} />
+      <Route exact path="/reset-password/:token" index element ={<ResetPassword/>} />
     </Routes>
   </BrowserRouter>
 );
