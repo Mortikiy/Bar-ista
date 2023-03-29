@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import "./styles.css";
 import { Link } from 'react-router-dom';
+var bp = require('./Path.js');
 
 function Login(props) 
 {
@@ -54,7 +55,7 @@ function Login(props)
     
     //https://obscure-springs-89188.herokuapp.com/api/login
     //http://localhost:5000/api/login
-    fetch('https://obscure-springs-89188.herokuapp.com/api/login',
+    fetch(bp.buildPath('api/login'),
     {
       method: 'POST',
       headers: {
