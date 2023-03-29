@@ -38,3 +38,29 @@ exports.confirmationEmail = async function(user){
 
     console.log("email sent!");
 }
+
+exports.sendResetPassword = async function(user){
+    let userID = {id: user._id.toString()};
+    let emailToken = await jwt.sign(userID, process.env.SECRET_TOKEN);
+    let url;
+
+    if (process.env.NODE_ENV === 'production')
+    {
+        url = `https://obscure-springs-89188.herokuapp.com/forgot/?id=${emailToken}`;
+    }
+    else
+    {
+        url = `http://localhost:3000/forgot/?id=${emailToken}`;
+    }
+
+    transporter.sendMail({
+        from: 'cop4331lp@gmail.com',
+        to: `${user.email}`,
+        subject: 'Forgot Password Link',
+        html: `Reset your password here: <a href=${url}>${url}</a>`
+    });
+
+    console.log("email sent!");
+
+
+}
