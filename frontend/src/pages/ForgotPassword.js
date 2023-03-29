@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import './forgotStyles.css';
 import { Link } from 'react-router-dom';
+import { IoMdArrowBack } from 'react-icons/io';
 
 const ForgotPassword = () => {
   const [email, setEmail] = useState('');
@@ -55,8 +56,7 @@ const ForgotPassword = () => {
         <p id="resetErr"></p>
         <br></br>
         <button className="forgot-password-button" type="submit">Reset Password</button>
-        <br></br>
-        <Link to="/"><strong id="back" style={{textDecoration: "underline", display: "inline", cursor: "pointer"}}>Go back</strong></Link>
+        <Link to="/" id="back" style={{paddingTop: "10px"}}> <IoMdArrowBack />Back</Link>
       </form>
     </div>
   );
