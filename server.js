@@ -168,6 +168,31 @@ app.get('/confirmation/:token', async (req, res, next) =>
   }
 });
 
+app.post('/api/sendPasswordLink', async (req, res, next) =>{
+  //incoming: user email
+  const { email } = req.body;
+  const db = client.db("LargeProject");
+  const user = await db.collection('users').find({email:email}).toArray();
+  console.log(email);
+
+  if(!user.length)
+  {
+    var results = {error: 'user does not exist with that email'};
+    res.status(200).json(results);
+    
+  }
+
+  else
+  {
+    emailer.sendResetPassword(user[0]);
+    var ret = {error:'email sent'};
+    res.status(200).json(ret);
+  }
+
+
+
+});
+
 app.post('/api/searchIngredient', async (req, res, next) => 
 {
   // incoming: userId, search
