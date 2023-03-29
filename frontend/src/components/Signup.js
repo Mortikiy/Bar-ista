@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import "./styles.css";
+var bp = require('./Path.js');
 
 function Signup(props) {
     const [firstName, setfirstName] = useState("");
@@ -123,9 +124,9 @@ function Signup(props) {
 
       
       // Sign up API here
-      //https://obscure-springs-89188.herokuapp.com/api/login
+      //https://obscure-springs-89188.herokuapp.com/api/createUser
       //http://localhost:5000/api/createUser
-      fetch('https://obscure-springs-89188.herokuapp.com/api/createUser',
+      fetch(bp.buildPath('api/createUser'),
       {
         method: 'POST',
         headers:
