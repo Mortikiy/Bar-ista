@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import './forgotStyles.css';
 import { Link } from 'react-router-dom';
 import { IoMdArrowBack } from 'react-icons/io';
+let bp = require('../components/Path.js');
 
 const ForgotPassword = () => {
   const [email, setEmail] = useState('');
@@ -41,9 +42,45 @@ const ForgotPassword = () => {
           ; // Proceed to FETCH
         }
     }
-    console.log(`Password reset requested for email: ${email}`);
-    setEmail('');
-  };
+
+    fetch(bp.buildPath('api/sendPasswordLink'),
+    {
+      method: 'POST',
+      headers:
+      {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({email}),
+    })
+    .then((response) =>
+    {
+      if (!response.ok)
+      {
+        throw new Error('Network error - response not OK');
+      }
+      return response.json();
+    })
+    .then((data) =>
+    {
+      if (data.error === ('user does not exist with that email'))
+      {
+          msg.innerHTML="No user found with this email.";
+          msg.style.color="red";
+          return;
+      }
+      
+      else
+      {
+        setEmail("");
+        msg.innerHTML="Email with link to reset your password sent!";
+        msg.style.color='green';
+      }
+    })
+    .catch((error) => 
+    {
+      console.error('Forgot Password Error:', error);
+    });
+};
 
   return (
     <div className="forgot-password-container">
@@ -56,7 +93,7 @@ const ForgotPassword = () => {
         <p id="resetErr"></p>
         <br></br>
         <button className="forgot-password-button" type="submit">Reset Password</button>
-        <Link to="/" id="back" style={{paddingTop: "10px"}}> <IoMdArrowBack />Back</Link>
+        <Link to="/" id="back" style={{paddingTop: "12px"}}> <IoMdArrowBack />Back</Link>
       </form>
     </div>
   );
