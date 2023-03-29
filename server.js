@@ -168,6 +168,10 @@ app.get('/confirmation/:token', async (req, res, next) =>
   }
 });
 
+app.get('/forgot', async (req, res, next) => {
+  res.redirect('https://obscure-springs-89188.herokuapp.com/forgot');
+});
+
 app.post('/api/sendPasswordLink', async (req, res, next) =>{
   //incoming: user email
   const { email } = req.body;
