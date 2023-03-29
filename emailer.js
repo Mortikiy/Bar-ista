@@ -46,18 +46,18 @@ exports.sendResetPassword = async function(user){
 
     if (process.env.NODE_ENV === 'production')
     {
-        url = `https://obscure-springs-89188.herokuapp.com/forgot/?id=${emailToken}`;
+        url = `https://obscure-springs-89188.herokuapp.com/reset-password/${emailToken}`;
     }
     else
     {
-        url = `http://localhost:3000/forgot/?id=${emailToken}`;
+        url = `http://localhost:3000/reset-password/${emailToken}`;
     }
 
     transporter.sendMail({
         from: 'cop4331lp@gmail.com',
         to: `${user.email}`,
-        subject: 'Forgot Password Link',
-        html: `Reset your password here: <a href=${url}>${url}</a>`
+        subject: 'Barista - Forgot Password Link',
+        html: `Reset your password here: <a href=${url}>${url}</a><br><br>If you did not request this email, you may ignore this message.`
     });
 
     console.log("email sent!");
