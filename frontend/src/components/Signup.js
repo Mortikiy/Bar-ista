@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import "./styles.css";
-var bp = require('./Path.js');
+let bp = require('./Path.js');
 
 function Signup(props) {
     const [firstName, setfirstName] = useState("");

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "./styles.css";
 import { Link } from 'react-router-dom';
-var bp = require('./Path.js');
+let bp = require('./Path.js');
 
 function Login(props) 
 {
