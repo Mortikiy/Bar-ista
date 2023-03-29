@@ -105,7 +105,7 @@ function Signup(props) {
           }
         case 3:
           {
-            signUpErrMsg.innerHTML="Your password must contain at least:<br>1 Uppercase & Lowercase letter<br>1 Symbol & 1 Digit";
+            signUpErrMsg.innerHTML="Your password must contain at least:<br>1 Uppercase & 1 Lowercase letter<br>1 Symbol & 1 Digit";
             signUpErrMsg.style.color='red';
             return;
           }

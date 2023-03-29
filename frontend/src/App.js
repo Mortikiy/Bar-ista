@@ -2,6 +2,7 @@ import React from 'react';
 import './App.css';
 import LoginPage from './pages/LoginPage';
 import ForgotPassword from './pages/ForgotPassword';
+import ResetPassword from './pages/ResetPassword';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
 function App() {
@@ -12,7 +13,6 @@ function App() {
       <Route path="/forgot" index element={<ForgotPassword/>} />
     </Routes>
   </BrowserRouter>
-
 );
 }
 
