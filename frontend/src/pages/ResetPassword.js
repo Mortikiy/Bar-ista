@@ -94,7 +94,19 @@ const ResetPassword = () => {
     }
     const urlParams = new URLSearchParams(window.location.search);
     const userID = urlParams.get("id");
-    let userid = jwt_decode(userID).id;
+    let userid;
+    try
+    {
+      userid = jwt_decode(userID).id;
+    }
+
+    catch(error)
+    {
+      setMessage("Invalid reset link.");
+      setColor("red");
+      return;
+    }
+    
   
     fetch(bp.buildPath('api/resetPassword'),
       {
@@ -149,8 +161,8 @@ const ResetPassword = () => {
           <input style = {{marginBottom: "0px"}} id ="confirmResetPassword" className="forgot-password-input" type={confirm ? "text" : "password"} value={confirmPassword} onChange={passwordCheck} placeholder="Confirm new password" />
           <span style={{color: messageColor, paddingBottom: "8px", paddingTop: "5px", float: "right"}}>{match}</span>
         </div>
-        <button className="forgot-password-button" type="submit" style={{marginTop: "10px"}}>Change Password</button>
         <span style={{color: color, whiteSpace: 'pre-line', paddingTop: "12px"}}>{message}</span>
+        <button className="forgot-password-button" type="submit" style={{marginTop: "10px"}}>Change Password</button>
         <Link to="/" id="back" style={{paddingTop: "12px"}}> <IoMdArrowBack />Back</Link>
       </form>
     </div>
