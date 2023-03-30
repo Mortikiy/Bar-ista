@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import './forgotStyles.css';
+let bp = require('../components/Path.js');
+const jwt = require('jsonwebtoken');
 
 const ResetPassword = () => {
   const [password, setPassword] = useState('');
@@ -84,9 +86,42 @@ const ResetPassword = () => {
 
         default:
         {
-          console.log(password, confirmPassword);
+          ; // Continue to FETCH
         }
     }
+    const urlParams = new URLSearchParams(window.location.search);
+    const userID = urlParams.get('emailToken');
+    let userId = jwt.verify(userID, process.env.SECRET_TOKEN).id;
+    
+    fetch(bp.buildPath('api/resetPassword'),
+      {
+        method: 'POST',
+        headers:
+        {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({userId, password}),
+      })
+      .then((response) =>
+      {
+        if (!response.ok)
+        {
+          throw new Error('Network error - response not OK');
+        }
+        return response.json();
+      })
+      .then((data) =>
+      {
+        {
+          setMessage("Password successfully changed!");
+          setColor("green");
+        }
+      })
+      .catch((error) => 
+      {
+        console.error('Change password error:', error);
+      });
+
   };
 
   return (

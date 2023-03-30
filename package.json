@@ -18,12 +18,14 @@
     "all": "^0.0.0",
     "body-parser": "^1.20.2",
     "cors": "^2.8.5",
+    "crypto-browserify": "^3.12.0",
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
     "jsonwebtoken": "^9.0.0",
     "mongodb": "^5.1.0",
     "nodemailer": "^6.9.1",
-    "nodemon": "^2.0.20"
+    "nodemon": "^2.0.20",
+    "stream-browserify": "^3.0.0"
   },
   "proxy": "https://obscure-springs-89188.herokuapp.com/"
 }

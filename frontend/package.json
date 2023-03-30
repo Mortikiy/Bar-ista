@@ -6,11 +6,19 @@
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
+    "assert": "^2.0.0",
+    "crypto": "^1.0.1",
+    "crypto-browserify": "^3.12.0",
+    "https-browserify": "^1.0.0",
+    "jsonwebtoken": "^9.0.0",
+    "os-browserify": "^0.3.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-icons": "^4.8.0",
     "react-router-dom": "^6.9.0",
     "react-scripts": "^5.0.1",
+    "stream-browserify": "^3.0.0",
+    "stream-http": "^3.2.0",
     "styled-component": "^2.8.0",
     "styled-components": "^5.3.8",
     "web-vitals": "^2.1.4"
@@ -38,5 +46,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "@types/jsonwebtoken": "^9.0.1"
   }
 }
