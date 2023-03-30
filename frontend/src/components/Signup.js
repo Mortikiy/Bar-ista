@@ -155,7 +155,12 @@ function Signup(props) {
           let signUpErrMsg = document.getElementById('signUpError');
           document.getElementById("signUpForm").querySelectorAll("input").forEach((input) => {
             input.value = "";
+          setEmail('');
+          setfirstName('');
+          setlastName('');
           });
+
+
           passwordVerification();
           signUpErrMsg.innerHTML="New account made! Verification email sent.";
           signUpErrMsg.style.color='green';
