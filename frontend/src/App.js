@@ -11,7 +11,7 @@ function App() {
     <Routes>
       <Route exact path="/" index element={<LoginPage/>} />
       <Route path="/forgot" index element={<ForgotPassword/>} />
-      <Route path="/reset-password/:token" index element ={<ResetPassword/>} />
+      <Route path="/reset-password/*" index element ={<ResetPassword/>} />
     </Routes>
   </BrowserRouter>
 );

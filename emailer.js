@@ -46,11 +46,11 @@ exports.sendResetPassword = async function(user){
 
     if (process.env.NODE_ENV === 'production')
     {
-        url = `https://obscure-springs-89188.herokuapp.com/reset-password/${emailToken}`;
+        url = `https://obscure-springs-89188.herokuapp.com/reset-password/?id=${emailToken}`;
     }
     else
     {
-        url = `http://localhost:3000/reset-password/${emailToken}`;
+        url = `http://localhost:3000/reset-password/?id=${emailToken}`;
     }
 
     transporter.sendMail({

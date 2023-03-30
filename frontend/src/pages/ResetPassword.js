@@ -1,11 +1,14 @@
 import React, { useState } from 'react';
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import './forgotStyles.css';
+import jwt_decode from 'jwt-decode';
+import { Link } from 'react-router-dom';
+import { IoMdArrowBack } from 'react-icons/io';
 let bp = require('../components/Path.js');
-const jwt = require('jsonwebtoken');
+
 
 const ResetPassword = () => {
-  const [password, setPassword] = useState('');
+  const [newPassword, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [message, setMessage] = useState('');
   const [color, setColor] = useState('');
@@ -49,11 +52,11 @@ const ResetPassword = () => {
     {
       let passwordRestriction = /(?=.*\d)(?=.*[A-Za-z])(?=.*[?!@#$%^&*]).{8,32}$/;
   
-      if (password === "" || confirmPassword ==="")
+      if (newPassword === "" || confirmPassword ==="")
         return 1;
-      else if (passwordRestriction.test(password) === false)
+      else if (passwordRestriction.test(newPassword) === false)
         return 2;
-      else if (password !== confirmPassword)
+      else if (newPassword !== confirmPassword)
         return 3;
       else
         return 4;
@@ -90,9 +93,9 @@ const ResetPassword = () => {
         }
     }
     const urlParams = new URLSearchParams(window.location.search);
-    const userID = urlParams.get('emailToken');
-    let userId = jwt.verify(userID, process.env.SECRET_TOKEN).id;
-    
+    const userID = urlParams.get("id");
+    let userid = jwt_decode(userID).id;
+  
     fetch(bp.buildPath('api/resetPassword'),
       {
         method: 'POST',
@@ -100,7 +103,7 @@ const ResetPassword = () => {
         {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({userId, password}),
+        body: JSON.stringify({userid, newPassword}),
       })
       .then((response) =>
       {
@@ -130,7 +133,7 @@ const ResetPassword = () => {
         <h1 className="forgot-password-title">Reset Password</h1>
         <div id = "wrapper">
           <label className="forgot-password-label">New password:</label>
-          <input id ="resetPassword" className="forgot-password-input" type={confirm ? "text" : "password"} value={password} onChange={passwordCheck} placeholder="New password" />
+          <input id ="resetPassword" className="forgot-password-input" type={confirm ? "text" : "password"} value={newPassword} onChange={passwordCheck} placeholder="New password" />
           <i style={{
                         position:"absolute",
                         backgroundColor:"transparent",
@@ -148,6 +151,7 @@ const ResetPassword = () => {
         </div>
         <button className="forgot-password-button" type="submit" style={{marginTop: "10px"}}>Change Password</button>
         <span style={{color: color, whiteSpace: 'pre-line', paddingTop: "12px"}}>{message}</span>
+        <Link to="/" id="back" style={{paddingTop: "12px"}}> <IoMdArrowBack />Back</Link>
       </form>
     </div>
   );
