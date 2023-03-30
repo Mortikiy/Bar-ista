@@ -203,6 +203,43 @@ app.post('/api/sendPasswordLink', async (req, res, next) =>{
 
 });
 
+app.post('/api/resetPassword', async (req, res, next) =>{
+  //incoming: user email
+  const { userid, newPassword } = req.body;
+  //var o_id = new mongo.ObjectId(userid);
+  try{
+  var o_id = new mongo.ObjectId(userid);
+  const db = client.db("LargeProject");
+  const user = await db.collection('users').find({_id:o_id}).toArray();
+
+  if(user.length > 0)
+  {
+    await db.collection('users').updateOne({_id:o_id},{$set:{password:newPassword}});
+    const updatedUser = await db.collection('users').find({_id:o_id}).toArray();
+    let ret = {id:updatedUser[0]._id,newPass:updatedUser[0].password};
+    res.status(200).json(ret);
+  }
+  
+
+  else
+  {
+    let results = {error: 'user not found'};
+    res.status(200).json(results);
+  }
+
+  
+  }
+  catch(e)
+  {
+    let results = {error: 'user id not valid'};
+    res.status(200).json(results);
+    return;
+  }
+
+  
+
+});
+
 app.post('/api/searchIngredient', async (req, res, next) => 
 {
   // incoming: userId, search
