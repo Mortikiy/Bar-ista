@@ -54,6 +54,16 @@ app.get('/', (req, res) =>
 {
 res.sendFile(path.resolve(__dirname, 'frontend', 'build', 'index.html'));
 });
+
+app.get('/forgot', (req, res) =>
+{
+res.sendFile(path.resolve(__dirname, 'frontend', 'build', 'index.html'));
+});
+
+app.get('/reset-password/:token', (req, res) =>
+{
+res.sendFile(path.resolve(__dirname, 'frontend', 'build', 'index.html'));
+});
 }
 
 app.post('/api/login', async (req, res, next) => 
