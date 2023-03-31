@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 import {
   StyleSheet,
   Text,
@@ -25,41 +25,36 @@ const LogInScreen = ({ navigation }) => {
   const [password, setPassword] = useState("");
 
   const handleSubmit = () => {
-    fetch('https://obscure-springs-89188.herokuapp.com/api/login',
-    {
-      method: 'POST',
+    fetch("https://obscure-springs-89188.herokuapp.com/api/login", {
+      method: "POST",
       headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
+        Accept: "application/json",
+        "Content-Type": "application/json",
       },
-      body: JSON.stringify({ 
-        login: login, 
-        password: password 
+      body: JSON.stringify({
+        login: login,
+        password: password,
       }),
     })
-    .then((response) =>
-    {
-      if (!response.ok){
-        throw new Error('Network error - response not OK');
-      }
-      return response.json();
-    })
-    .then((data) =>
-    {
-      if (data.error === ('no user found')){
-        alert('No user found');
-      }
-      else{
-        console.log(data);
-        alert('Hello, '+data.firstName+' '+data.lastName+'!');
-      }
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Network error - response not OK");
+        }
+        return response.json();
+      })
+      .then((data) => {
+        if (data.error === "no user found") {
+          alert("No user found");
+        } else {
+          console.log(data);
+          alert("Hello, " + data.firstName + " " + data.lastName + "!");
+        }
         // Here is where we do something with the response data our call gives us (nothing for login besides a cookie maybe)
-    })
-    .catch((error) => 
-    {
-      console.error('Login request error:', error);
-    });
-  }
+      })
+      .catch((error) => {
+        console.error("Login request error:", error);
+      });
+  };
 
   return (
     <ImageBackground
@@ -67,6 +62,24 @@ const LogInScreen = ({ navigation }) => {
       source={require("../assets/gradient.png")}
     >
       <SafeAreaView style={{ flex: 1, justifyContent: "center" }}>
+        {/* Added a back button */}
+        <TouchableOpacity
+          onPress={() => navigation.goBack()}
+          style={{
+            position: "absolute",
+            top: Platform.OS === "ios" ? 40 : 20,
+            left: 0,
+            padding: 10,
+            zIndex: 1,
+          }}
+        >
+          <MaterialIcons
+            name="arrow-back"
+            size={29}
+            color="white"
+            style={{ marginRight: 5 }}
+          />
+        </TouchableOpacity>
         <KeyboardAvoidingView
           style={{ paddingHorizontal: 25 }}
           behavior={Platform.OS === "ios" ? "padding" : "height"}
@@ -120,7 +133,7 @@ const LogInScreen = ({ navigation }) => {
               keyboardType = "email-address"
             /> */}
 
-            {/* <InputField
+          {/* <InputField
               label={"Password"}
               icon={
                 <Ionicons
@@ -136,7 +149,7 @@ const LogInScreen = ({ navigation }) => {
               fieldButtonLabel={"Forgot?"} 
               fieldButtonFunction={() => {}} //forget password function
             /> */}
-            {/* <TextInput
+          {/* <TextInput
               placeholder = "password"
               style = {{flex: 1, paddingVertical: 0}}
               secureTextEntry = {true}

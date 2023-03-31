@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 import {
   StyleSheet,
   Text,
@@ -31,60 +31,61 @@ const RegisterScreen = ({ navigation }) => {
 
   const handleSubmit = () => {
     let str = "";
-    if(firstName === ""){
+    if (firstName === "") {
       str += "First Name cannot be empty";
-    } 
-    if(lastName === ""){
+    }
+    if (lastName === "") {
       str += "\nLast Name cannot be empty";
     }
-    if(email === ""){
+    if (email === "") {
       str += "\nEmail cannot be empty";
     }
-    if(password.localeCompare(confirmPassword)){
+    if (password.localeCompare(confirmPassword)) {
       str += "\nPassword does not match";
     }
-    if(password === ""){
+    if (password === "") {
       str += "\nPassword cannot be empty";
     }
 
-    if(str != ""){
+    if (str != "") {
       alert(str);
-    }
-    else {
-        fetch('https://obscure-springs-89188.herokuapp.com/api/createUser',
-      {
-        method: 'POST',
+    } else {
+      fetch("https://obscure-springs-89188.herokuapp.com/api/createUser", {
+        method: "POST",
         headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
+          Accept: "application/json",
+          "Content-Type": "application/json",
         },
-        body: JSON.stringify({ 
-          firstName: firstName, 
+        body: JSON.stringify({
+          firstName: firstName,
           lastName: lastName,
           email: email,
-          password: password
+          password: password,
         }),
       })
-      .then((response) =>
-      {
-        if (!response.ok){
-          throw new Error('Network error - response not OK');
-        }
-        return response.json();
-      })
-      .then((data) =>
-        {
-          if (data.error === ('user already exists'))
-            alert('Error: User already exists!');
-          else
-            console.log('New account made! Hello, '+data.firstName+' '+data.lastName+'!');
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error("Network error - response not OK");
+          }
+          return response.json();
         })
-        .catch((error) => 
-        {
-          console.error('Signup request error:', error);
+        .then((data) => {
+          if (data.error === "user already exists")
+            alert("Error: User already exists!");
+          else
+            console.log(
+              "New account made! Hello, " +
+                data.firstName +
+                " " +
+                data.lastName +
+                "!"
+            );
+        })
+        .catch((error) => {
+          console.error("Signup request error:", error);
         });
     }
-    };
+  };
 
   return (
     <ImageBackground
@@ -92,6 +93,23 @@ const RegisterScreen = ({ navigation }) => {
       source={require("../assets/gradient.png")}
     >
       <SafeAreaView style={{ flex: 1, justifyContent: "center" }}>
+        <TouchableOpacity
+          onPress={() => navigation.goBack()}
+          style={{
+            position: "absolute",
+            top: Platform.OS === "ios" ? 40 : 20,
+            left: 0,
+            padding: 10,
+            zIndex: 1,
+          }}
+        >
+          <MaterialIcons
+            name="arrow-back"
+            size={29}
+            color="white"
+            style={{ marginRight: 5 }}
+          />
+        </TouchableOpacity>
         <KeyboardAvoidingView
           style={{ paddingHorizontal: 25 }}
           behavior={Platform.OS === "ios" ? "padding" : "height"}
@@ -122,9 +140,11 @@ const RegisterScreen = ({ navigation }) => {
             onChangeText={value => setfirstName(value)}
             value={email}
           /> */}
+
+          {/* Changed material to Ionicon */}
           <View style={styles.container}>
-            <MaterialIcons
-              name="firstname"
+            <Ionicons
+              name="person-outline"
               size={29}
               color="#666"
               style={{ marginRight: 5 }}
@@ -138,8 +158,8 @@ const RegisterScreen = ({ navigation }) => {
           </View>
 
           <View style={styles.container}>
-            <MaterialIcons
-              name="lastname"
+            <Ionicons
+              name="person-outline"
               size={29}
               color="#666"
               style={{ marginRight: 5 }}
@@ -151,7 +171,6 @@ const RegisterScreen = ({ navigation }) => {
               value={lastName}
             />
           </View>
-
 
           {/* <InputField
             label={"Last Name"}
@@ -225,11 +244,11 @@ const RegisterScreen = ({ navigation }) => {
               onChangeText={(text) => setPassword(text)}
               value={password}
             />
-            <TouchableOpacity onPress={() => {}}>
+            {/* <TouchableOpacity onPress={() => {}}>
               <Text style={{ color: "#AD40AF", fontWeight: "700" }}>
                 Forgot?
               </Text>
-            </TouchableOpacity>
+            </TouchableOpacity> */}
           </View>
           {/* <InputField
             label={"Confirm Password"}
@@ -259,15 +278,20 @@ const RegisterScreen = ({ navigation }) => {
               onChangeText={(text) => setConfirmPassword(text)}
               value={confirmPassword}
             />
-            <TouchableOpacity onPress={() => {}}>
+            {/* <TouchableOpacity onPress={() => {}}>
               <Text style={{ color: "#AD40AF", fontWeight: "700" }}>
                 Forgot?
               </Text>
-            </TouchableOpacity>
+            </TouchableOpacity> */}
           </View>
 
           {/* register button */}
-          <CustomButton label={"Register"} onPress={() => {handleSubmit()}} />
+          <CustomButton
+            label={"Register"}
+            onPress={() => {
+              handleSubmit();
+            }}
+          />
 
           {/* <TouchableOpacity
             onPress={() => {}}
