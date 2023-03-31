@@ -16,6 +16,7 @@ import Ionicons from "react-native-vector-icons/Ionicons";
 
 import LogoImage from "../assets/logo.svg";
 
+// login github test
 import LoginSVG from "../assets/login.svg";
 import CustomButton from "../components/CustomButton";
 import InputField from "../components/InputField";
