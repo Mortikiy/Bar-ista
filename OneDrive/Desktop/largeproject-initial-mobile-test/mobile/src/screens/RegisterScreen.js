@@ -28,27 +28,69 @@ const RegisterScreen = ({ navigation }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [color, setColor] = useState("#fff");
+
+    // grabbed style info so textbox changes color when confirm password and password is not the same
+  const mystyle = {
+    flexDirection: "row",
+    backgroundColor: color,
+    alignItems: "center",
+    borderWidth: 1,
+    borderColor: "gray",
+    borderRadius: 5,
+    padding: 10,
+  }
+
+  function InputValidation(){
+    let str = "";
+    // Regex
+    let passRestriction = /(?=.*\d)(?=.*[A-Za-z])(?=.*[?!@#$%^&*]).{8,32}$/;
+    let nameRestriction = /(?=.*[a-zA-Z])./;
+    let emailRestriction = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+
+    if(firstName === ""){
+      str += "First Name cannot be empty\n";
+    } else if (nameRestriction.test(firstName) === false){
+      str += "Please enter a valid first name\n";
+    }
+
+    if(lastName === ""){
+      str += "Last Name cannot be empty\n";
+    } else if (nameRestriction.test(lastName) === false){
+      str += "Please enter a valid first name\n";
+    }
+
+    if(email === ""){
+      str += "Email cannot be empty\n";
+    } else if(emailRestriction.test(email) === false){
+      str += "Please enter a valid email\n"
+    }
+
+    if(password === ""){
+      str += "Password cannot be empty\n";
+    }
+
+    if (confirmPassword ===""){
+      str += "Please confirm your password\n"
+    } 
+
+    if(passRestriction.test(password) === false){
+      str += "Your password must contain at least: \n 1 Uppercase and 1 lowercase letter\ 1 Symbol & 1 Digit\n";
+    }
+
+    if(password.localeCompare(confirmPassword) != 0){
+      str += "Password does not match\n";
+      setColor("#FFCCCC")
+    } else {
+      setColor("#b1deb5")
+    }
+
+    return str;
+  }
 
   const handleSubmit = () => {
-    let str = "";
-    if (firstName === "") {
-      str += "First Name cannot be empty";
-    }
-    if (lastName === "") {
-      str += "\nLast Name cannot be empty";
-    }
-    if (email === "") {
-      str += "\nEmail cannot be empty";
-    }
-    if (password.localeCompare(confirmPassword)) {
-      str += "\nPassword does not match";
-    }
-    if (password === "") {
-      str += "\nPassword cannot be empty";
-    }
-
-    if (str != "") {
-      alert(str);
+    if (InputValidation() != "") {
+      alert(InputValidation());
     } else {
       fetch("https://obscure-springs-89188.herokuapp.com/api/createUser", {
         method: "POST",
@@ -230,7 +272,7 @@ const RegisterScreen = ({ navigation }) => {
             value={password}
             inputType="password"
           /> */}
-          <View style={styles.container}>
+          <View style={mystyle}>
             <Ionicons
               name="ios-lock-closed-outline"
               size={29}
@@ -264,7 +306,7 @@ const RegisterScreen = ({ navigation }) => {
             value={confirmPassword}
             inputType="password"
           /> */}
-          <View style={styles.container}>
+          <View style={mystyle}>
             <Ionicons
               name="ios-lock-closed-outline"
               size={29}
