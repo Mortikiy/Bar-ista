@@ -313,6 +313,52 @@ app.post('/api/getDrinks', async (req, res, next) =>
   
 });
 
+app.post('/api/getFavorites', async (req, res, next) => 
+{
+  // incoming: userId
+  // outgoing: drink data
+  var error = '';
+  const { userId } = req.body;
+  var o_id = new mongo.ObjectId(userId);
+  
+  
+  const db = client.db("LargeProject");
+  const user = await db.collection('users').find({_id:o_id}).toArray();
+  
+  
+  
+  if( user.length > 0 )
+  {
+    var fav = user[0].savedDrinks;
+   console.log(fav);
+    
+    var ret = [];
+    const makeDrink = await db.collection('Drinks').find({name: {$in: fav}}).toArray();
+    console.log(makeDrink);
+    
+
+    for( var i=0; i<makeDrink.length; i++ )
+    {
+      
+      ret.push(makeDrink[i]);
+      
+    }
+    
+    var ree = {Drinks:ret};
+
+    
+    res.status(200).json(ret);
+
+
+  }
+  else{
+    var ret = {error: 'no user found'};
+    res.status(200).json(ret);
+  }
+  
+  
+});
+
 app.post('/api/searchDrink', async (req, res, next) => 
 {
   // incoming: search
