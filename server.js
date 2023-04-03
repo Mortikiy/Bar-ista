@@ -425,6 +425,111 @@ app.post('/api/addIngredientToBar', async (req, res, next) =>
   
 });
 
+
+app.delete('/api/deleteIngredientInBar', async (req, res, next) => 
+{
+  // incoming: search
+  // outgoing: results[], error
+  var error = '';
+  const { userId, ingName } = req.body;
+  var o_id = new mongo.ObjectId(userId);
+  
+  const db = client.db("LargeProject");
+  const user = await db.collection('users').find({_id: o_id}).toArray();
+
+  if(user.length>0)
+  {
+    const result = await db.collection('ingredients').find({ingredient: ingName}).toArray();
+
+    if(result.length>0)
+    {
+      const add = await db.collection('users').updateOne({_id:user[0]._id}, {$pull:{bar:ingName}});
+      const updated = await db.collection('users').find({_id: o_id}).toArray();
+      res.status(200).json(updated[0]);
+    }
+    else
+    {
+      var ret = {error: 'ingredient not found'};
+      res.status(200).json(ret);
+    
+    }
+  }
+  else{
+    var ret = {error: 'user not found'};
+    res.status(200).json(ret);
+  }
+  
+});
+
+//Favorite Section
+app.post('/api/addFavorite', async (req, res, next) => 
+{
+  // incoming: search
+  // outgoing: results[], error
+  var error = '';
+  const { userId, name } = req.body;
+  var o_id = new mongo.ObjectId(userId);
+  
+  const db = client.db("LargeProject");
+  const user = await db.collection('users').find({_id: o_id}).toArray();
+
+  if(user.length>0)
+  {
+    const result = await db.collection('Drinks').find({name: name}).toArray();
+
+    if(result.length>0)
+    {
+      const add = await db.collection('users').updateOne({_id:user[0]._id}, {$addToSet:{savedDrinks:name}});
+      const updated = await db.collection('users').find({_id: o_id}).toArray();
+      res.status(200).json(updated[0]);
+    }
+    else
+    {
+      var ret = {error: 'Drink not found'};
+      res.status(200).json(ret);
+    }
+  }
+  else{
+    var ret = {error: 'user not found'};
+    res.status(200).json(ret);
+  }
+  
+});
+
+app.delete('/api/deleteFavorite', async (req, res, next) => 
+{
+  // incoming: search
+  // outgoing: results[], error
+  var error = '';
+  const { userId, name } = req.body;
+  var o_id = new mongo.ObjectId(userId);
+  
+  const db = client.db("LargeProject");
+  const user = await db.collection('users').find({_id: o_id}).toArray();
+
+  if(user.length>0)
+  {
+    const result = await db.collection('Drinks').find({name: name}).toArray();
+
+    if(result.length>0)
+    {
+      const add = await db.collection('users').updateOne({_id:user[0]._id}, {$pull:{savedDrinks:name}});
+      const updated = await db.collection('users').find({_id: o_id}).toArray();
+      res.status(200).json(updated[0]);
+    }
+    else
+    {
+      var ret = {error: 'Drink not found'};
+      res.status(200).json(ret);
+    }
+  }
+  else{
+    var ret = {error: 'user not found'};
+    res.status(200).json(ret);
+  }
+  
+});
+
 app.get('/', (req, res) => {
   res.send('hello world')
 });
