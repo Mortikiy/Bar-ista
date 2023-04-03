@@ -46,6 +46,8 @@ const LogInScreen = ({ navigation }) => {
       .then((data) => {
         if (data.error === "no user found") {
           alert("No user found");
+        } else if (data.error === "please confirm email"){
+          alert("Please Confirm your email to log in");
         } else {
           console.log(data);
           alert("Hello, " + data.firstName + " " + data.lastName + "!");
@@ -171,7 +173,7 @@ const LogInScreen = ({ navigation }) => {
               onChangeText={(text) => setPassword(text)}
               value={password}
             />
-            <TouchableOpacity onPress={() => {}}>
+            <TouchableOpacity onPress={() => navigation.navigate("ForgotPassword")}>
               <Text style={{ color: "#AD40AF", fontWeight: "700" }}>
                 Forgot?
               </Text>
