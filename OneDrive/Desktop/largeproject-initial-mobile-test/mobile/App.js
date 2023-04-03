@@ -11,8 +11,8 @@ const Stack = createNativeStackNavigator();
 const App = () => {
   return (
     <NavigationContainer>
-      <AuthStack />
-      {/* <AppStack /> */}
+      {/* <AuthStack /> */}
+      <AppStack />
     </NavigationContainer>
   );
 };

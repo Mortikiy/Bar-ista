@@ -11,6 +11,7 @@ import {
 } from "react-native";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import LogoImage from "../assets/logo.svg";
+import TabNavigator from "../navigation/TabNavigator";
 
 export default function HomeScreen() {
   return (
