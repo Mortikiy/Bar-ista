@@ -130,6 +130,8 @@ const ResetPassword = () => {
         {
           setMessage("Password successfully changed!");
           setColor("green");
+          setPassword('');
+          setConfirmPassword('');
         }
       })
       .catch((error) => 
