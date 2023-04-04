@@ -66,6 +66,11 @@ res.sendFile(path.resolve(__dirname, 'frontend', 'build', 'index.html'));
 });
 }
 
+app.get('/home', (req, res) =>
+{
+res.sendFile(path.resolve(__dirname, 'frontend', 'build', 'index.html'));
+});
+
 app.post('/api/login', async (req, res, next) => 
 {
   // incoming: email, password
