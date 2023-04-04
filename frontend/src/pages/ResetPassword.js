@@ -18,7 +18,6 @@ const ResetPassword = () => {
   const [match, setMatch] = useState('');
   
   const [messageColor, setMessageColor] = useState('');
-  const [submitted, setSubmitted] = useState(false);
 
   const togglePasswordVisibility = () => {
   setShowPassword(!showPassword);
@@ -128,21 +127,11 @@ const ResetPassword = () => {
       })
       .then((data) =>
       {
-        
-        if (submitted)
-        {
-          setMessage("Password already changed. Please log in.");
-          setColor("red");
-          document.getElementById('forgot-password-button').disabled = true;
-          return;
-        }
-        setSubmitted(true);
-        {
+          setSubmitted(true);
           setPassword('');
           setConfirmPassword('');
           setMessage("Password successfully changed!");
           setColor("green");
-        }
       })
       .catch((error) => 
       {
