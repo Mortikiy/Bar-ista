@@ -147,7 +147,10 @@ function Signup(props) {
       {
         if (data.error === ('user already exists'))
         {
-          alert('Error: User already exists!');
+          let signUpErrMsg = document.getElementById('signUpError');
+          signUpErrMsg.innerHTML="User already exists with this email.";
+          signUpErrMsg.style.color='red';
+          return;
         }
         
         else

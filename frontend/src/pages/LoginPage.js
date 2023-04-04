@@ -24,7 +24,7 @@ function LoginPage() {
 
   return (
     <div className="app-container">
-      <h1 style={{paddingBottom: 10, marginTop: '-1.7%'}}>Welcome to AppName!</h1>
+      <h1 style={{paddingBottom: 10, marginTop: '-1.7%'}}>Welcome to Bar-ista!</h1>
       <div className="form-switch-container"
        style={{backgroundColor: 'black', borderRadius: '10px'}}
       >
@@ -49,7 +49,7 @@ function LoginPage() {
       </div>
       <div style={{display: 'flex', alignItems: 'center', marginLeft: '12vw'}}>
       {isLogin ? <Login handleFunction2={handleFunction2}/> : <Signup handleFunction={handleFunction} />}
-      <img src={myImage} style={{width: '20%', height: '40%', padding: 10, postion: 'relative', display: 'inline'}} alt="Beer" />
+      <img src={myImage} style={{width: '20%', height: '40%', padding: 10, postion: 'relative', display: 'inline'}} alt="Logo" />
       </div>
     </div>
   );

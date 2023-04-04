@@ -66,6 +66,11 @@ res.sendFile(path.resolve(__dirname, 'frontend', 'build', 'index.html'));
 });
 }
 
+app.get('/home', (req, res) =>
+{
+res.sendFile(path.resolve(__dirname, 'frontend', 'build', 'index.html'));
+});
+
 app.post('/api/login', async (req, res, next) => 
 {
   // incoming: email, password
@@ -110,7 +115,8 @@ app.post('/api/login', async (req, res, next) =>
     //Iib = bar.length;
 
     var ret = { _id:id, firstName:fn, lastName:ln, bar:bar, savedDrinks:sd, emailConfirmed:ec, error:''};
-    res.status(200).json(ret);
+    const token = jwt.sign(ret, process.env.SECRET_TOKEN, { expiresIn: '30m' });
+    res.status(200).json(token);
 
   }
 

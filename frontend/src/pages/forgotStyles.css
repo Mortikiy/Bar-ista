@@ -61,7 +61,7 @@ body {
 }
 
 .forgot-password-button {
-  background-color: #4361EE;
+  background-color: #333;
   color: #fff;
   font-size: 16px;
   padding: 12px;
@@ -72,6 +72,7 @@ body {
 
 .forgot-password-button:hover {
   background-color: #4CC9F0;
+  transition: background-color 0.2s ease-in-out;
 }
 
 .forgot-password-button:focus {
