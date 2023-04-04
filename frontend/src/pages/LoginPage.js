@@ -24,7 +24,7 @@ function LoginPage() {
 
   return (
     <div className="app-container">
-      <h1 style={{paddingBottom: 10, marginTop: '-1.7%'}}>Welcome to AppName!</h1>
+      <h1 style={{paddingBottom: 10, marginTop: '-1.7%'}}>Welcome to Bar-ista!</h1>
       <div className="form-switch-container"
        style={{backgroundColor: 'black', borderRadius: '10px'}}
       >

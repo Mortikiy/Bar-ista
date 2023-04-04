@@ -18,6 +18,8 @@ const ResetPassword = () => {
   const [match, setMatch] = useState('');
   
   const [messageColor, setMessageColor] = useState('');
+  const [submitted, setSubmitted] = useState(false);
+
   const togglePasswordVisibility = () => {
   setShowPassword(!showPassword);
   setConfirm(!confirm);
@@ -107,7 +109,6 @@ const ResetPassword = () => {
       return;
     }
     
-  
     fetch(bp.buildPath('api/resetPassword'),
       {
         method: 'POST',
@@ -127,7 +128,18 @@ const ResetPassword = () => {
       })
       .then((data) =>
       {
+        
+        if (submitted)
         {
+          setMessage("Password already changed. Please log in.");
+          setColor("red");
+          document.getElementById('forgot-password-button').disabled = true;
+          return;
+        }
+        setSubmitted(true);
+        {
+          setPassword('');
+          setConfirmPassword('');
           setMessage("Password successfully changed!");
           setColor("green");
         }
