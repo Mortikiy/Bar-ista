@@ -49,7 +49,7 @@ function LoginPage() {
       </div>
       <div style={{display: 'flex', alignItems: 'center', marginLeft: '12vw'}}>
       {isLogin ? <Login handleFunction2={handleFunction2}/> : <Signup handleFunction={handleFunction} />}
-      <img src={myImage} style={{width: '20%', height: '40%', padding: 10, postion: 'relative', display: 'inline'}} alt="Beer" />
+      <img src={myImage} style={{width: '20%', height: '40%', padding: 10, postion: 'relative', display: 'inline'}} alt="Logo" />
       </div>
     </div>
   );

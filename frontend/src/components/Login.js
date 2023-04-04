@@ -1,13 +1,15 @@
 import React, { useState } from "react";
 import "./styles.css";
 import { Link } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 let bp = require('./Path.js');
 
 function Login(props) 
 {
   const [login, setLogin] = useState("");
   const [password, setPassword] = useState("");
-   
+  const navigate = useNavigate();
+
   const handleClick2 = () => {
     props.handleFunction2();
   };
@@ -87,8 +89,8 @@ function Login(props)
         // LOGGED IN
         else
         {
-          console.log(data);
-          alert('Hello, '+data.firstName+' '+data.lastName+'!');
+          localStorage.setItem('token', data);
+          navigate("/home");
         }
           
 
