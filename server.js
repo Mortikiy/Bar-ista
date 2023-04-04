@@ -45,11 +45,11 @@ const jwt = require('jsonwebtoken');
 //   response.sendFile(path.resolve(__dirname, "./frontend/build", "index.html"));
 // });
 
+
 if (process.env.NODE_ENV === 'production')
 {
 // Set static folder
 app.use(express.static('frontend/build'));
-<<<<<<< Updated upstream
 app.get('/', (req, res) =>
 {
 res.sendFile(path.resolve(__dirname, 'frontend', 'build', 'index.html'));
@@ -61,9 +61,6 @@ res.sendFile(path.resolve(__dirname, 'frontend', 'build', 'index.html'));
 });
 
 app.get('/reset-password/*', (req, res) =>
-=======
-app.get('*', (req, res) =>
->>>>>>> Stashed changes
 {
 res.sendFile(path.resolve(__dirname, 'frontend', 'build', 'index.html'));
 });
@@ -113,8 +110,7 @@ app.post('/api/login', async (req, res, next) =>
     //Iib = bar.length;
 
     var ret = { _id:id, firstName:fn, lastName:ln, bar:bar, savedDrinks:sd, emailConfirmed:ec, error:''};
-    const expiresIn = '30m';
-    const token = jwt.sign(ret, process.env.SECRET_TOKEN, {expiresIn});
+    const token = jwt.sign(ret, process.env.SECRET_TOKEN, { expiresIn: '30m' });
     res.status(200).json(token);
 
   }
@@ -158,12 +154,13 @@ app.get('/confirmation/:token', async (req, res, next) =>
   try{
     let userId = jwt.verify(req.params.token, process.env.SECRET_TOKEN).id;
     var o_id = new mongo.ObjectId(userId);
-    //console.log(o_id);
-    //console.log(req.params.token);
+    console.log(o_id);
+    console.log(req.params.token);
     //const update = db.collection('users').updateOne({_id:o_id}, {$set:{"emailConfirmed":true}}).toArray();
     const db = client.db("LargeProject");
     db.collection('users').updateOne({_id:o_id}, {$set:{"emailConfirmed":true}});
     //const ret = await db.collection('users').find({_id:o_id}).toArray();
+   
     
     
   }
@@ -182,7 +179,6 @@ app.get('/confirmation/:token', async (req, res, next) =>
   }
 });
 
-<<<<<<< Updated upstream
 app.post('/api/sendPasswordLink', async (req, res, next) =>{
   //incoming: user email
   const { email } = req.body;
@@ -245,8 +241,6 @@ app.post('/api/resetPassword', async (req, res, next) =>{
 
 });
 
-=======
->>>>>>> Stashed changes
 app.post('/api/searchIngredient', async (req, res, next) => 
 {
   // incoming: userId, search
