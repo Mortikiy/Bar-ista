@@ -9,7 +9,7 @@
 |Samuel Georgis|API/Front-End (Web)|
 |Hunter Smith|Front-End (Web)|
 
-
+credit to Jack for the Git cheat sheet! 
 # Git Command Cheat Sheet
 
 Before doing anything on Git, it is best to make sure you have checked out the correct branch and are basing on the correct branch
