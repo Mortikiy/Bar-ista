@@ -56,6 +56,7 @@ function Home()
 
 
     return (
+        
         <div>
         <nav className="navbar">
         <div className="navbar-left">

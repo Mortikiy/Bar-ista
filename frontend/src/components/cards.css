@@ -18,44 +18,62 @@
   margin: 0 auto;
   max-width: 1200px;
 }
+
+.card:nth-child(1) {
+  grid-row: 1 / span 1;
+  grid-column: 1 / span 1;
+  animation-delay: 0.1s;
+
+}
+
+.card:nth-child(2) {
+  grid-row: 1 / span 1;
+  grid-column: 2 / span 1;
+  animation-delay: 0.1s;
+
+}
+
+.card:nth-child(3) {
+  grid-row: 2 / span 1;
+  grid-column: 1 / span 1;
+  animation-delay: 0.4s;
+
+}
+
+.card:nth-child(4) {
+  grid-row: 2 / span 1;
+  grid-column: 2 / span 1;
+  animation-delay: 0.4s;
+
+}
   
-  .card:nth-child(1) {
-    grid-row: 1 / span 1;
-    grid-column: 1 / span 1;
+ .card {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 20px;
+  background-color: white;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  border-radius: 10px;
+  opacity: 0;
+  transform: translateY(100px);
+  animation: slideIn 1s ease-out forwards;
+}
+
+@keyframes slideIn {
+  100% {
+    opacity: 1;
+    transform: translateY(0);
   }
-  
-  .card:nth-child(2) {
-    grid-row: 1 / span 1;
-    grid-column: 2 / span 1;
-  }
-  
-  .card:nth-child(3) {
-    grid-row: 2 / span 1;
-    grid-column: 1 / span 1;
-  }
-  
-  .card:nth-child(4) {
-    grid-row: 2 / span 1;
-    grid-column: 2 / span 1;
-  }
-  
-  .card {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    padding: 20px;
-    background-color: white;
-    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-    width: 100%;
-    border-radius: 10px;
-  }
-  
-  .card img {
-    width: 150px;
-    height: 150px;
-    object-fit: cover;
-    margin-right: 20px;
-  }
+}
+
+.card img {
+  width: 150px;
+  height: 150px;
+  object-fit: cover;
+  margin-right: 20px;
+}
   
   .card-data h2 {
     margin: 0;
@@ -104,10 +122,18 @@
   margin-bottom: 2%;
   border-bottom: 2px solid #4CC9F0;
   font-family: PlayfairDisplay;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
-  transform: translateY(-10px) rotateX(3deg);
-  perspective: 1000px;
-  transition: transform 0.3s;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.5);
+  opacity: 0;
+  animation: navbarFadeIn 3s ease forwards;
+}
+
+@keyframes navbarFadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
 }
 
 .navbar img {
