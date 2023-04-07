@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import {
   StyleSheet,
   Text,
@@ -20,9 +20,11 @@ import LogoImage from "../assets/logo.svg";
 import LoginSVG from "../assets/login.svg";
 import CustomButton from "../components/CustomButton";
 import InputField from "../components/InputField";
+import { AuthContext, AuthProvider } from "../context/AuthContext";
 
 const LogInScreen = ({ navigation }) => {
-  const [login, setLogin] = useState("");
+  const {login} = useContext(AuthContext)
+  const [email, setLogin] = useState("");
   const [password, setPassword] = useState("");
 
   const handleSubmit = () => {
@@ -33,7 +35,7 @@ const LogInScreen = ({ navigation }) => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        login: login,
+        login: email, 
         password: password,
       }),
     })
@@ -111,7 +113,7 @@ const LogInScreen = ({ navigation }) => {
               style={styles.input}
               keyboardType="email-address"
               onChangeText={(text) => setLogin(text)}
-              value={login}
+              value={email}
             />
           </View>
 
@@ -201,7 +203,7 @@ const LogInScreen = ({ navigation }) => {
           </TouchableOpacity>
 
           {/* where the functionality should go */}
-          <CustomButton label={"Login"} onPress={() => handleSubmit()} />
+          <CustomButton label={"Login"} onPress={() => {login(email, password)}} />
 
           <View style={{ flexDirection: "row", justifyContent: "center" }}>
             <Text style={{ color: "#fff" }}>Don't have an account? </Text>

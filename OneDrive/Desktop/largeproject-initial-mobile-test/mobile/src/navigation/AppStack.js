@@ -7,6 +7,7 @@ import HomeScreen from "../screens/HomeScreen";
 import FavoriteDrinksScreen from "../screens/FavoriteDrinksScreen";
 import TabNavigator from "./TabNavigator";
 import MyBarScreen from "../screens/MyBarScreen";
+import Profile from "../screens/Profile";
 
 const Stack = createNativeStackNavigator();
 
@@ -16,6 +17,7 @@ const AppStack = () => {
       <Stack.Screen component={TabNavigator} name="Home" />
       <Stack.Screen component={FavoriteDrinksScreen} name="FavoriteDrinks" />
       <Stack.Screen component={MyBarScreen} name="MyBar" />
+      <Stack.Screen component={Profile} name = "Profile" />
     </Stack.Navigator>
   );
 };

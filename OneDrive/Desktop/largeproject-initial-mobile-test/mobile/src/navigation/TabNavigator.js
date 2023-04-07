@@ -7,6 +7,7 @@ import FavoriteDrinksScreen from "../screens/FavoriteDrinksScreen";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import Feather from "react-native-vector-icons/Feather";
 import MyBarScreen from "../screens/MyBarScreen";
+import Profile from "../screens/Profile";
 
 const Tab = createBottomTabNavigator();
 
@@ -48,8 +49,8 @@ const TabNavigator = () => {
         }}
       />
       <Tab.Screen
-        name="Logout"
-        component={MyBarScreen}
+        name="Profile"
+        component={Profile}
         options={{
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="log-out-outline" color={color} size={size} />
