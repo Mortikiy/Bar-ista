@@ -21,23 +21,6 @@ const FavoriteDrinksScreen = ({ navigation }) => {
       <SafeAreaView
         style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
       >
-        <TouchableOpacity
-          onPress={() => navigation.goBack()}
-          style={{
-            position: "absolute",
-            top: Platform.OS === "ios" ? 40 : 20,
-            left: 0,
-            padding: 10,
-            zIndex: 1,
-          }}
-        >
-          <MaterialIcons
-            name="arrow-back"
-            size={29}
-            color="white"
-            style={{ marginRight: 5 }}
-          />
-        </TouchableOpacity>
         <Text>Favorite Drinks Screen</Text>
       </SafeAreaView>
     </ImageBackground>
