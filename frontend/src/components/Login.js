@@ -102,13 +102,12 @@ function Login(props)
       });
   };
 
-  return (
+return (
     <div className="form-container">
       <h1 className="form-title">Login</h1>
       <form onSubmit={handleSubmit} className="form">
         <div className="form-group">
           <label htmlFor="username" className="form-label">
-          Email:
           </label>
           <input
             placeholder="Email"
@@ -121,7 +120,6 @@ function Login(props)
         </div>
         <div className="form-group" id="labelpass" >
           <label htmlFor="password" className="form-label">
-            Password:
           </label>
           <input
             placeholder="Password"
@@ -131,14 +129,15 @@ function Login(props)
             onChange={(event) => setPassword(event.target.value)}
             className="form-input"
           />
-          <Link to="/forgot"><strong id="forgot" style={{textDecoration: "underline", display: "inline", cursor: "pointer"}}>Forgot?</strong></Link>
         </div>
         <button type="submit" className="form-button">
           Log in
         </button>
         <br></br>
         <p id="logInError"></p>
-        <p>New here? <strong onClick={handleClick2} style={{textDecoration: "underline", display: "inline", cursor: "pointer"}}>Sign up!</strong></p>
+        <p>New here? <strong onClick={handleClick2} style={{textDecoration: "underline", display: "inline", cursor: "pointer"}}>Sign up!</strong>
+          <Link to="/forgot"><strong id="forgot" style={{textDecoration: "underline", color: "darkgray", display: "inline", cursor: "pointer"}}>Forgot password?</strong></Link>
+        </p>
       </form>
     </div>
   );

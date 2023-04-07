@@ -90,7 +90,7 @@ const ForgotPassword = () => {
           <label className="forgot-password-label">Enter email:</label>
           <input id ="resetEmail" className="forgot-password-input" type="text" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Email" />
         </div>
-        <p id="resetErr"></p>
+        <p id="resetErr" style={{paddingBottom: "12px"}}></p>
         <br></br>
         <button className="forgot-password-button" type="submit">Reset Password</button>
         <Link to="/" id="back" style={{paddingTop: "12px"}}> <IoMdArrowBack />Back</Link>

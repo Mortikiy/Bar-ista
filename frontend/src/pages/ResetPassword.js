@@ -146,7 +146,6 @@ const ResetPassword = () => {
       <form className="forgot-password-form" onSubmit={handleSubmit}>
         <h1 className="forgot-password-title">Reset Password</h1>
         <div id = "wrapper">
-          <label className="forgot-password-label">New password:</label>
           <input id ="resetPassword" className="forgot-password-input" type={confirm ? "text" : "password"} value={newPassword} onChange={passwordCheck} placeholder="New password" />
           <i style={{
                         position:"absolute",

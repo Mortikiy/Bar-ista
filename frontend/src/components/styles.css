@@ -1,3 +1,13 @@
+@font-face {
+  font-family: 'PlayfairDisplay';
+  src: local('PlayfairDisplay') url(../fonts/PlayfairDisplay-Regular.otf) format('opentype');
+}
+
+@font-face {
+  font-family: 'Montserrat';
+  src: local('Montserrat') url(../fonts/Montserrat-Regular.otf) format('opentype');
+}
+
 * {
   box-sizing: border-box;
   margin: 0;
@@ -5,23 +15,34 @@
 }
 
 body {
-  font-family: sans-serif;
+  font-family: PlayfairDisplay;
   background-image: linear-gradient(#7209B7, 65%, #F72585);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
 }
 
 /* Form styles */
 .form-container {
-  width: 80%;
-  max-width: 500px;
   margin: auto auto;
   background-color: #fff;
   border-radius: 5px;
   padding: 20px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-  max-height: 650px;
+  width: 400px;
+  position: relative;
+  overflow: hidden;
+  box-shadow:
+    0 2px 10px rgba(0, 0, 0, 0.1),
+    0 0 5px #0A0A08,
+    0 0 10px #0A0A08,
+    0 0 20px #0A0A08,
+    0 0 30px #0A0A08,
+    0 0 40px #0A0A08;
 }
 
 .form-title {
+  font-family: PlayfairDisplay;
   text-align: center;
   margin-bottom: 10px;
   color: #333;
@@ -29,6 +50,8 @@ body {
 }
 
 .form {
+  font-family: Montserrat;
+  font-size: 0.8em;
   display: flex;
   flex-direction: column;
 }
@@ -45,6 +68,7 @@ body {
 }
 
 .form-input {
+  font-family: Montserrat;
   width: 100%;
   padding: 10px;
   border-radius: 5px;
@@ -52,15 +76,16 @@ body {
 }
 
 .form-button {
+  font-family: Montserrat;
   width: 100%;
   padding: 10px;
   border-radius: 5px;
   border: none;
-  background-color: #333;
+  background-color: #4361EE;
   color: white;
   font-weight: bold;
   cursor: pointer;
-  transition: background-color 0.2s ease-in-out;
+  transition: background-color 0.6s ease-in-out;
 }
 
 .form-button:hover {
@@ -69,10 +94,12 @@ body {
 
 /* Form switch styles */
 .app-container {
+  font-family: Montserrat;
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-top: 50px;
+  margin-top: 20em;
+  transform: scale(1.4);
 }
 
 .form-switch-container {
@@ -81,10 +108,14 @@ body {
 }
 
 .form-switch-button {
+  font-family: PlayfairDisplay;
+  margin-right: 1em;
+  margin-left:  1em;
   padding: 10px 20px;
   border: none;
-  background-color: transparent;
-  color: white;
+  border-radius: 20px;
+  background-color: #4361EE;
+  color: #ccc;
   font-weight: bold;
   font-size: 1.2em;
   cursor: pointer;
@@ -93,11 +124,42 @@ body {
 }
 
 .form-switch-button-active {
-  color: grey;
+  color: #f9f9f9;
   cursor: default;
+  border: #f9f9f9;
+  border-style: solid;
+  border-width: 2px;
 }
-i
-{
+
+.neon-logo {
+  font-size: 3rem;
+  font-family: PlayfairDisplay;
+  text-transform: uppercase;
+  text-align: center;
+  color: #f9f9f9;
+  text-shadow:
+    0 0 5px #000,
+    0 0 10px #000,
+    0 0 20px #000,
+    0 0 30px #000,
+    0 0 40px #000;
+}
+
+.form-and-image {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.beer-image {
+  width: 20%;
+  height: 40%;
+  padding: 10px;
+  position: relative;
+  display: inline;
+}
+
+i {
   position: absolute;
   background-color: transparent;
   border: none;
@@ -105,31 +167,31 @@ i
   transform: translateX(-160%);
   padding-top: 10px;
 }
-#logInError, #signUpError
-{
+
+#logInError,
+#signUpError {
   display: inline;
   color: red;
   font-size: 1em;
+  padding-top: 10px;
   padding-bottom: 10px;
   font-weight: 700;
 }
-#forgot
-{
+
+#forgot {
   position: relative;
-  font-size: .85em;
+  font-size: 0.85em;
   float: right;
   margin-top: 5px;
 }
 
-#labelpass
-{
+#labelpass {
   margin-bottom: 12px;
 }
 
-#confirmMessage
-{
+#confirmMessage {
   position: relative;
-  font-size: .9em;
+  font-size: 0.9em;
   float: right;
-  margin-top: 5px;
+  margin-top: 10px;
 }
