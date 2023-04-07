@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import Card from '../components/Card.js';
 import myImage from '../components/image.png';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faRightFromBracket } from '@fortawesome/free-solid-svg-icons'
+import { faArrowRightFromBracket } from '@fortawesome/free-solid-svg-icons'
 import jwt_decode from 'jwt-decode';
 let bp = require('../components/Path.js');
 
@@ -66,7 +66,7 @@ function Home()
         <div className="navbar-tabs">
         <a href="#" className="tab-link">Favorites</a>
         <a href="#" className="tab-link">MyBar</a>
-        <a href="/" className="tab-link" onClick={logOff}><FontAwesomeIcon icon={faRightFromBracket} /></a>
+        <a href="/" className="tab-link" onClick={logOff}><FontAwesomeIcon icon={faArrowRightFromBracket} /></a>
         </div>
         </nav>
         <div className="card-header">

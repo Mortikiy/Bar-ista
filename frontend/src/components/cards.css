@@ -58,7 +58,7 @@
   border-radius: 10px;
   opacity: 0;
   transform: translateY(100px);
-  animation: slideIn 1s ease-out forwards;
+  animation: slideIn 1.7s ease-out forwards;
 }
 
 @keyframes slideIn {
@@ -124,7 +124,7 @@
   font-family: PlayfairDisplay;
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.5);
   opacity: 0;
-  animation: navbarFadeIn 3s ease forwards;
+  animation: navbarFadeIn 1s ease forwards;
 }
 
 @keyframes navbarFadeIn {
