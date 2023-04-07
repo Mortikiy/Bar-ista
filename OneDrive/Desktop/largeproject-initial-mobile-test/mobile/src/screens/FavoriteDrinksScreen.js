@@ -76,61 +76,6 @@ export default function HomeScreen() {
       <SafeAreaView
         style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
       >
-          <ScrollView contentContainerStyle={styles.scrollViewContent}>
-            {favorites.length === 0 ? (
-              <View style = {styles.container}>
-                <Text style={{color: "#fff"}}>You don't have any drinks favorited</Text>
-                <TouchableOpacity onPress={handlePress} style={styles.button}>
-                  <Text style={styles.buttonText}>Add Favorites?</Text>
-                </TouchableOpacity>
-              </View>
-            ) : (
-              <View style={styles.drinksContainer}>
-                <Text style={styles.header}>
-                  Your Favorite Drinks:
-                </Text>
-                {favorites.map((drink, index) => (
-                  <View
-                    key={index}
-                    style={[styles.drink, { width: screenWidth - 20 }]}
-                  >
-                    {drink.img ? (
-                      <Image
-                        source={{ uri: drink.img }}
-                        style={styles.drinkImage}
-                      />
-                    ) : null}
-                    <Text style={styles.drinkName}>{drink.name}</Text>
-                    <Text style={styles.ingredients}>
-                      Ingredients: {drink.ingNeeded.join(", ")}
-                    </Text>
-                  </View>
-                ))}
-              </View>
-            )}
-          </ScrollView>
-{/* 
-        <ScrollView contentContainerStyle={styles.scrollViewContent}>
-          <View style={styles.drinksContainer}>
-            {favorites.map((drink, index) => (
-              <View
-                key={index}
-                style={[styles.drink, { width: screenWidth - 20 }]}
-              >
-                {drink.img ? (
-                  <Image
-                    source={{ uri: drink.img }}
-                    style={styles.drinkImage}
-                  />
-                ) : null}
-                <Text style={styles.drinkName}>{drink.name}</Text>
-                <Text style={styles.ingredients}>
-                  Ingredients: {drink.ingNeeded.join(", ")}
-                </Text>
-              </View>
-            ))}
-          </View>
-        </ScrollView> */}
       </SafeAreaView>
     </ImageBackground>
   );

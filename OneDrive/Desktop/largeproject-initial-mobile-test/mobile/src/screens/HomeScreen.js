@@ -11,16 +11,27 @@ import {
   Image,
   ScrollView,
 } from "react-native";
+
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
-import LogoImage from "../assets/logo.svg";
-import TabNavigator from "../navigation/TabNavigator";
 
 export default function HomeScreen() {
   const [drinks, setDrinks] = useState([]);
 
+  const toggleHeart = (index) => {
+    const updatedDrinks = [...drinks];
+    updatedDrinks[index].isHeartFilled = !updatedDrinks[index].isHeartFilled;
+    setDrinks(updatedDrinks);
+  };
+
   useEffect(() => {
     fetch("https://obscure-springs-89188.herokuapp.com/api/getRandomDrink")
       .then((response) => response.json())
+      .then((data) =>
+        data.map((drink) => ({
+          ...drink,
+          isHeartFilled: false,
+        }))
+      )
       .then((data) => setDrinks(data))
       .catch((error) => console.error(error));
   }, []);
@@ -33,10 +44,15 @@ export default function HomeScreen() {
       source={require("../assets/gradient.png")}
     >
       <SafeAreaView
-        style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
+        style={{
+          flex: 1,
+          justifyContent: "center",
+          alignItems: "center",
+          paddingTop: Platform.OS === "android" ? 25 : 0,
+        }}
       >
         <Text style={styles.header}>
-          Here are some random drinks you should try:
+          Hello, name, here are some random drinks you should try:
         </Text>
         <ScrollView contentContainerStyle={styles.scrollViewContent}>
           <View style={styles.drinksContainer}>
@@ -51,7 +67,24 @@ export default function HomeScreen() {
                     style={styles.drinkImage}
                   />
                 ) : null}
-                <Text style={styles.drinkName}>{drink.name}</Text>
+                <View
+                  style={{
+                    flexDirection: "row",
+                    justifyContent: "space-between",
+                  }}
+                >
+                  <Text style={styles.drinkName}>{drink.name}</Text>
+                  <TouchableOpacity onPress={() => toggleHeart(index)}>
+                    <MaterialIcons
+                      name={
+                        drink.isHeartFilled ? "favorite" : "favorite-outline"
+                      }
+                      size={24}
+                      style={styles.heartIcon}
+                      color="#FC46AA"
+                    />
+                  </TouchableOpacity>
+                </View>
                 <Text style={styles.ingredients}>
                   Ingredients: {drink.ingNeeded.join(", ")}
                 </Text>
@@ -73,6 +106,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: "bold",
     marginBottom: 10,
+    color: "black",
   },
   drinksContainer: {
     alignItems: "center",
@@ -100,5 +134,11 @@ const styles = StyleSheet.create({
     height: 150,
     marginBottom: 10,
     borderRadius: 10,
+  },
+  heartIcon: {
+    width: 30,
+    height: 30,
+    alignSelf: "flex-end",
+    tintColor: "#ff69b4",
   },
 });
