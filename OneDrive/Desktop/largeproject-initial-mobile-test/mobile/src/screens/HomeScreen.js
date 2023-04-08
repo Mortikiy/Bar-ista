@@ -13,28 +13,128 @@ import {
 } from "react-native";
 
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import jwt_decode from "jwt-decode";
+import RNRestart from 'react-native-restart';
 
 export default function HomeScreen() {
   const [drinks, setDrinks] = useState([]);
+  const [favoriteNames, setFavoriteNames] = useState([]);
+  const [userData, setUserData] = useState(null);
 
+  const deleteFavorite = async (name) => {
+    const userToken = await AsyncStorage.getItem("userToken");
+    const decodedToken = jwt_decode(userToken);
+    setUserData(decodedToken);
+    
+    const response = await fetch(
+      "https://obscure-springs-89188.herokuapp.com/api/deleteFavorite",
+      {
+        method: "DELETE",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          userId: decodedToken._id,
+          name: name,
+        }),
+      }
+    );
+    
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    
+    const data = await response.json();
+    
+    console.log(data);
+    const names = data.map((drink) => drink.savedDrinks);
+    setFavoriteNames(names);
+  }
+
+  const addFavorite = async (name) => {
+    const userToken = await AsyncStorage.getItem("userToken");
+    const decodedToken = jwt_decode(userToken);
+    setUserData(decodedToken);
+    
+    const response = await fetch(
+      "https://obscure-springs-89188.herokuapp.com/api/addFavorite",
+      {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          userId: decodedToken._id,
+          name: name,
+        }),
+      }
+    );
+    
+    const data = await response.json();
+    const names = data.map((drink) => drink.savedDrinks);
+    setFavoriteNames(names);
+  }
+  
   const toggleHeart = (index) => {
-    const updatedDrinks = [...drinks];
-    updatedDrinks[index].isHeartFilled = !updatedDrinks[index].isHeartFilled;
+    const updatedDrinks = drinks;
+    //if not filled
+    if(!updatedDrinks[index].isHeartFilled){
+      //we add
+      updatedDrinks[index].isHeartFilled = !updatedDrinks[index].isHeartFilled;
+      addFavorite(updatedDrinks[index].name);
+    } else {
+      console.log("deleting");
+      updatedDrinks[index].isHeartFilled = !updatedDrinks[index].isHeartFilled;
+      deleteFavorite(updatedDrinks[index].name);
+      console.log("deleted")
+    }
     setDrinks(updatedDrinks);
-  };
+  }
 
+  useEffect(() => {
+    const startReload = ()=> RNRestart.Restart();
+    const fetchData = async () => {
+      const userToken = await AsyncStorage.getItem("userToken");
+      const decodedToken = jwt_decode(userToken);
+      setUserData(decodedToken);
+      const response = await fetch(
+        "https://obscure-springs-89188.herokuapp.com/api/getFavorites",
+        {
+          method: "POST",
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            userId: decodedToken._id,
+          }),
+        }
+      );
+      
+      const data = await response.json();
+      const names = data.map((drink) => drink.name);
+      setFavoriteNames(names);
+    };
+  
+    fetchData();
+  }, []);
+  
   useEffect(() => {
     fetch("https://obscure-springs-89188.herokuapp.com/api/getRandomDrink")
       .then((response) => response.json())
       .then((data) =>
         data.map((drink) => ({
           ...drink,
-          isHeartFilled: false,
+          isHeartFilled: favoriteNames.includes(drink.name),
         }))
       )
       .then((data) => setDrinks(data))
       .catch((error) => console.error(error));
-  }, []);
+  }, [favoriteNames]);
+  
 
   const screenWidth = Dimensions.get("window").width;
 

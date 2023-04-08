@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext} from "react";
+import React, { useState, useEffect, useContext } from "react";
 import {
   StyleSheet,
   Text,
@@ -16,55 +16,100 @@ import LogoImage from "../assets/logo.svg";
 import TabNavigator from "../navigation/TabNavigator";
 import LogInScreen from "./LogInScreen";
 import { AuthContext } from "../context/AuthContext";
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import jwt_decode from 'jwt-decode';
-import { useNavigation } from "@react-navigation/native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import jwt_decode from "jwt-decode";
+import { useNavigation } from '@react-navigation/native';
+import RNRestart from 'react-native-restart';
 
 export default function HomeScreen() {
   const [favorites, setFavorites] = useState([]);
-  const {logout} = useContext(AuthContext)
+  const { logout } = useContext(AuthContext);
   const [userData, setUserData] = useState(null);
+
   const navigation = useNavigation();
 
-  const handlePress = () => {
-    navigation.navigate("Home");
-  };
+  const toggleHeart = (index) => {
+    const updatedDrinks = favorites;
+    //if not filled
+    if(updatedDrinks[index].isHeartFilled){
+      updatedDrinks[index].isHeartFilled = !updatedDrinks[index].isHeartFilled;
+      deleteFavorite(updatedDrinks[index].name);
+    }
+    setFavorites(updatedDrinks);
+  }
 
-  useEffect(() => {
-    const fetchData = async () => {
-      const userToken = await AsyncStorage.getItem('userToken');
-      const decodedToken = jwt_decode(userToken);
-      setUserData(decodedToken);
-
-      const response = await fetch("https://obscure-springs-89188.herokuapp.com/api/getFavorites", {
-        method: "POST",
+  const deleteFavorite = async (name) => {
+    const userToken = await AsyncStorage.getItem("userToken");
+    const decodedToken = jwt_decode(userToken);
+    setUserData(decodedToken);
+    
+    const response = await fetch(
+      "https://obscure-springs-89188.herokuapp.com/api/deleteFavorite",
+      {
+        method: "DELETE",
         headers: {
           Accept: "application/json",
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          userId: decodedToken._id, 
+          userId: decodedToken._id,
+          name: name,
         }),
-      });
-
-      if (!response.ok) {
-        throw new Error('Failed to fetch favorite drinks');
       }
+    );
+    
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    
+    const data = await response.json();
+    
+    console.log(data);
+    const names = data.map((drink) => drink.savedDrinks);
+    setFavorites(names);
+  }
 
+
+  useEffect(() => {
+    const startReload = ()=> RNRestart.Restart();
+    const fetchData = async () => {
+      const userToken = await AsyncStorage.getItem("userToken");
+      const decodedToken = jwt_decode(userToken);
+      setUserData(decodedToken);
+  
+      const response = await fetch(
+        "https://obscure-springs-89188.herokuapp.com/api/getFavorites",
+        {
+          method: "POST",
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            userId: decodedToken._id,
+          }),
+        }
+      );
+      
       const data = await response.json();
-
-      if (data.length === 0) {
-        //set up a button to ask if they want to go to home to favorite drinks? 
-
-        console.log("no favorites, add a favorite?")
+      if (data && data.length === 0) {
+        console.log("no favorites");
       } else {
-        setFavorites(data);
+        const favDrinks = data.map((fav) => ({
+          ...fav,
+          isHeartFilled:true,
+        }))
+        setFavorites(favDrinks);
       }
     };
-
+  
     fetchData();
   }, []);
   
+  const handleButtonPress = () => {
+    navigation.navigate("Home");
+  };
+
 
   const screenWidth = Dimensions.get("window").width;
 
@@ -76,6 +121,55 @@ export default function HomeScreen() {
       <SafeAreaView
         style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
       >
+  
+        <ScrollView contentContainerStyle={styles.scrollViewContent}>
+          {favorites.length === 0 ? (
+          <View style={styles.container}>
+            <Text style={{color: "#fff", fontSize: 15, fontWeight: "bold", padding: 10}}>You don't have any favorites</Text>
+            <TouchableOpacity onPress={handleButtonPress} style={styles.button}>
+              <Text style={styles.text}>Add Favorites?</Text>
+            </TouchableOpacity>
+          </View>
+                      
+          ) : (
+            <View style={styles.drinksContainer}>
+              <Text style={styles.header}>
+                Your favorite drinks:
+              </Text>
+              {favorites.map((drink, index) => (
+                <View
+                  key={index}
+                  style={[styles.drink, { width: screenWidth - 20 }]}
+                >
+                  {drink.img ? (
+                    <Image
+                      source={{ uri: drink.img }}
+                      style={styles.drinkImage}
+                    />
+                  ) : null}
+                  <View style = {{flexDirection: "row", justifyContent: "space-between"}}>
+                    <Text style={styles.drinkName}>{drink.name}</Text>
+                    <TouchableOpacity onPress={() => toggleHeart(index)}>
+                      <MaterialIcons
+                        name={
+                          drink.isHeartFilled ? "favorite" : "favorite-outline"
+                        }
+                        size={24}
+                        style={styles.heartIcon}
+                        color="#FC46AA"
+                      />
+                    </TouchableOpacity>
+                  </View>
+                  <Text style={styles.ingredients}>
+                    Ingredients: {drink.ingNeeded.join(", ")}
+                  </Text>
+                </View>
+              ))}
+            </View>
+          )}
+        </ScrollView>
+
+
       </SafeAreaView>
     </ImageBackground>
   );
@@ -87,7 +181,6 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   header: {
-    paddingTop: 10,
     fontSize: 20,
     fontWeight: "bold",
     marginBottom: 10,
@@ -120,22 +213,25 @@ const styles = StyleSheet.create({
     borderRadius: 10,
   },
   button: {
-    backgroundColor: '#fff',
+    backgroundColor: "#FFF",
     padding: 10,
     borderRadius: 5,
-    margin: 10,
-    alignSelf: 'center',
   },
-  buttonText: {
-    color: '#AD40AF',
+  text: {
+    color: "#AD40AF",
+    fontWeight: "bold",
     fontSize: 18,
-    fontWeight: 'bold',
-    textAlign: 'center',
   },
   container: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    paddingTop: '75%',
+    paddingTop: "70%"
+  },
+  heartIcon: {
+    width: 30,
+    height: 30,
+    alignSelf: "flex-end",
+    tintColor: "#ff69b4",
   },
 });
