@@ -239,7 +239,7 @@ const RegisterScreen = ({ navigation }) => {
               placeholder="Email"
               style={styles.input}
               keyboardType="email-address"
-              onChangeText={(text) => setEmail(text)}
+              onChangeText={(text) => setEmail(text.toLowerCase())}
               value={email}
             />
           </View>

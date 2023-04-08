@@ -21,6 +21,7 @@ export default function HomeScreen() {
   const [drinks, setDrinks] = useState([]);
   const [favoriteNames, setFavoriteNames] = useState([]);
   const [userData, setUserData] = useState(null);
+  const [decodedToken, setDecodedToken] = useState({});
 
   const deleteFavorite = async (name) => {
     const userToken = await AsyncStorage.getItem("userToken");
@@ -100,6 +101,7 @@ export default function HomeScreen() {
       const userToken = await AsyncStorage.getItem("userToken");
       const decodedToken = jwt_decode(userToken);
       setUserData(decodedToken);
+      setDecodedToken(decodedToken);
       const response = await fetch(
         "https://obscure-springs-89188.herokuapp.com/api/getFavorites",
         {
@@ -152,7 +154,7 @@ export default function HomeScreen() {
         }}
       >
         <Text style={styles.header}>
-          Hello, name, here are some random drinks you should try:
+          Hello, {decodedToken.firstName} {decodedToken.lastName}, here are some random drinks you should try:
         </Text>
         <ScrollView contentContainerStyle={styles.scrollViewContent}>
           <View style={styles.drinksContainer}>

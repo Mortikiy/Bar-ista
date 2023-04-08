@@ -203,7 +203,7 @@ const LogInScreen = ({ navigation }) => {
           </TouchableOpacity>
 
           {/* where the functionality should go */}
-          <CustomButton label={"Login"} onPress={() => {login(email, password)}} />
+          <CustomButton label={"Login"} onPress={() => {login(email.toLowerCase(), password)}} />
 
           <View style={{ flexDirection: "row", justifyContent: "center" }}>
             <Text style={{ color: "#fff" }}>Don't have an account? </Text>

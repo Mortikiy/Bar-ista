@@ -21,7 +21,7 @@ import jwt_decode from "jwt-decode";
 import { useNavigation } from '@react-navigation/native';
 import RNRestart from 'react-native-restart';
 
-export default function HomeScreen() {
+export default function Favorite() {
   const [favorites, setFavorites] = useState([]);
   const { logout } = useContext(AuthContext);
   const [userData, setUserData] = useState(null);
