@@ -13,12 +13,42 @@ import {
   ScrollView,
 } from "react-native";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import jwt_decode from "jwt-decode";
 
 const MyBarScreen = ({ navigation }) => {
   const [searchText, setSearchText] = useState("");
   const [searchResults, setSearchResults] = useState([]);
   const [showResults, setShowResults] = useState(false);
-  const [myIngredients, setMyIngredients] = useState([]);
+
+  const [userData, setUserData] = useState(null);
+  const [decodedToken, setDecodedToken] = useState({});
+
+  const [ingredients, setIngredients] = useState([]);
+
+  // useEffect(() => {
+  //   fetchBarIngredients();
+  // }, []);
+
+  // const fetchBarIngredients = async () => {
+  //   try {
+  //     const response = await fetch(
+  //       "https://obscure-springs-89188.herokuapp.com/api/getBar",
+  //       {
+  //         method: "POST",
+  //         headers: {
+  //           Accept: "application/json",
+  //           "Content-Type": "application/json",
+  //         },
+  //         body: JSON.stringify({ userId: userData._id }),
+  //       }
+  //     );
+  //     const result = await response.json();
+  //     setIngredients(result);
+  //   } catch (error) {
+  //     console.error(error);
+  //   }
+  // };
 
   const handleSearch = async () => {
     try {
@@ -42,6 +72,39 @@ const MyBarScreen = ({ navigation }) => {
       console.error(error);
     }
   };
+
+  async function addIngredientToBar(userId, ingName) {
+    try {
+      const response = await fetch(
+        "https://obscure-springs-89188.herokuapp.com/api/addIngredientToBar",
+        {
+          method: "POST",
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            userId: userId,
+            ingName: ingName,
+          }),
+        }
+      );
+      const data = await response.json();
+    } catch (error) {
+      console.error(error);
+      // Handle the error here
+    }
+  }
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const userToken = await AsyncStorage.getItem("userToken");
+      const decoded = jwt_decode(userToken);
+      setUserData(decoded);
+      setDecodedToken(decoded);
+    };
+    fetchData();
+  }, []);
 
   return (
     <ImageBackground
@@ -88,8 +151,8 @@ const MyBarScreen = ({ navigation }) => {
                   key={index}
                   style={styles.searchResultItem}
                   onPress={() => {
-                    setMyIngredients([...myIngredients, result.ingredient]);
                     setShowResults(false);
+                    addIngredientToBar(userData._id, result.ingredient);
                   }}
                 >
                   <Text style={styles.searchResultText}>
@@ -113,7 +176,7 @@ const MyBarScreen = ({ navigation }) => {
               My Ingredients
             </Text>
 
-            {myIngredients.map((ingredient, index) => (
+            {userData?.bar?.map((ingredient, index) => (
               <View key={index} style={styles.myIngredientItem}>
                 <Text style={styles.myIngredientText}>{ingredient}</Text>
               </View>
