@@ -320,10 +320,10 @@ exports.setApp = function ( app, client )
         
         var ret = {results:_ret, error:error};
         res.status(200).json(ret);
-        });
+    });
 
-        app.get('/api/getIngredients', async (req, res, next) => 
-        {
+    app.get('/api/getIngredients', async (req, res, next) => 
+    {
         
         // outgoing: Ingredients
         
@@ -357,15 +357,16 @@ exports.setApp = function ( app, client )
         }
         
         res.status(200).json(_ret);
-        });
+    });
 
-        app.get('/api/getRandomDrink', async (req, res, next) => 
-        {
+    app.get('/api/getRandomDrink', async (req, res, next) => 
+    {
         
         // outgoing: Ingredients
         
         const db = client.db("LargeProject");
         const results = await db.collection('Drinks').aggregate([{$sample: {size: 4}}]).toArray();
+        
         
         
         var _ret = [];
@@ -516,4 +517,51 @@ exports.setApp = function ( app, client )
         }
     
     });
+
+    app.post('/api/getBar', async (req, res, next) => 
+    {
+        // incoming: userId
+        // outgoing: drink data
+        var error = '';
+        const { userId } = req.body;
+        var o_id = new mongo.ObjectId(userId);
+        
+        
+        const db = client.db("LargeProject");
+        const user = await db.collection('users').find({_id:o_id}).toArray();
+        
+        
+        
+        if( user.length > 0 )
+        {
+            var bar = user[0].bar;
+        
+            
+            var ret = [];
+            const fullBar = await db.collection('ingredients').find({ingredient: {$in: bar}}).toArray();
+            
+            
+
+            for( var i=0; i<fullBar.length; i++ )
+            {
+            
+                ret.push(fullBar[i]);
+            
+            }
+            
+
+            
+            res.status(200).json(ret);
+
+
+        }
+        else{
+            var ret = {error: 'no user found'};
+            res.status(200).json(ret);
+        }
+    
+    
+    });
+
+
 }
