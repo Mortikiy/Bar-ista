@@ -17,7 +17,7 @@ const AppStack = () => {
       <Stack.Screen component={TabNavigator} name="Home" />
       <Stack.Screen component={FavoriteDrinksScreen} name="FavoriteDrinks" />
       <Stack.Screen component={MyBarScreen} name="MyBar" />
-      <Stack.Screen component={Profile} name = "Profile" />
+      <Stack.Screen component={Profile} name="Profile" />
     </Stack.Navigator>
   );
 };
