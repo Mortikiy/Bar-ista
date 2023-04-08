@@ -19,7 +19,7 @@ import { AuthContext } from "../context/AuthContext";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import jwt_decode from "jwt-decode";
 import { useNavigation } from '@react-navigation/native';
-
+import RNRestart from 'react-native-restart';
 
 export default function HomeScreen() {
   const [favorites, setFavorites] = useState([]);
@@ -28,12 +28,55 @@ export default function HomeScreen() {
 
   const navigation = useNavigation();
 
+  const toggleHeart = (index) => {
+    const updatedDrinks = favorites;
+    //if not filled
+    if(updatedDrinks[index].isHeartFilled){
+      updatedDrinks[index].isHeartFilled = !updatedDrinks[index].isHeartFilled;
+      deleteFavorite(updatedDrinks[index].name);
+    }
+    setFavorites(updatedDrinks);
+  }
+
+  const deleteFavorite = async (name) => {
+    const userToken = await AsyncStorage.getItem("userToken");
+    const decodedToken = jwt_decode(userToken);
+    setUserData(decodedToken);
+    
+    const response = await fetch(
+      "https://obscure-springs-89188.herokuapp.com/api/deleteFavorite",
+      {
+        method: "DELETE",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          userId: decodedToken._id,
+          name: name,
+        }),
+      }
+    );
+    
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    
+    const data = await response.json();
+    
+    console.log(data);
+    const names = data.map((drink) => drink.savedDrinks);
+    setFavorites(names);
+  }
+
+
   useEffect(() => {
+    const startReload = ()=> RNRestart.Restart();
     const fetchData = async () => {
       const userToken = await AsyncStorage.getItem("userToken");
       const decodedToken = jwt_decode(userToken);
       setUserData(decodedToken);
-
+  
       const response = await fetch(
         "https://obscure-springs-89188.herokuapp.com/api/getFavorites",
         {
@@ -49,18 +92,20 @@ export default function HomeScreen() {
       );
       
       const data = await response.json();
-      
       if (data && data.length === 0) {
         console.log("no favorites");
       } else {
-        setFavorites(data);
+        const favDrinks = data.map((fav) => ({
+          ...fav,
+          isHeartFilled:true,
+        }))
+        setFavorites(favDrinks);
       }
     };
-
+  
     fetchData();
   }, []);
-
-
+  
   const handleButtonPress = () => {
     navigation.navigate("Home");
   };
@@ -102,7 +147,19 @@ export default function HomeScreen() {
                       style={styles.drinkImage}
                     />
                   ) : null}
-                  <Text style={styles.drinkName}>{drink.name}</Text>
+                  <View style = {{flexDirection: "row", justifyContent: "space-between"}}>
+                    <Text style={styles.drinkName}>{drink.name}</Text>
+                    <TouchableOpacity onPress={() => toggleHeart(index)}>
+                      <MaterialIcons
+                        name={
+                          drink.isHeartFilled ? "favorite" : "favorite-outline"
+                        }
+                        size={24}
+                        style={styles.heartIcon}
+                        color="#FC46AA"
+                      />
+                    </TouchableOpacity>
+                  </View>
                   <Text style={styles.ingredients}>
                     Ingredients: {drink.ingNeeded.join(", ")}
                   </Text>
@@ -170,5 +227,11 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     paddingTop: "70%"
+  },
+  heartIcon: {
+    width: 30,
+    height: 30,
+    alignSelf: "flex-end",
+    tintColor: "#ff69b4",
   },
 });
