@@ -31,6 +31,12 @@ const MyBarScreen = ({ navigation }) => {
   const [data, setData] = useState(null);
 
   useEffect(() => {
+    const fetchData = async () => {
+      const userToken = await AsyncStorage.getItem("userToken");
+      const decoded = jwt_decode(userToken);
+      setUserData(decoded);
+      setDecodedToken(decoded);
+    };
     fetchData();
   }, []);
 
@@ -49,15 +55,17 @@ const MyBarScreen = ({ navigation }) => {
       const data = await response.json();
       return data;
     } catch (error) {
+      console.log("Error getBar");
       console.error(error);
     }
   };
 
-  const handlePress = async () => {
-    const userId = userData._id; // replace with the actual user ID
-    const data = await fetchData(userId);
-    setData(data);
-  };
+  useEffect(() => {
+    const userId = decodedToken._id; // replace with the actual user ID
+    fetchData(userId)
+      .then((data) => setData(data))
+      .catch((error) => console.error(error));
+  }, [decodedToken._id]);
 
   const handleSearch = async () => {
     try {
@@ -78,6 +86,7 @@ const MyBarScreen = ({ navigation }) => {
       setSearchResults(data.results);
       setShowResults(data.results.length > 0);
     } catch (error) {
+      console.log("Error search!");
       console.error(error);
     }
   };
@@ -99,21 +108,36 @@ const MyBarScreen = ({ navigation }) => {
         }
       );
       const data = await response.json();
+      const newData = await fetchData(userId); //might need these 2 in delete
+      setData(newData);
     } catch (error) {
+      console.log("Error add!");
       console.error(error);
       // Handle the error here
     }
   }
 
-  useEffect(() => {
-    const fetchData = async () => {
-      const userToken = await AsyncStorage.getItem("userToken");
-      const decoded = jwt_decode(userToken);
-      setUserData(decoded);
-      setDecodedToken(decoded);
-    };
-    fetchData();
-  }, []);
+  async function deleteIngredientFromBar(userId, ingName) {
+    try {
+      const response = await fetch(
+        "https://obscure-springs-89188.herokuapp.com/api/deleteIngredientInBar",
+        {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ userId, ingName }),
+        }
+      );
+      const data = await response.json();
+      const newData = await fetchData(userId); //might need these 2 in delete
+      setData(newData);
+    } catch (error) {
+      console.log("Error delete!");
+      console.error(error);
+      // Handle the error here
+    }
+  }
 
   return (
     <ImageBackground
@@ -162,7 +186,7 @@ const MyBarScreen = ({ navigation }) => {
                   onPress={() => {
                     setShowResults(false);
                     addIngredientToBar(userData._id, result.ingredient);
-                    handlePress();
+                    //handlePress();
                   }}
                 >
                   <Text style={styles.searchResultText}>
@@ -186,13 +210,25 @@ const MyBarScreen = ({ navigation }) => {
               My Ingredients
             </Text>
 
-            {data?.map((ingredientObj, index) => (
-              <View key={index} style={styles.myIngredientItem}>
-                <Text style={styles.myIngredientText}>
-                  {ingredientObj.ingredient}
-                </Text>
-              </View>
-            ))}
+            {Array.isArray(data) &&
+              data.map((ingredientObj, index) => (
+                <View key={index} style={styles.myIngredientItem}>
+                  <Text style={styles.myIngredientText}>
+                    {ingredientObj.ingredient}
+                  </Text>
+                  <MaterialIcons
+                    name="highlight-off"
+                    size={24}
+                    color="#FF000088"
+                    onPress={() => {
+                      deleteIngredientFromBar(
+                        decodedToken._id,
+                        ingredientObj.ingredient
+                      );
+                    }}
+                  />
+                </View>
+              ))}
           </ScrollView>
         </View>
       </View>
@@ -252,6 +288,8 @@ const styles = StyleSheet.create({
     padding: 10,
     borderBottomWidth: 1,
     borderBottomColor: "#CCCCCC",
+    flexDirection: "row",
+    justifyContent: "space-between",
   },
   myIngredientText: {
     fontSize: 16,
