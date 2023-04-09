@@ -74,6 +74,11 @@ app.get('/home', (req, res) =>
 res.sendFile(path.resolve(__dirname, 'frontend', 'build', 'index.html'));
 });
 
+app.get('/favorites', (req, res) =>
+{
+res.sendFile(path.resolve(__dirname, 'frontend', 'build', 'index.html'));
+});
+
 
 
 app.get('/', (req, res) => {
