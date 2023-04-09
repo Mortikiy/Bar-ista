@@ -134,3 +134,11 @@ i
   float: right;
   margin-top: 5px;
 }
+
+.filled svg {
+  fill: red;
+}
+
+.outline svg {
+  stroke: black;
+}
