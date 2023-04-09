@@ -26,29 +26,36 @@ const MyBarScreen = ({ navigation }) => {
 
   const [ingredients, setIngredients] = useState([]);
 
-  // useEffect(() => {
-  //   fetchBarIngredients();
-  // }, []);
+  const [data, setData] = useState(null);
 
-  // const fetchBarIngredients = async () => {
-  //   try {
-  //     const response = await fetch(
-  //       "https://obscure-springs-89188.herokuapp.com/api/getBar",
-  //       {
-  //         method: "POST",
-  //         headers: {
-  //           Accept: "application/json",
-  //           "Content-Type": "application/json",
-  //         },
-  //         body: JSON.stringify({ userId: userData._id }),
-  //       }
-  //     );
-  //     const result = await response.json();
-  //     setIngredients(result);
-  //   } catch (error) {
-  //     console.error(error);
-  //   }
-  // };
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  const fetchData = async (userId) => {
+    try {
+      const response = await fetch(
+        "https://obscure-springs-89188.herokuapp.com/api/getBar",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ userId }),
+        }
+      );
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const handlePress = async () => {
+    const userId = userData._id; // replace with the actual user ID
+    const data = await fetchData(userId);
+    setData(data);
+  };
 
   const handleSearch = async () => {
     try {
@@ -153,6 +160,7 @@ const MyBarScreen = ({ navigation }) => {
                   onPress={() => {
                     setShowResults(false);
                     addIngredientToBar(userData._id, result.ingredient);
+                    handlePress();
                   }}
                 >
                   <Text style={styles.searchResultText}>
@@ -176,9 +184,11 @@ const MyBarScreen = ({ navigation }) => {
               My Ingredients
             </Text>
 
-            {userData?.bar?.map((ingredient, index) => (
+            {data?.map((ingredientObj, index) => (
               <View key={index} style={styles.myIngredientItem}>
-                <Text style={styles.myIngredientText}>{ingredient}</Text>
+                <Text style={styles.myIngredientText}>
+                  {ingredientObj.ingredient}
+                </Text>
               </View>
             ))}
           </ScrollView>
