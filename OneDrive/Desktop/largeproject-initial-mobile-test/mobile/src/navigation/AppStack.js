@@ -8,6 +8,7 @@ import FavoriteDrinksScreen from "../screens/FavoriteDrinksScreen";
 import TabNavigator from "./TabNavigator";
 import MyBarScreen from "../screens/MyBarScreen";
 import Profile from "../screens/Profile";
+import GeneratedDrinksScreen from "../screens/GeneratedDrinksScreen";
 
 const Stack = createNativeStackNavigator();
 
@@ -18,6 +19,7 @@ const AppStack = () => {
       <Stack.Screen component={FavoriteDrinksScreen} name="FavoriteDrinks" />
       <Stack.Screen component={MyBarScreen} name="MyBar" />
       <Stack.Screen component={Profile} name="Profile" />
+      <Stack.Screen component={GeneratedDrinksScreen} name="GenerateDrinks" />
     </Stack.Navigator>
   );
 };

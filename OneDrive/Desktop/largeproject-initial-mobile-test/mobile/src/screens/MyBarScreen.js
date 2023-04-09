@@ -16,6 +16,8 @@ import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import jwt_decode from "jwt-decode";
 
+import GuyThing from "../assets/guything.svg";
+
 //commentt
 
 const MyBarScreen = ({ navigation }) => {
@@ -231,7 +233,7 @@ const MyBarScreen = ({ navigation }) => {
               ))}
           </ScrollView>
         </View>
-        <TouchableOpacity onPress={() => {}}>
+        <TouchableOpacity onPress={() => navigation.navigate("GenerateDrinks")}>
           <View style={styles.generateContainer}>
             <Text
               style={{
@@ -245,6 +247,16 @@ const MyBarScreen = ({ navigation }) => {
             </Text>
           </View>
         </TouchableOpacity>
+        <View
+          style={{
+            flex: 1,
+            justifyContent: "center",
+            alignItems: "center",
+            marginTop: Platform.OS === "ios" ? 150 : 200,
+          }}
+        >
+          <GuyThing width={150} height={150} />
+        </View>
       </View>
     </ImageBackground>
   );
