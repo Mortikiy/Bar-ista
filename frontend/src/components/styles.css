@@ -7,6 +7,7 @@
 body {
   font-family: sans-serif;
   background-image: linear-gradient(#7209B7, 65%, #F72585);
+  background-attachment: fixed;
 }
 
 /* Form styles */

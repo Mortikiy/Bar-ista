@@ -11,6 +11,7 @@ function Home()
     {
         localStorage.removeItem('token');
     }
+
     const [apiData, setApiData] = useState([]);
     useEffect(() =>
     {
@@ -61,7 +62,8 @@ function Home()
                 <h1 id="greeting"></h1>
             </div>
             <div className="navbar-tabs">
-            <a href="#">Favorites</a>
+            <a href="/home">Daily Drinks</a>
+            <a href="/favorites">Favorites</a>
             <a href="#">MyBar</a>
             <a href="/" onClick={logOff}>Logout</a>
             </div>
