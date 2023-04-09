@@ -4,17 +4,29 @@ import "./favoritestyles.css";
 import jwt_decode from 'jwt-decode';
 import "../components/cards.css";
 import myImage from '../components/image.png';
+import HeartButton from '../components/HeartButton';
 let bp = require('../components/Path.js');
 
 
 function FavoritesPage() {
   const [favoriteDrinks, setFavoriteDrinks] = useState([]);
   const [list, setList] = useState(false);
+  const [heartFilledStates, setHeartFilledStates] = useState([]);
 
   function logOff()
   {
       localStorage.removeItem('token');
   }
+
+  const handleHeartClick = (index) => {
+    const newStates = [...heartFilledStates];
+    newStates[index] = !newStates[index];
+    setHeartFilledStates(newStates);
+  };
+
+  useEffect(() => {
+    setHeartFilledStates(new Array(favoriteDrinks.length).fill(true));
+  }, [favoriteDrinks]);
 
   useEffect(() =>
   {
@@ -169,7 +181,7 @@ function FavoritesPage() {
         {favoriteDrinks.map((drink, index) => (
           <div className="drink" key={drink.id}>
             <Card imageUrl={drink.img} title={drink.name} description={drink.instructions} ingredients={drink.ingMeasurments} />
-            <button className="remove" onClick={() => removeFavoriteDrink(index)}>Remove</button>
+            <button style={{background: 'none', border: 'none', padding: '0', cursor: 'pointer', marginBottom: '0'}} className="heart-button" onClick={() => removeFavoriteDrink(index)}><HeartButton isFilled={heartFilledStates[index]} onClick={() => handleHeartClick(index)} /></button>
           </div>
         ))}
       </div>

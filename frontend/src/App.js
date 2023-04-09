@@ -5,6 +5,7 @@ import ForgotPassword from './pages/ForgotPassword';
 import ResetPassword from './pages/ResetPassword';
 import FavoritesPage from './pages/FavoritesPage';
 import Home from './pages/Home';
+
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
 function App() {

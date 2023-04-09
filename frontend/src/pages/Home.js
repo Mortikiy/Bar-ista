@@ -3,6 +3,8 @@ import { useState, useEffect } from "react";
 import Card from '../components/Card.js';
 import myImage from '../components/image.png';
 import jwt_decode from 'jwt-decode';
+import HeartButton from '../components/HeartButton';
+import './favoritestyles.css';
 let bp = require('../components/Path.js');
 
 function Home()
@@ -71,14 +73,17 @@ function Home()
         <div className="card-header">
             <h1 className ="daily">Try these drinks!</h1>
         </div>
+
         <div className="card-container">
             {apiData.map(item => (
+            <div className="drink">
             <Card
             imageUrl={item.img}
             title={item.name}
             ingredients={item.ingMeasurments}
             description={item.instructions}
             />
+            </div>
             ))}
         </div>
         </div>
