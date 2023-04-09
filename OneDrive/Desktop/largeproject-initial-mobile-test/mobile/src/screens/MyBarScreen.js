@@ -231,6 +231,20 @@ const MyBarScreen = ({ navigation }) => {
               ))}
           </ScrollView>
         </View>
+        <TouchableOpacity onPress={() => {}}>
+          <View style={styles.generateContainer}>
+            <Text
+              style={{
+                textAlign: "center",
+                paddingTop: 7,
+                fontSize: 16,
+                fontWeight: "bold",
+              }}
+            >
+              Generate Drinks
+            </Text>
+          </View>
+        </TouchableOpacity>
       </View>
     </ImageBackground>
   );
@@ -241,6 +255,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   searchBarContainer: {
+    borderWidth: 2,
     marginTop: Platform.OS === "ios" ? 60 : 30,
     padding: 10,
     flexDirection: "row",
@@ -279,6 +294,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   myIngredientsContainer: {
+    borderWidth: 2,
     backgroundColor: "white",
     borderRadius: 20,
     width: Dimensions.get("window").width * 0.9,
@@ -293,6 +309,14 @@ const styles = StyleSheet.create({
   },
   myIngredientText: {
     fontSize: 16,
+  },
+  generateContainer: {
+    borderWidth: 2,
+    backgroundColor: "#4CC9F0",
+    borderRadius: 20,
+    width: Dimensions.get("window").width * 0.9,
+    height: Dimensions.get("window").height * 0.05,
+    marginTop: 10,
   },
 });
 
