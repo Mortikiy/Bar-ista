@@ -12,6 +12,16 @@ function FavoritesPage() {
   const [list, setList] = useState(false);
   const [favoriteDrinks, setFavoriteDrinks] = useState([]);
 
+  const sortedFavorites = favoriteDrinks.sort((a, b) => {
+    if (a.name < b.name) {
+      return -1;
+    } else if (a.name > b.name) {
+      return 1;
+    } else {
+      return 0;
+    }
+  });
+
   function refreshFavorites()
   {}
   
@@ -97,7 +107,7 @@ function FavoritesPage() {
       <div className="title-box"><h1>Favorite Drinks</h1></div>
       {list ?
       <div className="drink-list">
-        {favoriteDrinks.map((drink, index) => (
+        {sortedFavorites.map((drink, index) => (
           <div className="drink" key={drink.id}>
             <Card imageUrl={drink.img} title={drink.name} description={drink.instructions} ingredients={drink.ingMeasurments} savedDrinks={favoriteDrinks.map(item => item.name)} grandParentFunction={refreshFavorites}/>
           </div>
