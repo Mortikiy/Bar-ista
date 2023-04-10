@@ -60,21 +60,6 @@
   .description-list li {
     margin-bottom: 5px;
   }
-  
-  .remove {
-    margin-top: 20px;
-    background-color: #F72585;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.2s ease-in-out;
-  }
-  
-  .remove:hover {
-    background-color: #9e3b68;
-  }
 
   button.clicked {
     transform: translateY(2px);

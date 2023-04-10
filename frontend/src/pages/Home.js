@@ -9,6 +9,16 @@ let bp = require('../components/Path.js');
 
 function Home()
 {
+    const [userToken, setUserToken] = useState(localStorage.getItem('token'));
+    const decoded = jwt_decode(userToken);
+    const [favoriteDrinks, setFavoriteDrinks] = useState([]);
+    const [refresh, setRefresh] = useState(false);
+
+    function refreshFavorites()
+    {
+        setRefresh(!(refresh));
+    }
+
     function logOff()
     {
         localStorage.removeItem('token');
@@ -19,7 +29,6 @@ function Home()
     {
         // code to run when component mounts
         const token = localStorage.getItem('token');
-
         // To login page if no token
         if (!token)
         {
@@ -30,6 +39,10 @@ function Home()
         const userData = jwt_decode(token);
         let name = document.getElementById("greeting");
         name.innerHTML="Welcome to Bar-ista, "+userData.firstName+"!";
+        const userId = 
+      {
+        userId: userData._id
+      }
 
         fetch(bp.buildPath('api/getRandomDrink'),
         {
@@ -51,10 +64,50 @@ function Home()
         {
             console.error('Login request error:', error);
         });
-
       }, []);
-    
+      
 
+      useEffect(() =>
+      {  
+        const token = localStorage.getItem('token');
+        const userData = jwt_decode(token);
+        const userId = 
+      {
+        userId: userData._id
+      }
+        fetch(bp.buildPath('api/getFavorites'),
+      {
+      method: 'POST',
+      headers: {
+          'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(userId),
+      })
+      .then((response) =>
+      {
+          if (!response.ok)
+          {
+          throw new Error('Network error - response not OK');
+          }
+          return response.json();
+      })
+      .then((data) => 
+      {
+        if (data.error == 'no user found')
+          {
+            setFavoriteDrinks(); // Show no favorites
+          }
+        else
+        {
+            setFavoriteDrinks([...data.map(item => item.name)]);
+        }
+      })
+      .catch((error) => 
+      {
+          console.error(error);
+      });
+      
+      }, [refresh]);
 
     return (
         <div>
@@ -82,6 +135,8 @@ function Home()
             title={item.name}
             ingredients={item.ingMeasurments}
             description={item.instructions}
+            savedDrinks={favoriteDrinks}
+            grandParentFunction={refreshFavorites}
             />
             </div>
             ))}
