@@ -356,12 +356,12 @@ const MyBarPage = () => {
         ))}
       </div>
       </div>
-      : <div><h2>Craftable Drinks</h2><div className="centered"><p>No craftable drinks!</p></div></div>}
+      : <div><h2>Craftable Drinks</h2><div className="centered"><p style={{fontWeight: "bold"}}>No craftable drinks!</p></div></div>}
         </div>
         <div className="mybar">
         <div className="title_box"><h2>My Bar</h2></div>
                 <div className="ingredient-list">
-                    {myBar !== null ?
+                    {myBar.length > 0 ?
                     myBar.map((ingredient) => (
                         <div key={ingredient.ingredient} className="ingredient-item" style={{backgroundColor: getDrinkColor(ingredient.type), cursor: 'default'}}>
                             <span
@@ -382,7 +382,7 @@ const MyBarPage = () => {
                             </span>
                             <button id = "x" title={'Remove from bar'} onClick={() => handleRemove(ingredient)}>X</button>
                         </div>
-                    )) : <div style={{textAlign: 'center', fontSize: '1.2em'}}>You have no drinks added to your bar!</div>}
+                    )) : <div style={{textAlign: 'center', fontWeight: "bold", fontSize: '1.3em', color: "white"}}>You have no drinks added to your bar!</div>}
                 </div>
         </div>
     </div>
