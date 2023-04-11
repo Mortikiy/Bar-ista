@@ -11,8 +11,9 @@ let bp = require('../components/Path.js');
 function FavoritesPage() {
   const [list, setList] = useState(false);
   const [favoriteDrinks, setFavoriteDrinks] = useState([]);
+  const [searchTerm, setSearchTerm] = useState('');
 
-  const sortedFavorites = favoriteDrinks.sort((a, b) => {
+  const sortedFavorites = favoriteDrinks.filter(drink => drink.name.toLowerCase().includes(searchTerm.toLowerCase())).sort((a, b) => {
     if (a.name < b.name) {
       return -1;
     } else if (a.name > b.name) {
@@ -99,12 +100,24 @@ function FavoritesPage() {
     <div className="navbar-tabs">
     <a href="/home">Daily Drinks</a>
     <a href="/favorites">Favorites</a>
-    <a href="#">MyBar</a>
+    <a href="/mybar">MyBar</a>
     <a href="/" onClick={logOff}>Logout</a>
     </div>
 </nav>
     <div className="favorite-drinks">
       <div className="title-box"><h1>Favorite Drinks</h1></div>
+      <div className="search-container">
+  <div className="search-bar">
+    <input
+      type="text"
+      placeholder="Search for a favorite..."
+      className="search-input"
+      value={searchTerm}
+      onChange={(event) => setSearchTerm(event.target.value)}
+    />
+  </div>
+</div>
+
       {list ?
       <div className="drink-list">
         {sortedFavorites.map((drink, index) => (

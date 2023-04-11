@@ -38,7 +38,7 @@ function Home()
 
         const userData = jwt_decode(token);
         let name = document.getElementById("greeting");
-        name.innerHTML="Welcome to Bar-ista, "+userData.firstName+"!";
+        name.innerHTML="Welcome to Barista, "+userData.firstName+"!";
         const userId = 
       {
         userId: userData._id
@@ -94,12 +94,12 @@ function Home()
       .then((data) => 
       {
         if (data.error == 'no user found')
-          {
-            setFavoriteDrinks(); // Show no favorites
-          }
+        {
+          setFavoriteDrinks(); // Show no favorites
+        }
         else
         {
-            setFavoriteDrinks([...data.map(item => item.name)]);
+          setFavoriteDrinks([...data.map(item => item.name)]);
         }
       })
       .catch((error) => 
@@ -119,7 +119,7 @@ function Home()
             <div className="navbar-tabs">
             <a href="/home">Daily Drinks</a>
             <a href="/favorites">Favorites</a>
-            <a href="#">MyBar</a>
+            <a href="/mybar">MyBar</a>
             <a href="/" onClick={logOff}>Logout</a>
             </div>
         </nav>
