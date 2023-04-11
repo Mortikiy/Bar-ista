@@ -7,7 +7,6 @@ let bp = require('../components/Path.js');
 
 const MyBarPage = () => {
   const [ingredients, setIngredients] = useState([]);
-  const [selectedIngredient, setSelectedIngredient] = useState("");
   const [myBar, setMyBar] = useState([]);
   const [refresh, setRefresh] = useState(false);
   const [filter, setFilter] = useState("");
@@ -234,7 +233,7 @@ const MyBarPage = () => {
       case "syrup":
         return "yellow";
       case "liqueur":
-        return "purple";
+        return "#9dffa0";
       case "spirit":
         return "red";
       case "bitters":
@@ -338,7 +337,6 @@ const MyBarPage = () => {
                     <input
                     type="text"
                     placeholder="Search"
-                    value={filter}
                     onChange={handleInputChange}
                     />
                 </div>
@@ -356,18 +354,18 @@ const MyBarPage = () => {
         ))}
       </div>
       </div>
-      : <div><h2>Craftable Drinks</h2><div className="centered"><p style={{fontWeight: "bold"}}>No craftable drinks!</p></div></div>}
+      : <div><h2>Craftable Drinks</h2><div className="centered"><p style={{fontWeight: "bold"}}>No craftable drinks! Add some more ingredients!</p></div></div>}
         </div>
         <div className="mybar">
         <div className="title_box"><h2>My Bar</h2></div>
                 <div className="ingredient-list">
                     {myBar.length > 0 ?
                     myBar.map((ingredient) => (
-                        <div key={ingredient.ingredient} className="ingredient-item" style={{backgroundColor: getDrinkColor(ingredient.type), cursor: 'default'}}>
+                        <div key={ingredient.ingredient} className="ingredient-item" style={{backgroundColor: getDrinkColor(ingredient.type), cursor: 'default', color: "black"}}>
                             <span
                             style={{
                             backgroundColor: getDrinkColor(ingredient.type),
-                            color: "#fff",
+                            color: "black",
                             borderRadius: "4px",
                             padding: "4px",
                             marginRight: "4px",
@@ -380,9 +378,9 @@ const MyBarPage = () => {
                             <span style={{cursor: 'default'}}>
                                 {ingredient.ingredient.charAt(0).toUpperCase() + ingredient.ingredient.slice(1)}
                             </span>
-                            <button id = "x" title={'Remove from bar'} onClick={() => handleRemove(ingredient)}>X</button>
+                            <button id = "x" style={{color: "black"}} title={'Remove from bar'} onClick={() => handleRemove(ingredient)}>X</button>
                         </div>
-                    )) : <div style={{textAlign: 'center', fontWeight: "bold", fontSize: '1.3em', color: "white"}}>You have no drinks added to your bar!</div>}
+                    )) : <div style={{textAlign: 'center', fontWeight: "bold", fontSize: '1.3em', color: "white"}}>You have no ingredients added to your bar!</div>}
                 </div>
         </div>
     </div>
