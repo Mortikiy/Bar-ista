@@ -6,8 +6,6 @@
 
 body {
   font-family: sans-serif;
-  background-image: linear-gradient(#7209B7, 65%, #F72585);
-  height: 100vh;
 }
 
 .forgot-password-container {
@@ -15,20 +13,8 @@ body {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  margin-top: 20em;
-  background-color: #fff;
-  border-radius: 5px;
-  padding: 20px;
-  width: 400px;
-  position: relative;
-  overflow: hidden;
-  box-shadow:
-    0 2px 10px rgba(0, 0, 0, 0.1),
-    0 0 5px #0A0A08,
-    0 0 10px #0A0A08,
-    0 0 20px #0A0A08,
-    0 0 30px #0A0A08,
-    0 0 40px #0A0A08;
+  height: 100vh;
+  background-image: linear-gradient(#7209B7, 65%, #F72585);
 }
 
 .forgot-password-form {
@@ -45,18 +31,15 @@ body {
 }
 
 .forgot-password-title {
-  font-family: PlayfairDisplay;
-  text-align: center;
-  margin-bottom: 10px;
-  color: #333;
-  font-size: 1.5em;
+  font-size: 28px;
+  margin-bottom: 20px;
+  font-weight: bold;
 }
 
 .forgot-password-label {
-  display: block;
-  margin-bottom: 5px;
+  font-size: 16px;
+  margin-bottom: 8px;
   font-weight: bold;
-  color: #333;
 }
 
 .forgot-password-input {

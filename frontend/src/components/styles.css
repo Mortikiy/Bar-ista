@@ -205,3 +205,12 @@ i {
   float: right;
   margin-top: 10px;
 }
+
+
+.filled svg {
+  fill: red;
+}
+
+.outline svg {
+  stroke: black;
+}

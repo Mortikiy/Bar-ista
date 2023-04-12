@@ -176,12 +176,13 @@ function Signup(props) {
       });
     };
   
-  return (
+    return (
       <div className="form-container">
         <h1 className="form-title">Sign Up</h1>
         <form onSubmit={handleSubmit} className="form" id="signUpForm">
         <div className="form-group">
             <label htmlFor="firstName" className="form-label">
+              First Name:
             </label>
             <input
               name = "firstname"
@@ -195,6 +196,7 @@ function Signup(props) {
           </div>
           <div className="form-group">
             <label htmlFor="lastName" className="form-label">
+              Last Name:
             </label>
             <input
               name = "lastname"
@@ -208,6 +210,7 @@ function Signup(props) {
           </div>
           <div className="form-group">
             <label htmlFor="email" className="form-label">
+              Email:
             </label>
             <input
               name = "email"
@@ -221,6 +224,7 @@ function Signup(props) {
           </div>
           <div className="form-group">
             <label htmlFor="password" className="form-label">
+              Password:
             </label>
             <input
               name = "password"
@@ -237,6 +241,7 @@ function Signup(props) {
           </div>
           <div className="form-group">
             <label htmlFor="confirm-password" className="form-label">
+              Confirm Password:
             </label>
             <input
               name = "confirm"

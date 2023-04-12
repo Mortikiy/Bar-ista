@@ -7,6 +7,14 @@
   font-family: 'Montserrat';
   src: local('Montserrat') url(../fonts/Montserrat-Regular.otf) format('opentype');
 }
+#root {
+  width: 100%;
+}
+
+.page-container {
+  width: 45%;
+  margin: 0 auto;
+}
 
 .card-container {
   display: grid;
@@ -46,7 +54,7 @@
   animation-delay: 0.4s;
 
 }
-  
+
  .card {
   display: flex;
   flex-direction: row;
@@ -69,10 +77,11 @@
 }
 
 .card img {
-  width: 150px;
-  height: 150px;
+  width: 175px;
+  height: 175px;
   object-fit: cover;
   margin-right: 20px;
+  padding-left: 10px;
 }
   
   .card-data h2 {
@@ -119,6 +128,7 @@
   align-items: center;
   background-color: #1a1a1a;
   padding: 13px;
+  width: 100%;
   margin-bottom: 2%;
   border-bottom: 2px solid #4CC9F0;
   font-family: PlayfairDisplay;
@@ -126,6 +136,7 @@
   opacity: 0;
   animation: navbarFadeIn 1s ease forwards;
 }
+
 
 @keyframes navbarFadeIn {
   0% {
@@ -147,6 +158,18 @@
   align-items: center;
   gap: 20px;
 }
+@media (max-width: 768px) {
+  .navbar-tabs {
+    font-size: 1.5em;
+  }
+}
+
+@media (max-width: 480px) {
+  .navbar-tabs {
+    font-size: 1.2em;
+  }
+}
+
 
 .tab-link {
   color: #4CC9F0;
@@ -169,7 +192,7 @@
 }
 
 .tab-link:hover::before {
-  width: 100%;
+  wiidth: 100%;
 }
 
 .navbar-left h1 {
@@ -185,8 +208,7 @@
 }
 
 .daily {
-  font-family: PlayfairDisplay;
-  font-size: 3em;
+  font-size: 22px;
   margin: 20px 0;
 }
 
@@ -198,14 +220,13 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-bottom: 2em;
+    margin-bottom: 10px;
   }
-
-.card-header h1 {
-  font-family: PlayfairDisplay;
-  margin: 0;
-  color: #FFFFFF;
-}
+  
+  .card-header h1 {
+    margin: 0;
+    color: #FFFFFF;
+  }
   
   .description-list {
     margin: 0;
