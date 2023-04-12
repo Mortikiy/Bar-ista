@@ -17,14 +17,19 @@ import {
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import jwt_decode from "jwt-decode";
-
+import FavoriteButton from "../components/FavoriteButton";
 import NoDrinks from "../assets/nodrinks.svg";
 
 const GeneratedDrinksScreen = ({ navigation }) => {
   const [userData, setUserData] = useState(null);
   const [decodedToken, setDecodedToken] = useState({});
 
-  const [drinks, setDrinks] = useState([]);
+  const [favorites, setFavorites] = useState([]);
+  const [refresh, setRefresh] = useState(false);
+
+  function refreshFavorites() {
+    setRefresh(!refresh);
+  }
 
   useEffect(() => {
     const fetchData = async () => {
@@ -35,6 +40,8 @@ const GeneratedDrinksScreen = ({ navigation }) => {
     };
     fetchData();
   }, []);
+
+  const [apiData, setApiData] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -53,14 +60,54 @@ const GeneratedDrinksScreen = ({ navigation }) => {
         }
       );
       const drinksData = await response.json();
-      setDrinks(drinksData);
+      setApiData(drinksData);
     };
     fetchData();
   }, []);
 
+  // //need to fix this
+  // const toggleHeart = (index) => {
+  //   setDrinks((prevDrinks) => {
+  //     const newDrinks = [...prevDrinks];
+  //     newDrinks[index].isHeartFilled = !newDrinks[index].isHeartFilled;
+  //     return newDrinks;
+  //   });
+  // };
+
+  useEffect(() => {
+    const startReload = () => RNRestart.Restart();
+    const fetchData = async () => {
+      const userToken = await AsyncStorage.getItem("userToken");
+      const decodedToken = jwt_decode(userToken);
+      setUserData(decodedToken);
+      setDecodedToken(decodedToken);
+      const response = await fetch(
+        "https://obscure-springs-89188.herokuapp.com/api/getFavorites",
+        {
+          method: "POST",
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            userId: decodedToken._id,
+          }),
+        }
+      );
+
+      const data = await response.json();
+      if (data.error == "no user found") {
+        setFavorites();
+      } else {
+        setFavorites([...data.map((drink) => drink.name)]);
+      }
+    };
+    fetchData();
+  }, [favorites]);
+
   const screenWidth = Dimensions.get("window").width;
 
-  if (drinks.length === 0) {
+  if (apiData.length === 0) {
     return (
       <ImageBackground
         style={styles.background}
@@ -137,7 +184,7 @@ const GeneratedDrinksScreen = ({ navigation }) => {
           </View>
           <ScrollView contentContainerStyle={styles.scrollViewContent}>
             <View style={styles.drinksContainer}>
-              {drinks.map((drink, index) => (
+              {apiData.map((drink, index) => (
                 <View
                   key={index}
                   style={[styles.drink, { width: screenWidth - 20 }]}
@@ -155,7 +202,7 @@ const GeneratedDrinksScreen = ({ navigation }) => {
                     }}
                   >
                     <Text style={styles.drinkName}>{drink.name}</Text>
-                    <TouchableOpacity onPress={() => toggleHeart(index)}>
+                    {/* <TouchableOpacity onPress={() => toggleHeart(index)}>
                       <MaterialIcons
                         name={
                           drink.isHeartFilled ? "favorite" : "favorite-outline"
@@ -164,7 +211,12 @@ const GeneratedDrinksScreen = ({ navigation }) => {
                         style={styles.heartIcon}
                         color="#FC46AA"
                       />
-                    </TouchableOpacity>
+                    </TouchableOpacity> */}
+                    <FavoriteButton
+                      userId={decodedToken._id}
+                      drinkName={drink.name}
+                      isFavorite={favorites.includes(drink.name) ? true : false}
+                    ></FavoriteButton>
                   </View>
                   <Text style={styles.ingredients}>
                     Ingredients: {drink.ingMeasurments.join(", ")}
@@ -221,7 +273,7 @@ const styles = StyleSheet.create({
     fontSize: Platform.OS === "ios" ? 18 : 20,
     fontWeight: "bold",
     marginBottom: 10,
-    color: "black",
+    color: "white",
     textAlign: "center",
   },
   headerConatainer: {

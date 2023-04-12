@@ -15,88 +15,37 @@ import {
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import jwt_decode from "jwt-decode";
-import RNRestart from 'react-native-restart';
+import RNRestart from "react-native-restart";
+import FavoriteButton from "../components/FavoriteButton";
 
 export default function HomeScreen() {
-  const [drinks, setDrinks] = useState([]);
-  const [favoriteNames, setFavoriteNames] = useState([]);
   const [userData, setUserData] = useState(null);
   const [decodedToken, setDecodedToken] = useState({});
 
-  const deleteFavorite = async (name) => {
-    const userToken = await AsyncStorage.getItem("userToken");
-    const decodedToken = jwt_decode(userToken);
-    setUserData(decodedToken);
-    
-    const response = await fetch(
-      "https://obscure-springs-89188.herokuapp.com/api/deleteFavorite",
-      {
-        method: "DELETE",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          userId: decodedToken._id,
-          name: name,
-        }),
-      }
-    );
-    
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
-    
-    const data = await response.json();
-    
-    console.log(data);
-    const names = data.map((drink) => drink.savedDrinks);
-    setFavoriteNames(names);
+  const [favorites, setFavorites] = useState([]);
+  const [refresh, setRefresh] = useState(false);
+
+  function refreshFavorites() {
+    setRefresh(!refresh);
   }
 
-  const addFavorite = async (name) => {
-    const userToken = await AsyncStorage.getItem("userToken");
-    const decodedToken = jwt_decode(userToken);
-    setUserData(decodedToken);
-    
-    const response = await fetch(
-      "https://obscure-springs-89188.herokuapp.com/api/addFavorite",
-      {
-        method: "POST",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          userId: decodedToken._id,
-          name: name,
-        }),
-      }
-    );
-    
-    const data = await response.json();
-    const names = data.map((drink) => drink.savedDrinks);
-    setFavoriteNames(names);
-  }
-  
-  const toggleHeart = (index) => {
-    const updatedDrinks = drinks;
-    //if not filled
-    if(!updatedDrinks[index].isHeartFilled){
-      //we add
-      updatedDrinks[index].isHeartFilled = !updatedDrinks[index].isHeartFilled;
-      addFavorite(updatedDrinks[index].name);
-    } else {
-      console.log("deleting");
-      updatedDrinks[index].isHeartFilled = !updatedDrinks[index].isHeartFilled;
-      deleteFavorite(updatedDrinks[index].name);
-      console.log("deleted")
-    }
-    setDrinks(updatedDrinks);
-  }
+  const [apiData, setApiData] = useState([]);
 
   useEffect(() => {
-    const startReload = ()=> RNRestart.Restart();
+    fetch("https://obscure-springs-89188.herokuapp.com/api/getRandomDrink")
+      .then((response) => response.json())
+      // .then((data) =>
+      //   data.map((drink) => ({
+      //     ...drink,
+      //     isHeartFilled: refresh.includes(drink.name),
+      //   }))
+      // )
+      .then((data) => setApiData(data))
+      .catch((error) => console.error(error));
+  }, []);
+
+  useEffect(() => {
+    const startReload = () => RNRestart.Restart();
     const fetchData = async () => {
       const userToken = await AsyncStorage.getItem("userToken");
       const decodedToken = jwt_decode(userToken);
@@ -115,28 +64,16 @@ export default function HomeScreen() {
           }),
         }
       );
-      
+
       const data = await response.json();
-      const names = data.map((drink) => drink.name);
-      setFavoriteNames(names);
+      if (data.error == "no user found") {
+        setFavorites();
+      } else {
+        setFavorites([...data.map((drink) => drink.name)]);
+      }
     };
-  
     fetchData();
-  }, []);
-  
-  useEffect(() => {
-    fetch("https://obscure-springs-89188.herokuapp.com/api/getRandomDrink")
-      .then((response) => response.json())
-      .then((data) =>
-        data.map((drink) => ({
-          ...drink,
-          isHeartFilled: favoriteNames.includes(drink.name),
-        }))
-      )
-      .then((data) => setDrinks(data))
-      .catch((error) => console.error(error));
-  }, [favoriteNames]);
-  
+  }, [favorites]);
 
   const screenWidth = Dimensions.get("window").width;
 
@@ -154,11 +91,11 @@ export default function HomeScreen() {
         }}
       >
         <Text style={styles.header}>
-          Hello, {decodedToken.firstName} {decodedToken.lastName}, here are some random drinks you should try:
+          Hey {decodedToken.firstName}, try some of these favorites:
         </Text>
         <ScrollView contentContainerStyle={styles.scrollViewContent}>
           <View style={styles.drinksContainer}>
-            {drinks.map((drink, index) => (
+            {apiData.map((drink, index) => (
               <View
                 key={index}
                 style={[styles.drink, { width: screenWidth - 20 }]}
@@ -176,7 +113,7 @@ export default function HomeScreen() {
                   }}
                 >
                   <Text style={styles.drinkName}>{drink.name}</Text>
-                  <TouchableOpacity onPress={() => toggleHeart(index)}>
+                  {/* <TouchableOpacity onPress={() => toggleHeart(index)}>
                     <MaterialIcons
                       name={
                         drink.isHeartFilled ? "favorite" : "favorite-outline"
@@ -185,10 +122,18 @@ export default function HomeScreen() {
                       style={styles.heartIcon}
                       color="#FC46AA"
                     />
-                  </TouchableOpacity>
+                  </TouchableOpacity> */}
+                  <FavoriteButton
+                    userId={decodedToken._id}
+                    drinkName={drink.name}
+                    isFavorite={favorites.includes(drink.name) ? true : false}
+                  ></FavoriteButton>
                 </View>
                 <Text style={styles.ingredients}>
-                  Ingredients: {drink.ingNeeded.join(", ")}
+                  Ingredients: {drink.ingMeasurments.join(", ")}
+                </Text>
+                <Text style={styles.ingredients}>
+                  Instructions: {drink.instructions}
                 </Text>
               </View>
             ))}
@@ -208,12 +153,13 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: "bold",
     marginBottom: 10,
-    color: "black",
+    color: "white",
   },
   drinksContainer: {
     alignItems: "center",
   },
   drink: {
+    borderWidth: 2,
     marginVertical: 5,
     padding: 10,
     backgroundColor: "#fff",
@@ -236,11 +182,11 @@ const styles = StyleSheet.create({
     height: 150,
     marginBottom: 10,
     borderRadius: 10,
+    borderWidth: 2,
   },
   heartIcon: {
     width: 30,
     height: 30,
     alignSelf: "flex-end",
-    tintColor: "#ff69b4",
   },
 });

@@ -18,65 +18,77 @@ import LogInScreen from "./LogInScreen";
 import { AuthContext } from "../context/AuthContext";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import jwt_decode from "jwt-decode";
-import { useNavigation } from '@react-navigation/native';
-import RNRestart from 'react-native-restart';
+import { useNavigation } from "@react-navigation/native";
+import RNRestart from "react-native-restart";
+
+import FavoriteButton from "../components/FavoriteButton";
+
+import Fav from "../assets/fav.svg";
 
 export default function Favorite() {
-  const [favorites, setFavorites] = useState([]);
   const { logout } = useContext(AuthContext);
   const [userData, setUserData] = useState(null);
 
   const navigation = useNavigation();
 
-  const toggleHeart = (index) => {
-    const updatedDrinks = favorites;
-    //if not filled
-    if(updatedDrinks[index].isHeartFilled){
-      updatedDrinks[index].isHeartFilled = !updatedDrinks[index].isHeartFilled;
-      deleteFavorite(updatedDrinks[index].name);
-    }
-    setFavorites(updatedDrinks);
-  }
+  //const [favorites, setFavorites] = useState([]);
 
-  const deleteFavorite = async (name) => {
-    const userToken = await AsyncStorage.getItem("userToken");
-    const decodedToken = jwt_decode(userToken);
-    setUserData(decodedToken);
-    
-    const response = await fetch(
-      "https://obscure-springs-89188.herokuapp.com/api/deleteFavorite",
-      {
-        method: "DELETE",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          userId: decodedToken._id,
-          name: name,
-        }),
-      }
-    );
-    
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
-    
-    const data = await response.json();
-    
-    console.log(data);
-    const names = data.map((drink) => drink.savedDrinks);
-    setFavorites(names);
-  }
+  const [decodedToken, setDecodedToken] = useState({});
 
+  const [list, setList] = useState(false);
+  const [favorites, setFavorites] = useState([]);
 
   useEffect(() => {
-    const startReload = ()=> RNRestart.Restart();
+    const fetchData = async () => {
+      const userToken = await AsyncStorage.getItem("userToken");
+      const decoded = jwt_decode(userToken);
+      setUserData(decoded);
+      setDecodedToken(decoded);
+    };
+    fetchData();
+  }, []);
+
+  // useEffect(() => {
+  //   const startReload = () => RNRestart.Restart();
+  //   const fetchData = async () => {
+  //     const userToken = await AsyncStorage.getItem("userToken");
+  //     const decodedToken = jwt_decode(userToken);
+  //     setUserData(decodedToken);
+
+  //     const response = await fetch(
+  //       "https://obscure-springs-89188.herokuapp.com/api/getFavorites",
+  //       {
+  //         method: "POST",
+  //         headers: {
+  //           Accept: "application/json",
+  //           "Content-Type": "application/json",
+  //         },
+  //         body: JSON.stringify({
+  //           userId: decodedToken._id,
+  //         }),
+  //       }
+  //     );
+
+  //     const data = await response.json();
+  //     if (data && data.length === 0) {
+  //       console.log("no favorites");
+  //     } else {
+  //       const favDrinks = data.map((fav) => ({
+  //         ...fav,
+  //         isHeartFilled: true,
+  //       }));
+  //       setFavorites(favDrinks);
+  //     }
+  //   };
+
+  //   fetchData();
+  // }, []);
+
+  useEffect(() => {
     const fetchData = async () => {
       const userToken = await AsyncStorage.getItem("userToken");
       const decodedToken = jwt_decode(userToken);
-      setUserData(decodedToken);
-  
+
       const response = await fetch(
         "https://obscure-springs-89188.herokuapp.com/api/getFavorites",
         {
@@ -90,26 +102,28 @@ export default function Favorite() {
           }),
         }
       );
-      
+
       const data = await response.json();
-      if (data && data.length === 0) {
-        console.log("no favorites");
-      } else {
-        const favDrinks = data.map((fav) => ({
-          ...fav,
-          isHeartFilled:true,
-        }))
-        setFavorites(favDrinks);
-      }
+      // if (data && data.length === 0) {
+      //   console.log("no favorites");
+      //   setList(false);
+      // } else {
+      setList(true);
+      setFavorites(data);
+      // const favDrinks = data.map((fav) => ({
+      //   ...fav,
+      //   isHeartFilled: true,
+      // }));
+      // setFavorites(favDrinks);
+      //}
     };
-  
+
     fetchData();
-  }, []);
-  
+  }, [favorites]);
+
   const handleButtonPress = () => {
     navigation.navigate("Home");
   };
-
 
   const screenWidth = Dimensions.get("window").width;
 
@@ -119,23 +133,17 @@ export default function Favorite() {
       source={require("../assets/gradient.png")}
     >
       <SafeAreaView
-        style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
+        style={{
+          flex: 1,
+          justifyContent: "center",
+          alignItems: "center",
+          paddingTop: Platform.OS === "android" ? 25 : 0,
+        }}
       >
-  
-        <ScrollView contentContainerStyle={styles.scrollViewContent}>
-          {favorites.length === 0 ? (
-          <View style={styles.container}>
-            <Text style={{color: "#fff", fontSize: 15, fontWeight: "bold", padding: 10}}>You don't have any favorites</Text>
-            <TouchableOpacity onPress={handleButtonPress} style={styles.button}>
-              <Text style={styles.text}>Add Favorites?</Text>
-            </TouchableOpacity>
-          </View>
-                      
-          ) : (
-            <View style={styles.drinksContainer}>
-              <Text style={styles.header}>
-                Your favorite drinks:
-              </Text>
+        {favorites.length > 0 ? (
+          <View style={styles.drinksContainer}>
+            <Text style={styles.header}>Your favorite drinks:</Text>
+            <ScrollView contentContainerStyle={styles.scrollViewContent}>
               {favorites.map((drink, index) => (
                 <View
                   key={index}
@@ -147,9 +155,14 @@ export default function Favorite() {
                       style={styles.drinkImage}
                     />
                   ) : null}
-                  <View style = {{flexDirection: "row", justifyContent: "space-between"}}>
+                  <View
+                    style={{
+                      flexDirection: "row",
+                      justifyContent: "space-between",
+                    }}
+                  >
                     <Text style={styles.drinkName}>{drink.name}</Text>
-                    <TouchableOpacity onPress={() => toggleHeart(index)}>
+                    {/* <TouchableOpacity onPress={() => toggleHeart(index)}>
                       <MaterialIcons
                         name={
                           drink.isHeartFilled ? "favorite" : "favorite-outline"
@@ -158,18 +171,41 @@ export default function Favorite() {
                         style={styles.heartIcon}
                         color="#FC46AA"
                       />
-                    </TouchableOpacity>
+                    </TouchableOpacity> */}
+                    <FavoriteButton
+                      userId={decodedToken._id}
+                      drinkName={drink.name}
+                      isFavorite={list}
+                    ></FavoriteButton>
                   </View>
                   <Text style={styles.ingredients}>
-                    Ingredients: {drink.ingNeeded.join(", ")}
+                    Ingredients: {drink.ingMeasurments.join(", ")}
+                  </Text>
+                  <Text style={styles.ingredients}>
+                    Instructions: {drink.instructions}
                   </Text>
                 </View>
               ))}
-            </View>
-          )}
-        </ScrollView>
-
-
+            </ScrollView>
+          </View>
+        ) : (
+          <View style={styles.container}>
+            <Text
+              style={{
+                color: "#fff",
+                fontSize: 15,
+                fontWeight: "bold",
+                padding: 10,
+              }}
+            >
+              You don't have any favorites
+            </Text>
+            <TouchableOpacity onPress={handleButtonPress} style={styles.button}>
+              <Text style={styles.text}>Add Favorites?</Text>
+            </TouchableOpacity>
+            <Fav width={150} height={150} style={{ top: 20 }} />
+          </View>
+        )}
       </SafeAreaView>
     </ImageBackground>
   );
@@ -184,11 +220,13 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: "bold",
     marginBottom: 10,
+    color: "white",
   },
   drinksContainer: {
     alignItems: "center",
   },
   drink: {
+    borderWidth: 2,
     marginVertical: 5,
     padding: 10,
     backgroundColor: "#fff",
@@ -211,6 +249,7 @@ const styles = StyleSheet.create({
     height: 150,
     marginBottom: 10,
     borderRadius: 10,
+    borderWidth: 2,
   },
   button: {
     backgroundColor: "#FFF",
@@ -226,12 +265,11 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    paddingTop: "70%"
+    //paddingTop: "50%",
   },
   heartIcon: {
     width: 30,
     height: 30,
     alignSelf: "flex-end",
-    tintColor: "#ff69b4",
   },
 });
