@@ -227,7 +227,7 @@ const MyBarPage = () => {
   const getDrinkColor = (drinkType) => {
     switch (drinkType.toLowerCase()) {
       case "mixer":
-        return "blue";
+        return "#a6dced";
       case "juice":
         return "green";
       case "syrup":
@@ -324,10 +324,10 @@ const MyBarPage = () => {
             <h1 id="greeting">MyBar</h1>
         </div>
         <div className="navbar-tabs">
-            <a href="/home">Daily Drinks</a>
-            <a href="/favorites">Favorites</a>
-            <a href="/mybar">MyBar</a>
-            <a href="/" onClick={logOff}>Logout</a>
+            <a href="/home" className="tab-link">Daily Drinks</a>
+            <a href="/favorites" className="tab-link">Favorites</a>
+            <a href="/mybar" className="tab-link">MyBar</a>
+            <a href="/" className="tab-link" onClick={logOff}>Logout</a>
         </div>
     </nav>
     <div className="mybar-page">
