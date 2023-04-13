@@ -21,7 +21,7 @@ body {
   justify-content: center;
   align-items: center;
   min-height: 100vh;
-  background-size: 1200px;
+  background-size: auto 1200px;
 }
 
 /* Form styles */
@@ -139,6 +139,7 @@ body {
 .neon-logo {
   font-size: 3rem;
   text-transform: uppercase;
+  font-family: PlayfairDisplay;
   text-align: center;
   color: #f9f9f9;
   text-shadow:

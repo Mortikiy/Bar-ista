@@ -33,7 +33,25 @@
     background: linear-gradient(#4361EE, 60%, #4CC9F0);
     border-radius: 5px;
   }
-  
+
+  @keyframes slideInDrink {
+  0% {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.drink:nth-child(1), .drink:nth-child(2) {
+  animation: slideInDrink 1.0s ease-out forwards;
+}
+
+.drink:nth-child(3), .drink:nth-child(4) {
+  animation: slideInDrink 1.0s 0.2s ease-out forwards;
+}
   .drink {
     display: flex;
     flex-direction: column;
@@ -46,6 +64,7 @@
     max-width: 600px;
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
     background: black;
+    opacity: 0; /* Set initial opacity to 0 */
   }
   
   .drink img {
@@ -141,6 +160,3 @@
   {
     font-size: 1.5em;
   }
-  
-  
-  

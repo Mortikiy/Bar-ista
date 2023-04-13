@@ -32,16 +32,37 @@
     grid-column: 2 / span 1;
   }
   
-  .card {
-    display: flex;
-    flex-direction: row-reverse;
-    align-items: flex-start;
-    padding: 20px;
-    background-color: white;
-    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-    width: 100%;
-    border-radius: 10px;
+@keyframes slideIn {
+  0% {
+    transform: translateY(100%);
+    opacity: 0;
   }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.card:nth-child(1), .card:nth-child(2) {
+  animation: slideIn 1.0s ease-out forwards;
+}
+
+.card:nth-child(3), .card:nth-child(4) {
+  animation: slideIn 1.0s 0.2s ease-out forwards;
+}
+
+.card {
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: flex-start;
+  padding: 20px;
+  background-color: white;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  border-radius: 10px;
+  opacity: 0; /* Set initial opacity to 0 */
+}
+
   
   .card img {
     width: 175px;
