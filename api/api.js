@@ -329,7 +329,7 @@ exports.setApp = function ( app, client )
         
         const db = client.db("LargeProject");
         const results = await db.collection('ingredients').find({}).toArray();
-        console.log("hit");
+       
         
         
         var _ret = [];

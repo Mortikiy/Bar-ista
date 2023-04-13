@@ -235,7 +235,7 @@ const MyBarPage = () => {
       case "liqueur":
         return "#9dffa0";
       case "spirit":
-        return "red";
+        return "#f48fb1";
       case "bitters":
         return "orange";
       case "vermouth":
