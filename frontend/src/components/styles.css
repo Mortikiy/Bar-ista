@@ -99,7 +99,7 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-top: 10em;
+  margin-top: 2em;
   transform: scale(1.0);
   animation: loginFadeIn 3s ease forwards;
 }
