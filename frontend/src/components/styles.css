@@ -16,13 +16,12 @@
 }
 
 body {
-  font-family: PlayfairDisplay;
   background-image: linear-gradient(#7209B7, 65%, #F72585);
   display: flex;
   justify-content: center;
   align-items: center;
   min-height: 100vh;
-  background-size: auto 1200px;
+  background-size: 1200px;
 }
 
 /* Form styles */
@@ -44,7 +43,6 @@ body {
 }
 
 .form-title {
-  font-family: PlayfairDisplay;
   text-align: center;
   margin-bottom: 10px;
   color: #333;
@@ -52,7 +50,6 @@ body {
 }
 
 .form {
-  font-family: Montserrat;
   font-size: 0.8em;
   display: flex;
   flex-direction: column;
@@ -70,7 +67,6 @@ body {
 }
 
 .form-input {
-  font-family: Montserrat;
   width: 100%;
   padding: 10px;
   border-radius: 5px;
@@ -78,7 +74,6 @@ body {
 }
 
 .form-button {
-  font-family: Montserrat;
   width: 100%;
   padding: 10px;
   border-radius: 5px;
@@ -96,7 +91,6 @@ body {
 
 /* Form switch styles */
 .app-container {
-  font-family: Montserrat;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -120,7 +114,6 @@ body {
 }
 
 .form-switch-button {
-  font-family: PlayfairDisplay;
   margin-right: 1em;
   margin-left:  1em;
   padding: 10px 20px;
@@ -145,7 +138,6 @@ body {
 
 .neon-logo {
   font-size: 3rem;
-  font-family: PlayfairDisplay;
   text-transform: uppercase;
   text-align: center;
   color: #f9f9f9;
