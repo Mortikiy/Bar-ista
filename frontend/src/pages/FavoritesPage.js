@@ -94,28 +94,27 @@ function FavoritesPage() {
     <div>
     <nav className="navbar">
     <div className="navbar-left">
-    <img src={myImage} alt="Logo" />
-    <h1 id="greeting">Favorites</h1>
+        <img src={myImage} alt="Logo" />
+        <h1 id="greeting">Favorites</h1>
     </div>
     <div className="navbar-tabs">
-    <a href="/home" className="tab-link">Home</a>
+    <a href="/home" className="tab-link">Daily Drinks</a>
+    <a href="/favorites" className="tab-link">Favorites</a>
     <a href="/mybar" className="tab-link">MyBar</a>
     <a href="/" className="tab-link" onClick={logOff}>Logout</a>
     </div>
-    </nav>
-    <div className="page-container">
+</nav>
     <div className="favorite-drinks">
-    <div className="title-box"><h1 className="title-text">Favorite Drinks</h1></div>
-    <div className="search-container">
-    <div className="search-bar">
+      <div className="title-box"><h1>Favorite Drinks</h1></div>
+      <div className="search-container">
+  <div className="search-bar">
     <input
-    type="text"
-    placeholder="Search for a favorite..."
-    className="search-input"
-    value={searchTerm}
-    onChange={(event) => setSearchTerm(event.target.value)}
+      type="text"
+      placeholder="Search for a favorite..."
+      className="search-input"
+      value={searchTerm}
+      onChange={(event) => setSearchTerm(event.target.value)}
     />
-    </div>
   </div>
 </div>
 
@@ -127,7 +126,7 @@ function FavoritesPage() {
           </div>
         ))}
       </div>
-      : <div className="centered"><p>You have no favorites! <br></br> Open your bar to create and favorite drinks!</p></div>}
+      : <div className="centered"><p>You have no favorites!</p><p>Open your bar to create and favorite drinks!</p></div>}
     </div>
     </div>
   );

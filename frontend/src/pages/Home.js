@@ -110,29 +110,29 @@ function Home()
       }, [refresh]);
 
     return (
-      <div>
-      <nav className="navbar">
-      <div className="navbar-left">
-      <img src={myImage} alt="Logo" />
-      <h1 id="greeting"></h1>
-      </div>
-      <div className="navbar-tabs">
-      <a href="/favorites" className="tab-link">Favorites</a>
-      <a href="/mybar" className="tab-link">MyBar</a>
-      <a href="/" className="tab-link" onClick={logOff}>Logout</a>
-      </div>
-      </nav>
-      <div className="page-container">
-      <div className="card-header">
-      <h1 className ="daily">Try these drinks!</h1>
-      </div>
+        <div>
+        <nav className="navbar">
+            <div className="navbar-left">
+                <img src={myImage} alt="Logo" />
+                <h1 id="greeting"></h1>
+            </div>
+            <div className="navbar-tabs">
+            <a href="/home" className="tab-link">Daily Drinks</a>
+            <a href="/favorites" className="tab-link">Favorites</a>
+            <a href="/mybar" className="tab-link">MyBar</a>
+            <a href="/" className="tab-link" onClick={logOff}>Logout</a>
+            </div>
+        </nav>
+        <div className="card-header">
+            <h1 className ="title-box">Try these drinks!</h1>
+        </div>
 
-      <div className="card-container">
-      {apiData.map(item => (
-        <div className="drink">
-        <Card
-        imageUrl={item.img}
-        title={item.name}
+        <div className="card-container">
+            {apiData.map(item => (
+            <div className="drink">
+            <Card
+            imageUrl={item.img}
+            title={item.name}
             ingredients={item.ingMeasurments}
             description={item.instructions}
             savedDrinks={favoriteDrinks}
@@ -141,7 +141,6 @@ function Home()
             </div>
             ))}
         </div>
-      </div>
         </div>
     );
 }

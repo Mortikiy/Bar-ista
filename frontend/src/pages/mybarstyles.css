@@ -1,68 +1,24 @@
-@font-face {
-  font-family: 'PlayfairDisplay';
-  src: local('PlayfairDisplay') url(../fonts/PlayfairDisplay-Regular.otf) format('opentype');
-}
-
-@font-face {
-  font-family: 'Montserrat';
-  src: local('Montserrat') url(../fonts/Montserrat-Regular.otf) format('opentype');
-}
-
 .mybar-page {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  margin: 20px;
-}
-
-.ingredients {
-  flex: 2;
-  margin-right: 20px;
-}
-
-.transition-box {
-  transform: translateY(100px);
-  animation: ingredients-transition 1.0s ease-out forwards;
-}
-
-@keyframes ingredients-transition {
-  100% {
-    opacity: 1;
-    transform: translateY(0);
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin: 20px;
   }
-}
-
-.craftable-drinks {
-  transform: translateY(1600px);
-  animation: craftable-transition 1.0s ease-out forwards;
-  animation-delay: 0.1s;
-}
-
-@keyframes craftable-transition {
-  100% {
-    opacity: 1;
-    transform: translateY(0);
+  
+  .ingredients {
+    flex: 2;
+    margin-right: 20px;
   }
-}
-
-.mybar {
-  flex: 1;
-  transform: translateY(1600px);
-  animation: mybar-transition 1.0s ease-out forwards;
-  animation-delay: 1.0s;
-}
-
-@keyframes mybar-transition {
-  100% {
-    opacity: 1;
-    transform: translateY(0);
+  
+  .mybar {
+    flex: 1;
   }
-}
-
-h2 {
-  font-size: 1.5rem;
-  display: inline-block;
-}
+  
+  h2 {
+    font-size: 1.5rem;
+    display: inline-block;
+    color: white;
+  }
 
   #getDrinkButton
   {
@@ -112,51 +68,50 @@ h2 {
     border: none;
     border-bottom: 2px solid #ccc;
     font-size: 1rem;
-    font-family: "Montserrat";
+    font-family: "Montserrat", sans-serif;
   }
   
-.filters {
-  display: flex;
-  margin-bottom: 10px;
-}
-
-.filters span {
-  padding: 8px 12px;
-  margin-right: 10px;
-  border-radius: 20px;
-  background-color: rgba(0, 0, 0, 0.8);
-  color: #f1f1f1;
-  font-size: 1.8rem;
-  font-family: "Montserrat";
-  cursor: pointer;
-  transition: background-color 0.2s;
-}
-
-.filters span:hover {
-  background-color: rgba(76, 201, 240, 0.4);
-}
-
-.filters span.active {
-  background-color: #e95420;
-  color: #fff;
-  text-shadow: 0 0 5px rgba(233, 84, 32, 0.5), 0 0 10px rgba(233, 84, 32, 0.3);
-}
-
-.ingredient-list {
-  height: 250px;
-  overflow-y: auto;
-  background-color: #fff;
-  border: 2px solid #ccc;
-  border-radius: 5px;
-  padding: 10px;
-  margin-bottom: 20px;
-  border: 3px solid black;
-  padding: 20px;
-  background: white;
-  background: linear-gradient(#4361EE, 60%, #4CC9F0);
-  border-radius: 5px;
-  max-height: 550px;
-}
+  .filters {
+    display: flex;
+    margin-bottom: 10px;
+  }
+  
+  .filters span {
+    padding: 5px 10px;
+    margin-right: 10px;
+    border-radius: 20px;
+    background-color: #fff;
+    color: #000;
+    font-size: 1rem;
+    font-family: "Montserrat", sans-serif;
+    cursor: pointer;
+    transition: background-color 0.2s;
+  }
+  
+  .filters span:hover {
+    background-color: #f2f2f2;
+  }
+  
+  .filters span.active {
+    background-color: #e95420;
+    color: #fff;
+  }
+  
+  .ingredient-list {
+    height: 250px;
+    overflow-y: auto;
+    background-color: #fff;
+    border: 2px solid #ccc;
+    border-radius: 5px;
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 3px solid black;
+    padding: 20px;
+    background: white;
+    background: linear-gradient(#4361EE, 60%, #4CC9F0);
+    border-radius: 5px;
+    max-height: 550px;
+  }
 
   .ingredient-list::-webkit-scrollbar {
     width: 10px;
@@ -233,43 +188,14 @@ h2 {
       margin-bottom: 20px;
     }
   }
-.centered {
-  margin: auto;
-  display: flex;
-  height: auto;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  background: #f2f2f2;
-  padding: 2em;
-  border-radius: 1em;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.08);
-}
 
-.centered p
-{
-  font-family: Montserrat;
-  font-size: 1.75em;
-}
-.title-box {
-  width: auto;
-  height: auto;
-  background: rgba(0, 0, 0, 0.8);
-  padding: 2em;
-  margin-bottom: 2em;
-  border-radius: 1em;
-  margin-top: 0em;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.08);
-}
-
-.title-text {
-  font-family: PlayfairDisplay;
-  font-size: 2.5em;
-  font-weight: bold;
-  color: #4CC9F0;
-  text-shadow: 0 0 1px rgba(76, 201, 240, 0.8), 0 0 10px rgba(76, 201, 240, 0.6), 0 0 20px rgba(76, 201, 240, 0.4), 0 0 30px rgba(76, 201, 240, 0.1);
-  letter-spacing: 1px;
-}
+  .title_box {
+    width: auto;
+    height: auto;
+    background: rgba(0, 0, 0, 0.8);
+    border-radius: 10px;
+    margin-bottom: 10px;
+    padding: 10px;
+    display: inline-block;
+  }
+  

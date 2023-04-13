@@ -227,7 +227,7 @@ const MyBarPage = () => {
   const getDrinkColor = (drinkType) => {
     switch (drinkType.toLowerCase()) {
       case "mixer":
-        return "blue";
+        return "#a6dced";
       case "juice":
         return "green";
       case "syrup":
@@ -319,60 +319,59 @@ const MyBarPage = () => {
   return (
     <div>
     <nav className="navbar">
-    <div className="navbar-left">
-    <img src={myImage} alt="Logo" />
-    <h1 id="greeting">My Bar</h1>
-    </div>
-    <div className="navbar-tabs">
-    <a href="/home" className="tab-link">Home</a>
-    <a href="/favorites" className="tab-link">Favorites</a>
-    <a href="/" className="tab-link" onClick={logOff}>Logout</a>
-    </div>
+        <div className="navbar-left">
+            <img src={myImage} alt="Logo" />
+            <h1 id="greeting">MyBar</h1>
+        </div>
+        <div className="navbar-tabs">
+            <a href="/home" className="tab-link">Daily Drinks</a>
+            <a href="/favorites" className="tab-link">Favorites</a>
+            <a href="/mybar" className="tab-link">MyBar</a>
+            <a href="/" className="tab-link" onClick={logOff}>Logout</a>
+        </div>
     </nav>
     <div className="mybar-page">
-    <div className="ingredients">
-    <div className="transition-box">
-    <div className="title-box"><h1 className="title-text">Ingredients</h1></div>
-    <div className="search">
-    <input
-    type="text"
-    placeholder="Search"
-    onChange={handleInputChange}
-    />
-    </div>
-    <div className="filters">
-    <span onClick={() => handleFilter("")}>All</span>
-    {typeTabs}
-    </div>
-    <div className="ingredient-list" title={'Add Ingredient'}>{ingredientList}</div>
-    </div>
-    {drinks.length > 0 ? <div className="craftable-drinks"><div className="title-box"><h1 className="title-text">Craftable Drinks</h1></div>
+        <div className="ingredients">
+            <div className="title_box"><h2>Ingredients</h2></div>
+                <div className="search">
+                    <input
+                    type="text"
+                    placeholder="Search"
+                    onChange={handleInputChange}
+                    />
+                </div>
+            <div className="filters">
+                <span onClick={() => handleFilter("")}>All</span>
+                {typeTabs}
+            </div>
+            <div className="ingredient-list" title={'Add Ingredient'}>{ingredientList}</div>
+            {drinks.length > 0 ? <div><div className="title_box"><h2>Craftable Drinks</h2></div>
       <div className="drink-list">
-      {drinks.map((drink, index) => (
-        <div className="drink" key={drink.id}>
-        <Card imageUrl={drink.img} title={drink.name} description={drink.instructions} ingredients={drink.ingMeasurments} savedDrinks={favoriteDrinks.map(item => item.name)} grandParentFunction={refreshFavorites}/>
+        {drinks.map((drink, index) => (
+          <div className="drink" key={drink.id}>
+            <Card imageUrl={drink.img} title={drink.name} description={drink.instructions} ingredients={drink.ingMeasurments} savedDrinks={favoriteDrinks.map(item => item.name)} grandParentFunction={refreshFavorites}/>
+          </div>
+        ))}
+      </div>
+      </div>
+      : <div><h2>Craftable Drinks</h2><div className="centered"><p style={{fontWeight: "bold"}}>No craftable drinks! Add some more ingredients!</p></div></div>}
         </div>
-      ))}
-      </div>
-      </div>
-      : <div className="craftable-drinks"><div className="title-box"><h1 className="title-text">Craftable Drinks</h1></div><div className="centered"><p style={{fontWeight: "bold"}}>No craftable drinks! Add some more ingredients!</p></div></div>}
-    </div>
-    <div className="mybar">
-    <div className="title-box"><h1 className="title-text">My Bar</h1></div>
-    <div className="ingredient-list">
-    {myBar.length > 0 ?
+        <div className="mybar">
+        <div className="title_box"><h2>My Bar</h2></div>
+                <div className="ingredient-list">
+                    {myBar.length > 0 ?
                     myBar.map((ingredient) => (
-                      <div key={ingredient.ingredient} className="ingredient-item" style={{backgroundColor: getDrinkColor(ingredient.type), cursor: 'default', color: "black"}}>
-                      <span
-                      style={{
-                        backgroundColor: getDrinkColor(ingredient.type),
-                        color: "black",
-                        borderRadius: "4px",
-                        padding: "4px",
-                        marginRight: "4px",
-                        textTransform: "capitalize",
-                        cursor: 'default',
-                      }}
+                        <div key={ingredient.ingredient} className="ingredient-item" style={{backgroundColor: getDrinkColor(ingredient.type), cursor: 'default', color: "black"}}>
+                            <span
+                            style={{
+                            backgroundColor: getDrinkColor(ingredient.type),
+                            color: "black",
+                            borderRadius: "4px",
+                            padding: "4px",
+                            marginRight: "4px",
+                            textTransform: "capitalize",
+                            cursor: 'default',
+                            }}
                             >
                                 {ingredient.type}
                             </span>
