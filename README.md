@@ -2,7 +2,7 @@
 
 |Name|Role|
 |----|----|
-|Blake Lochmandy|Team Lead|
+|Blake Lochmandy|Project Manager|
 |Alexander Slort|Database/API|
 |Leonie Alexandra|API/Front-End (Mobile)|
 |Kenny Dao|Front-End (Mobile)|
