@@ -117,8 +117,33 @@
     padding: 10px;
   }
   
+  
   .navbar-tabs a:hover {
     background-color: rgba(255, 255, 255, 0.2);
+  }
+
+  .tab-link {
+    color: #4CC9F0;
+    text-decoration: none;
+    font-size: 2.5em;
+    font-weight: bold;
+    padding: 10px;
+    position: relative;
+  }
+  
+  .tab-link::before {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background-color: #4CC9F0;
+    transition: width 0.3s;
+  }
+  
+  .tab-link:hover::before {
+    width: 100%;
   }
   
 .navbar-left h1 {
