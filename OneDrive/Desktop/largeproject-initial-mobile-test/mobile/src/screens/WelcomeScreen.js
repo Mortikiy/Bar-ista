@@ -32,7 +32,7 @@ const WelcomeScreen = ({ navigation }) => {
           }}
         >
           <Text style={{ fontSize: 30, fontWeight: "bold", color: "#fff" }}>
-            APP NAME
+            Bar-ista
           </Text>
           <View
             style={{ flex: 1, justifyContent: "center", alignItems: "center" }}

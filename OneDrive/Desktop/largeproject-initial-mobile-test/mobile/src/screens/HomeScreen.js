@@ -132,6 +132,7 @@ export default function HomeScreen() {
                 <Text style={styles.ingredients}>
                   Ingredients: {drink.ingMeasurments.join(", ")}
                 </Text>
+                <Text></Text>
                 <Text style={styles.ingredients}>
                   Instructions: {drink.instructions}
                 </Text>
