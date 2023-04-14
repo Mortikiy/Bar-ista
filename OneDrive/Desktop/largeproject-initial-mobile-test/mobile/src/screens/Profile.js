@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from 'react';
+import React, { useEffect, useState, useContext } from "react";
 import {
   StyleSheet,
   Text,
@@ -12,38 +12,36 @@ import {
   ScrollView,
 } from "react-native";
 import { AuthContext } from "../context/AuthContext";
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import jwt_decode from "jwt-decode";
+import Logout from "../assets/logout.svg";
 
 export default function Profile() {
   const [userData, setUserData] = useState(null);
   const [decodedToken, setDecodedToken] = useState({});
-  const {logout} = useContext(AuthContext);
+  const { logout } = useContext(AuthContext);
 
   useEffect(() => {
     const fetchData = async () => {
-      const userToken = await AsyncStorage.getItem('userToken');
+      const userToken = await AsyncStorage.getItem("userToken");
       const decoded = jwt_decode(userToken);
       setUserData(decoded);
       setDecodedToken(decoded);
-    }   
+    };
     fetchData();
   }, []);
 
   return (
-    <ImageBackground style={styles.background} source={require("../assets/gradient.png")}>
-    <View style= {styles.container}>
-      <View style={styles.header}>
-        <Text style={styles.title}>User Profile</Text>
+    <ImageBackground
+      style={styles.background}
+      source={require("../assets/gradient.png")}
+    >
+      <View style={styles.container}>
         <TouchableOpacity style={styles.logoutButton} onPress={logout}>
           <Text style={styles.logoutText}>Logout</Text>
         </TouchableOpacity>
+        <Logout width={250} height={250} />
       </View>
-      <View style={styles.content}> 
-      <Text style = {styles.greeting}>Hello,</Text>
-      <Text style= {styles.name}>{decodedToken.firstName} {decodedToken.lastName}!</Text>
-      </View>
-    </View>
     </ImageBackground>
   );
 }
@@ -55,43 +53,17 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-  },
-  header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingHorizontal: 20,
-    paddingTop: 45,
-  },
-  title: {
-    fontSize: 30,
-    fontWeight: 'bold',
-    color: '#FFF',
+    justifyContent: "center",
+    alignItems: "center",
   },
   logoutButton: {
     padding: 10,
-    backgroundColor: '#FFF',
+    backgroundColor: "#FFF",
     borderRadius: 5,
   },
   logoutText: {
     fontSize: 16,
-    fontWeight: 'bold',
-    color: '#AD40AF',
-  },
-  content: {
-    flex: 1,
-    padding: 20,
-  },
-  name: {
-    fontSize: 25,
-    fontWeight: 'bold',
-    marginBottom: 10,
-    color: "#FFF",
-  },
-  greeting: {
-    fontSize: 25,
-    fontWeight: 'bold',
-    marginBottom: 10,
-    color: "#000",
+    fontWeight: "bold",
+    color: "#AD40AF",
   },
 });
