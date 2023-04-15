@@ -227,21 +227,21 @@ const MyBarPage = () => {
   const getDrinkColor = (drinkType) => {
     switch (drinkType.toLowerCase()) {
       case "mixer":
-        return "#a6dced";
+        return "#FFD700"; // bright yellow
       case "juice":
-        return "green";
+        return "#ff9736"; // bright orange
       case "syrup":
-        return "yellow";
+        return "lime"; // bright blue
       case "liqueur":
-        return "#9dffa0";
+        return "#aaffc3"; // bright green
       case "spirit":
-        return "#f48fb1";
+        return "#f736f4"; // bright purple
       case "bitters":
-        return "orange";
+        return "#FF84B8"; // bright pink
       case "vermouth":
-        return "brown";
+        return "#ff7577"; // bright coral
       default:
-        return "gray";
+        return "#c1c1c1"; // bright gray
     }
   };
 
