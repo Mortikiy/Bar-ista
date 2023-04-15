@@ -5,9 +5,10 @@ const emailer = require('../emailer');
 const jwt = require('jsonwebtoken');
 const mongo = require("mongodb");
 
+
 exports.setApp = function ( app, client )
 {
-    app.post('/api/login', async (req, res, next) => 
+    app.post('/api/login', async (req, res, next) =>
     {
         // incoming: email, password
         // outgoing: id, firstName, lastName, email, password, bar, error
@@ -19,7 +20,7 @@ exports.setApp = function ( app, client )
         const { login, password } = req.body;
         const db = client.db("LargeProject");
         const results = await db.collection('users').find({email:login, password:password}).toArray();
-        
+
 
         var id = -1;
         var fn = '';
@@ -62,10 +63,12 @@ exports.setApp = function ( app, client )
         }
     });
 
-    app.post('/api/createUser', async (req, res, next) => 
+    app.post('/api/createUser', async (req, res, next) =>
     {
         // incoming: firstName, lastName, email, password
         // outgoing: id, firstName, lastName, email, password, bar, error
+
+        console.log(req.body);
 
         var error = '';
         const { firstName, lastName, email, password } = req.body;
@@ -90,19 +93,19 @@ exports.setApp = function ( app, client )
         }
     });
 
-    app.get('/confirmation/:token', async (req, res, next) => 
+    app.get('/confirmation/:token', async (req, res, next) =>
     {
         try{
             let userId = jwt.verify(req.params.token, process.env.SECRET_TOKEN).id;
             var o_id = new mongo.ObjectId(userId);
-            
+
             //const update = db.collection('users').updateOne({_id:o_id}, {$set:{"emailConfirmed":true}}).toArray();
             const db = client.db("LargeProject");
             db.collection('users').updateOne({_id:o_id}, {$set:{"emailConfirmed":true}});
             //const ret = await db.collection('users').find({_id:o_id}).toArray();
-        
-            
-            
+
+
+
         }
         catch(e)
         {
@@ -130,7 +133,7 @@ exports.setApp = function ( app, client )
         {
             var results = {error: 'user does not exist with that email'};
             res.status(200).json(results);
-            
+
         }
 
         else
@@ -160,7 +163,7 @@ exports.setApp = function ( app, client )
             let ret = {id:updatedUser[0]._id,newPass:updatedUser[0].password};
             res.status(200).json(ret);
         }
-        
+
 
         else
         {
@@ -168,7 +171,7 @@ exports.setApp = function ( app, client )
             res.status(200).json(results);
         }
 
-        
+
         }
         catch(e)
         {
@@ -177,33 +180,33 @@ exports.setApp = function ( app, client )
             return;
         }
 
-    
+
 
     });
 
-    app.post('/api/searchIngredient', async (req, res, next) => 
+    app.post('/api/searchIngredient', async (req, res, next) =>
     {
         // incoming: userId, search
         // outgoing: results[], error
         var error = '';
         const { search } = req.body;
         var _search = search.trim();
-        
+
         const db = client.db("LargeProject");
         const results = await db.collection('ingredients').find({"ingredient":{$regex:_search+'.*', $options:'i'}}).toArray();
-        
-        
+
+
         var _ret = [];
         for( var i=0; i<results.length; i++ )
         {
             _ret.push( results[i]);
         }
-        
+
         var ret = {results:_ret, error:error};
         res.status(200).json(ret);
     });
 
-    app.post('/api/getDrinks', async (req, res, next) => 
+    app.post('/api/getDrinks', async (req, res, next) =>
     {
         // incoming: userId
         // outgoing: drink data
@@ -211,13 +214,13 @@ exports.setApp = function ( app, client )
         const { userId } = req.body;
         var o_id = new mongo.ObjectId(userId);
         //console.log(o_id);
-        
+
         const db = client.db("LargeProject");
         const user = await db.collection('users').find({_id:o_id}).toArray();
         //let test = await User.findOne({_id:o_id});
         //console.log(test);
-        
-        
+
+
         if( user.length > 0 )
         {
             var bar = user[0].bar;
@@ -227,7 +230,7 @@ exports.setApp = function ( app, client )
             //console.log(bar);
             var ret = [];
             const makeDrink = await db.collection('Drinks').find({ingNeeded: { $not: {$elemMatch: { $nin: bar}}}}).toArray();
-            
+
             //console.log(makeDrink.length);
 
             for( var i=0; i<makeDrink.length; i++ )
@@ -241,7 +244,7 @@ exports.setApp = function ( app, client )
             var ree = {Drinks:ret};
             //console.log(ret[0]);
 
-            
+
             res.status(200).json(ret);
 
 
@@ -250,44 +253,44 @@ exports.setApp = function ( app, client )
             var ret = {error: 'no user found'};
             res.status(200).json(ret);
         }
-        
-    
+
+
     });
 
-    app.post('/api/getFavorites', async (req, res, next) => 
+    app.post('/api/getFavorites', async (req, res, next) =>
     {
         // incoming: userId
         // outgoing: drink data
         var error = '';
         const { userId } = req.body;
         var o_id = new mongo.ObjectId(userId);
-        
-        
+
+
         const db = client.db("LargeProject");
         const user = await db.collection('users').find({_id:o_id}).toArray();
-        
-        
-        
+
+
+
         if( user.length > 0 )
         {
             var fav = user[0].savedDrinks;
-        
-            
+
+
             var ret = [];
             const makeDrink = await db.collection('Drinks').find({name: {$in: fav}}).toArray();
-            
-            
+
+
 
             for( var i=0; i<makeDrink.length; i++ )
             {
-            
+
             ret.push(makeDrink[i]);
-            
+
             }
-            
+
             var ree = {Drinks:ret};
 
-            
+
             res.status(200).json(ret);
 
 
@@ -296,95 +299,93 @@ exports.setApp = function ( app, client )
             var ret = {error: 'no user found'};
             res.status(200).json(ret);
         }
-    
-    
+
+
     });
 
-    app.post('/api/searchDrink', async (req, res, next) => 
+    app.post('/api/searchDrink', async (req, res, next) =>
     {
         // incoming: search
         // outgoing: results[], error
         var error = '';
         const { search } = req.body;
         var _search = search.trim();
-        
+
         const db = client.db("LargeProject");
         const results = await db.collection('Drinks').find({"name":{$regex:_search+'.*', $options:'i'}}).toArray();
-        
-        
+
+
         var _ret = [];
         for( var i=0; i<results.length; i++ )
         {
             _ret.push( results[i]);
         }
-        
+
         var ret = {results:_ret, error:error};
         res.status(200).json(ret);
         });
 
-        app.get('/api/getIngredients', async (req, res, next) => 
+    app.get('/api/getIngredients', async (req, res, next) =>
         {
-        
+
         // outgoing: Ingredients
-        
+
         const db = client.db("LargeProject");
         const results = await db.collection('ingredients').find({}).toArray();
-        console.log("hit");
-        
-        
+
         var _ret = [];
         for( var i=0; i<results.length; i++ )
         {
             _ret.push( results[i]);
         }
-        
+
         res.status(200).json(_ret);
     });
 
-    app.get('/api/getAllDrinks', async (req, res, next) => 
+    app.get('/api/getAllDrinks', async (req, res, next) =>
     {
-    
+
         // outgoing: Ingredients
-        
+
         const db = client.db("LargeProject");
         const results = await db.collection('Drinks').find({}).toArray();
-        
-        
+
+
         var _ret = [];
         for( var i=0; i<results.length; i++ )
         {
             _ret.push( results[i]);
         }
-        
+
         res.status(200).json(_ret);
         });
 
-        app.get('/api/getRandomDrink', async (req, res, next) => 
+    app.get('/api/getRandomDrink', async (req, res, next) =>
         {
-        
+
         // outgoing: Ingredients
-        
+
         const db = client.db("LargeProject");
         const results = await db.collection('Drinks').aggregate([{$sample: {size: 4}}]).toArray();
-        
-        
+
+
         var _ret = [];
         for( var i=0; i<results.length; i++ )
         {
             _ret.push( results[i]);
         }
-        
+
         res.status(200).json(_ret);
     });
 
-    app.post('/api/addIngredientToBar', async (req, res, next) => 
+    app.post('/api/addIngredientToBar', async (req, res, next) =>
     {
         // incoming: search
         // outgoing: results[], error
         var error = '';
         const { userId, ingName } = req.body;
         var o_id = new mongo.ObjectId(userId);
-        
+
         const db = client.db("LargeProject");
         const user = await db.collection('users').find({_id: o_id}).toArray();
 
@@ -402,25 +403,24 @@ exports.setApp = function ( app, client )
             {
             var ret = {error: 'ingredient not found'};
             res.status(200).json(ret);
-            
+
             }
         }
         else{
             var ret = {error: 'user not found'};
             res.status(200).json(ret);
         }
-    
+
     });
 
-
-    app.delete('/api/deleteIngredientInBar', async (req, res, next) => 
+    app.delete('/api/deleteIngredientInBar', async (req, res, next) =>
     {
         // incoming: search
         // outgoing: results[], error
         var error = '';
         const { userId, ingName } = req.body;
         var o_id = new mongo.ObjectId(userId);
-        
+
         const db = client.db("LargeProject");
         const user = await db.collection('users').find({_id: o_id}).toArray();
 
@@ -438,25 +438,25 @@ exports.setApp = function ( app, client )
             {
             var ret = {error: 'ingredient not found'};
             res.status(200).json(ret);
-            
+
             }
         }
         else{
             var ret = {error: 'user not found'};
             res.status(200).json(ret);
         }
-    
+
     });
 
     //Favorite Section
-    app.post('/api/addFavorite', async (req, res, next) => 
+    app.post('/api/addFavorite', async (req, res, next) =>
     {
         // incoming: search
         // outgoing: results[], error
         var error = '';
         const { userId, name } = req.body;
         var o_id = new mongo.ObjectId(userId);
-        
+
         const db = client.db("LargeProject");
         const user = await db.collection('users').find({_id: o_id}).toArray();
 
@@ -480,17 +480,17 @@ exports.setApp = function ( app, client )
             var ret = {error: 'user not found'};
             res.status(200).json(ret);
         }
-    
+
     });
 
-    app.delete('/api/deleteFavorite', async (req, res, next) => 
+    app.delete('/api/deleteFavorite', async (req, res, next) =>
     {
     // incoming: search
     // outgoing: results[], error
     var error = '';
     const { userId, name } = req.body;
     var o_id = new mongo.ObjectId(userId);
-    
+
     const db = client.db("LargeProject");
     const user = await db.collection('users').find({_id: o_id}).toArray();
 
@@ -514,6 +514,6 @@ exports.setApp = function ( app, client )
             var ret = {error: 'user not found'};
             res.status(200).json(ret);
         }
-    
+
     });
 }

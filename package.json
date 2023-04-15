@@ -10,7 +10,8 @@
     "build": "cd client && npm run build",
     "install-client": "cd client && npm install",
     "server": "nodemon server.js",
-    "develop": "concurrently --kill-others-on-fail \"npm run server\" \"npm run start --prefix client\""
+    "develop": "concurrently --kill-others-on-fail \"npm run server\" \"npm run start --prefix client\"",
+    "test": "jest"
   },
   "author": "",
   "license": "ISC",
@@ -27,5 +28,9 @@
     "nodemon": "^2.0.20",
     "stream-browserify": "^3.0.0"
   },
-  "proxy": "https://obscure-springs-89188.herokuapp.com/"
+  "proxy": "https://obscure-springs-89188.herokuapp.com/",
+  "devDependencies": {
+    "jest": "^29.5.0",
+    "supertest": "^6.3.3"
+  }
 }
