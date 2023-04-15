@@ -108,7 +108,6 @@ function Login(props)
       <form onSubmit={handleSubmit} className="form">
         <div className="form-group">
           <label htmlFor="username" className="form-label">
-          Email:
           </label>
           <input
             placeholder="Email"
@@ -121,7 +120,6 @@ function Login(props)
         </div>
         <div className="form-group" id="labelpass" >
           <label htmlFor="password" className="form-label">
-            Password:
           </label>
           <input
             placeholder="Password"

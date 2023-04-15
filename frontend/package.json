@@ -49,6 +49,7 @@
     ]
   },
   "devDependencies": {
-    "@types/jsonwebtoken": "^9.0.1"
+    "@types/jsonwebtoken": "^9.0.1",
+    "webpack": "^5.79.0"
   }
 }

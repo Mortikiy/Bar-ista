@@ -22,14 +22,15 @@ function LoginPage() {
     mySecondClass.className="form-switch-button-active";
   };
 
-  return (
+return (
     <div className="app-container">
-      <h1 style={{paddingBottom: 10, marginTop: '-1.7%'}}>Welcome to Barista!</h1>
-      <div className="form-switch-container"
-       style={{backgroundColor: 'black', borderRadius: '10px'}}
-      >
+      <div className="neon-logo">
+        B a r i s t a
+      </div>
+      <img src={myImage} className="beer-image" alt="Beer" />
+      <div className="form-switch-container">
         <button
-          id = "logInButton"
+          id="logInButton"
           onClick={() => setIsLogin(true)}
           className={`form-switch-button ${
             isLogin ? "form-switch-button-active" : ""
@@ -38,7 +39,7 @@ function LoginPage() {
           Login
         </button>
         <button
-          id = "signUpButton"
+          id="signUpButton"
           onClick={() => setIsLogin(false)}
           className={`form-switch-button ${
             !isLogin ? "form-switch-button-active" : ""
@@ -47,12 +48,16 @@ function LoginPage() {
           Sign Up
         </button>
       </div>
-      <div style={{display: 'flex', alignItems: 'center', marginLeft: '12vw'}}>
-      {isLogin ? <Login handleFunction2={handleFunction2}/> : <Signup handleFunction={handleFunction} />}
-      <img src={myImage} style={{width: '20%', height: '40%', padding: 10, postion: 'relative', display: 'inline'}} alt="Logo" />
-      </div>
-    </div>
-  );
+
+      <div className="form-and-image">
+        {isLogin ? (
+          <Login handleFunction2={handleFunction2} />
+        ) : (
+          <Signup handleFunction={handleFunction} />
+        )}
+  </div>
+  </div>
+);
 }
 
 export default LoginPage;
