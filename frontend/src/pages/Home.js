@@ -38,7 +38,7 @@ function Home()
 
         const userData = jwt_decode(token);
         let name = document.getElementById("greeting");
-        name.innerHTML="Welcome to Barista, "+userData.firstName+"!";
+        name.innerHTML="Welcome to Bar-ista, "+userData.firstName+"!";
         const userId = 
       {
         userId: userData._id
