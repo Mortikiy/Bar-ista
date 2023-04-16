@@ -25,7 +25,7 @@ function LoginPage() {
 return (
     <div className="app-container">
       <div className="neon-logo">
-        B a r i s t a
+        B a r - i s t a
       </div>
       <img src={myImage} className="beer-image" alt="Beer" />
       <div className="form-switch-container">
